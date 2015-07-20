@@ -1,6 +1,6 @@
 # Type Functions
 
-    {curry}  = require "./core"
+    {curry}  = require "fairmont-core"
 
 ## type
 

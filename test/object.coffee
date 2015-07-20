@@ -8,7 +8,8 @@ Amen.describe "Object functions", (context) ->
     has, keys, values, pairs, pick, omit, query,
     toJSON, fromJSON} = require "../src/object"
 
-  {deepEqual, compose} = require "../src/core"
+  {compose} = require "fairmont-core"
+  {deepEqual} = require "../src/util"
 
   context.test "include"
 

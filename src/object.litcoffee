@@ -1,6 +1,8 @@
 # Object Functions
 
-    {compose, curry, deepEqual} = require "fairmont-core"
+    {compose, curry, negate} = require "fairmont-core"
+    {isObject} = require "./type"
+    {deepEqual} = require "./util"
 
 ## include, extend
 
@@ -119,19 +121,17 @@ Convert an object into association array.
 
 ## pick
 
-    pick = (f, x) ->
+    pick = curry (f, x) ->
       r = {}
       r[k] = v for k, v of x when f k, v
       r
 
 ## omit
 
-    {negate} = require "./logical"
-    omit = (f, x) -> pick (negate f), x
+    omit = curry (f, x) -> pick (negate f), x
 
 ## query
 
-    {isObject} = require "./type"
     query = curry (example, target) ->
       if (isObject example) && (isObject target)
         for k, v of example

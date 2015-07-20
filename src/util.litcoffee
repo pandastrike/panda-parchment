@@ -2,13 +2,13 @@
 
 These should probably all go somewhere else. For the moment, this is a holding pen of sorts for functions that we're not sure what to do with.
 
-## abort
-
-Simple wrapper around `process.exit(-1)`.
-
-    abort = (message) ->
-      console.error message if message?
-      process.exit -1
+    {curry} = require "fairmont-core"
+    {promise} = require "when"
+    {Method} = require "fairmont-multimethods"
+    {isFunction, isGenerator} = require "./type"
+    {async} = require "./async"
+    {isArray, isString, isObject} = require "./type"
+    {blank} = require "./string"
 
 ## memoize
 
@@ -32,38 +32,18 @@ Set a timer. Takes an interval in microseconds and an action. Returns a function
 Returns a promise that yields after a given interval.
 
     sleep = (interval) ->
-      {promise} = require "when"
       promise (resolve, reject) ->
         timer interval, -> resolve()
-
-## shell
-
-Execute a shell command. Returns a promise that resolves to an object with properties `stdout` and `stdin`, or is rejected with an error.
-
-    shell = (command) ->
-      {promise} = require "when"
-      {exec} = require "child_process"
-      promise (resolve, reject) ->
-        exec command, (error, stdout, stderr) ->
-          if error
-            reject error
-          else
-            resolve {stdout, stderr}
 
 ## times
 
 Run a function N number of times.
 
-    {curry} = require "./core"
     times = curry (fn, n) -> fn() until n-- == 0
 
 ## benchmark
 
 Run a function an record how long it took. Use this in conjunction with `times` to benchmark a function over N repetitions.
-
-    {Method} = require "./multimethods"
-    {isFunction, isGenerator} = require "./type"
-    {async} = require "./async"
 
     benchmark = Method.create()
 
@@ -81,15 +61,11 @@ Run a function an record how long it took. Use this in conjunction with `times` 
 
 Returns true if a contains no value. For arrays and strings, this means that its length is zero. For an object, it means that `keys` returns an array of length zero. For any other value, it will return true unless it's `undefined`.
 
-    {keys} = require "./object"
-    {isArray, isString, isObject} = require "./type"
-    {blank} = require "./string"
-
     empty = (x) ->
       if isArray x
         x.length == 0
       else if isObject x
-        empty keys x
+        empty Object.keys x
       else if isString x
         blank x
       else
@@ -101,7 +77,18 @@ Returns the length property of an object. This is so frequently used with string
 
     length = (x) -> x.length
 
+
+## deepEqual
+
+    deepEqual = (a, b) ->
+      assert = require "assert"
+      try
+        assert.deepEqual a, b
+        true
+      catch
+        false
+
 ---
 
-    module.exports = {times, shell, sleep, timer, memoize, abort,
-      times, benchmark, empty, length}
+    module.exports = {times, sleep, timer, memoize,
+      times, benchmark, empty, length, deepEqual}

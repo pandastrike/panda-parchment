@@ -1,7 +1,6 @@
 # Numeric Functions
 
-    {curry, partial} = require "./core"
-    {negate} = require "./logical"
+    {curry, partial, negate} = require "fairmont-core"
 
 ## gt, lt, gte, lte
 
