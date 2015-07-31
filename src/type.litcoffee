@@ -4,7 +4,7 @@
 
 ## type
 
-Get the type of a value. Possible values are: `number`, `string`, '`boolean`, `date`, `regexp`, `function`, `array`, `object`, `null`, `undefined`.
+Return the constructor function of the value, or `undefined`.
 
     type = (x) -> x?.constructor
 
