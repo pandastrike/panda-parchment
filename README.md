@@ -1,6 +1,8 @@
 # Fairmont-Helpers
 
-Fairmont-Helpers is a JavaScript library providing support for functional programming in JavaScript. It's part of the [Fairmont][] library. You can use it by itself, or simply as part of the [Fairmont][] library.
+Fairmont-Helpers is a JavaScript library providing a variety of helper functions for dealing with everything from Arrays to Promises in a functional style.
+It's part of the [Fairmont][] library.
+You can use it by itself, or simply as part of the [Fairmont][] library.
 
 ## Installation
 
