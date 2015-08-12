@@ -1,4 +1,4 @@
-{compose, curry, negate} = require "fairmont-core"
+{curry, negate} = require "fairmont-core"
 {isObject} = require "./type"
 {deepEqual} = require "./util"
 
