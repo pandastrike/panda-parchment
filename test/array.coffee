@@ -3,7 +3,7 @@ Amen = require "amen"
 
 Amen.describe "Array functions", (context) ->
 
-  {cat, slice, first, second, third, last, rest,
+  {cat, slice, first, second, third, fourth, fifth, last, rest,
     includes, uniqueBy, unique, uniq, dupes, union, intersection,
     difference, complement, remove, shuffle} = require "../src/array"
 
@@ -17,6 +17,8 @@ Amen.describe "Array functions", (context) ->
   context.test "first", -> assert (first ax) == 1
   context.test "second", -> assert (second ax) == 2
   context.test "third", -> assert (third ax) == 3
+  context.test "fourth", -> assert (fourth ax) == 4
+  context.test "fifth", -> assert (fifth ax) == 5
   context.test "last", -> assert (last ax) == 5
   context.test "rest", -> assert (first rest ax) == 2
   context.test "includes", ->
