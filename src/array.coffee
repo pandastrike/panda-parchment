@@ -78,6 +78,6 @@ shuffle = (ax) ->
 
 range = curry (start, finish) -> [start..finish]
 
-module.exports = {push, cat, slice, first, second, third, last, rest,
-  includes, uniqueBy, unique, uniq, dupes, union, intersection,
+module.exports = {push, cat, slice, first, second, third, fourth, fifth, last,
+  rest, includes, uniqueBy, unique, uniq, dupes, union, intersection,
   difference, complement, remove, shuffle}
