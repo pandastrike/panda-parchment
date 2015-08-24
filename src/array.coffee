@@ -2,6 +2,7 @@
   unary, binary, ternary} = require "fairmont-core"
 
 {detach} = require "./object"
+{deepEqual} = require "./util"
 
 # array only version of empty, not exported
 empty = (x) -> x.length == 0
@@ -80,4 +81,4 @@ range = curry (start, finish) -> [start..finish]
 
 module.exports = {push, cat, slice, first, second, third, fourth, fifth, nth,
   last, rest, includes, uniqueBy, unique, uniq, dupes, union, intersection,
-  difference, complement, remove, shuffle}
+  difference, complement, remove, shuffle, range}

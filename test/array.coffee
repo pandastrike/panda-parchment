@@ -5,7 +5,7 @@ Amen.describe "Array functions", (context) ->
 
   {cat, slice, first, second, third, fourth, fifth, nth, last, rest,
     includes, uniqueBy, unique, uniq, dupes, union, intersection,
-    difference, complement, remove, shuffle} = require "../src/array"
+    difference, complement, remove, shuffle, range} = require "../src/array"
 
   # array-only version of empty, length
   # TODO: import from ... ?
@@ -34,7 +34,12 @@ Amen.describe "Array functions", (context) ->
     rx = slice 1, 2, ax
     assert (length rx) == 1 && (first rx) == 2
 
-  context.test "uniqueBy"
+  context.test "uniqueBy", ->
+    numbers = [2, 3, 6, 9, 10, 14, 15, 18, 21, 22, 26, 27, 30, 33, 34, 39, 45, 51]
+    f = (x) -> if x % 2 == 0 then x * 3 else x * 2
+
+    output = uniqueBy f, numbers
+    assert.deepEqual output, [6, 18, 30, 42, 54, 66, 78, 90, 102]
 
   context.test "unique", ->
     assert (last (unique (cat [1..5], [2..6]))) == 6
@@ -67,8 +72,36 @@ Amen.describe "Array functions", (context) ->
     rx = complement ax, bx
     assert (first rx) == 1 && (second rx) == 2 && (length rx) == 2
 
-  context.test "remove"
+  context.test "remove", ->
+    fruits = ["apple", "orange", "lemon", "apple", "lime", "apple"]
 
-  context.test "shuffle"
+    output = remove "orange", fruits
+    assert.deepEqual output, "orange"
+    assert.deepEqual fruits, ["apple", "lemon", "apple", "lime", "apple"]
 
-  context.test "range"
+    output = remove "apple", fruits
+    assert.deepEqual output, "apple"
+    assert.deepEqual fruits, ["lemon", "apple", "lime", "apple"]
+
+    output = remove "orange", fruits
+    assert.deepEqual output, null
+    assert.deepEqual fruits, ["lemon", "apple", "lime", "apple"]
+
+
+  context.test "shuffle", ->
+    bx = [1..10]
+    rx = shuffle bx
+    assert.notDeepEqual bx, rx
+
+  context.test "range", ->
+    output = range 1, 5
+    assert.deepEqual output, [1, 2, 3, 4, 5]
+
+    output = range 5, 1
+    assert.deepEqual output, [5, 4, 3, 2, 1]
+
+    output = range 5, 5
+    assert.deepEqual output, [ 5 ]
+
+    output = range 1, "foobar"
+    assert.deepEqual output, [] 
