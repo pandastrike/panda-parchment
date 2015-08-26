@@ -30,6 +30,8 @@ isObject = isType Object
 
 isArray = isType Array
 
+isError = isType Error
+
 isDefined = (x) -> x?
 
 GeneratorFunction = (-> yield null).constructor
