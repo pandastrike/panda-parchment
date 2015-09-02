@@ -22,9 +22,9 @@ Amen.describe "Numeric functions", (context) ->
   
   context.test "sub", -> assert sub 1, 3 == 2
   
-  context.test "mul", -> assert mul 2, 4 == 8
+  context.test "mul", -> assert mul 2, 4
   
-  context.test "div", -> assert div 2, 4 == 2
+  context.test "div", -> assert div 2, 4
   
   context.test "mod", -> assert mod -3, 4 == 1
 
@@ -32,13 +32,9 @@ Amen.describe "Numeric functions", (context) ->
 
   context.test "odd", -> assert odd 5
 
-  context.test "min", ->
-    numbers = [1, 5, 10]
-    assert min numbers == 1
+  context.test "min", -> assert min 1, 5, 10 == 1
   
-  context.test "max", ->
-    numbers = [1, 5, 10]
-    assert max numbers == 10
+  context.test "max", -> assert max 1, 5, 10 == 10
 
   context.text "abs", -> assert abs (-5)
   
