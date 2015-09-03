@@ -4,6 +4,7 @@ if targets.length == 0
   targets = [
     "array"
     "async"
+    "hash"
     "numeric"
     "object"
     "string"

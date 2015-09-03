@@ -11,9 +11,22 @@ Amen.describe "Object functions", (context) ->
   {compose} = require "fairmont-core"
   {deepEqual} = require "../src/util"
 
-  context.test "include"
+  context.test "include && extend", ->
+    stats = {hp: 50, mp: 100}
 
-  context.test "merge"
+    include stats, {stamina: 10, strength: 10}, {intelligence: 50, agility: 20}
+    assert.deepEqual Object.keys(stats), ["hp", "mp", "stamina", "strength", "intelligence", "agility"]
+    include stats, {stamina: 50}
+    assert stats.stamina == 50
+
+    stats = {hp: 50, mp: 25}
+    extend stats, {stamina: 10, strength: 10}, {intelligence: 50, agility: 20}
+    assert.deepEqual Object.keys(stats), ["hp", "mp", "stamina", "strength", "intelligence", "agility"]
+    assert.deepEqual Object.keys(stats), ["hp", "mp", "stamina", "strength", "intelligence", "agility"]
+
+  context.test "merge", ->
+    stats = merge {hp: 50, mp: 100}, {stamina: 10, strength: 10}, {intelligence: 50, agility: 20}
+    assert.deepEqual Object.keys(stats), ["hp", "mp", "stamina", "strength", "intelligence", "agility"]
 
   context.test "clone", ->
     person =
@@ -25,9 +38,11 @@ Amen.describe "Object functions", (context) ->
       birthdate: new Date 'Feb 24, 1955'
       regex: /foo.*/igm
 
-
     assert.notEqual  (clone person), person
     assert.deepEqual (clone person), person
+
+    assert (clone 1) == 1
+
 
   context.test "property", ->
     a = { foo: 1, bar: 2, baz: { foo: 2 }}
@@ -35,15 +50,55 @@ Amen.describe "Object functions", (context) ->
     bazFoo = (compose (property "foo"), (property "baz"))
     assert (bazFoo a) == 2
 
-  context.test "delegate"
+  context.test "delegate", ->
+    a =
+      foo: -> this.bar()
+      bar: -> "This is a"
+
+    b =
+      bar: -> "This is b"
+
+    assert a.foo() == "This is a"
+    delegate a, b
+    assert a.foo() == "This is b"
+    assert a.bar() == "This is b"
 
   context.test "bind", ->
-    trim = bind String::trim, "foo "
-    assert (trim()), "foo"
+    this.x = 9
+    foo =
+      x: 81
+      getX: -> this.x
+
+    assert foo.getX() == 81     # accesses foo's internal context
+
+    getX = foo.getX
+    assert getX() == 9          # "this" refers to the global context
+
+    boundGetX = bind getX, foo
+    assert boundGetX() == 81    # Now, boundGetX's "this" is bound to foo's context
+
+    foo.x = 11
+    assert boundGetX() == 11    # And the context is *shared*, not copied.
 
   context.test "detach", ->
+    # Establishing an instance of prototype.
+    foo = ->
+    foo::x = 81
+    foo::f = (y) -> this.x / y
+
+    # Establishing secondary contexts.
+    this.x = 9
+    bar = x: 36
+
+    # Once detached, we may apply the other contexts to "f".
+    g = detach foo::f
+    assert (g this, 3) == 3
+    assert (g bar, 3) == 12
+
+
+    # Detaching reflective functions creates a function that only needs one argument (a context).
     trim = detach String::trim
-    assert (trim "foo "), "foo"
+    assert (trim "  panda    ") == "panda"
 
   context.test "properties", ->
     class A
@@ -58,17 +113,59 @@ Amen.describe "Object functions", (context) ->
     assert a._foo?
 
   context.test "has", ->
-    assert (has "a" , {a: 1})
+    panda =
+      color: "black and white"
+      limbs: 4
+
+    fish =
+      color: "silver"
+      limbs: 0
+
+    car =
+      color: "red"
+      wheels: 4
+
+    assert (has "limbs", panda) == true
+    assert (has "limbs", fish) == true
+    assert (has "limbs", car) == false
+
+    # has is curried, so we can create a function that always checks for the same property.
+    wheelCheck = has "wheels"
+    assert (wheelCheck panda) == false
+    assert (wheelCheck fish) == false
+    assert (wheelCheck car) == true
 
   context.test "keys", ->
-    assert ("a" in keys {a: 1})
+    panda =
+      c: 3
+      v: 1
+      q: 12
+      t: 10
+
+    assert.deepEqual (keys panda), ["c", "v", "q", "t"]
 
   context.test "values", ->
-    assert (1 in values {a: 1})
+    panda =
+      c: 3
+      v: 1
+      q: 12
+      t: 10
+
+    assert.deepEqual (values panda), [3, 1, 12, 10]
 
   context.test "pairs", ->
     assert deepEqual (pairs {a: 1, b: 2, c: 3}),
       [["a", 1], ["b", 2], ["c", 3]]
+
+    obj =
+      a:
+        foo: 100
+        bar: 200
+      b: 2
+      c: 3
+
+    assert.deepEqual (pairs obj), [ [ 'a', { foo: 100, bar: 200 } ], [ 'b', 2 ], [ 'c', 3 ] ]
+
 
   context.test "pick", ->
     assert deepEqual (pick ((k, v) -> v?), {a: 1, b: null, c: 3}),

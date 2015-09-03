@@ -7,7 +7,7 @@
 # array only version of empty, not exported
 empty = (x) -> x.length == 0
 
-push = curry (ax, a) -> ax.push a ; ax
+push = curry (ax, a...) -> ax.push a... ; ax
 
 cat = detach Array::concat
 

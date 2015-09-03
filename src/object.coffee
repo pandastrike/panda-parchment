@@ -1,5 +1,5 @@
 {curry, negate} = require "fairmont-core"
-{isObject} = require "./type"
+{isObject, isFunction} = require "./type"
 {deepEqual} = require "./util"
 
 include = extend = (object, mixins...) ->
@@ -42,7 +42,7 @@ property = curry (key, object) -> object[key]
 
 delegate = (from, to) ->
 
-  for name, value of to when (type value) is "function"
+  for name, value of to when isFunction value
     do (value) ->
       from[name] = (args...) -> value.call to, args...
 

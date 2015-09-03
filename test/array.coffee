@@ -3,7 +3,7 @@ Amen = require "amen"
 
 Amen.describe "Array functions", (context) ->
 
-  {cat, slice, first, second, third, fourth, fifth, nth, last, rest,
+  {push, cat, slice, first, second, third, fourth, fifth, nth, last, rest,
     includes, uniqueBy, unique, uniq, dupes, union, intersection,
     difference, complement, remove, shuffle, range} = require "../src/array"
 
@@ -25,6 +25,24 @@ Amen.describe "Array functions", (context) ->
   context.test "includes", ->
     assert (includes 3, ax) && !(includes 6, ax)
 
+  context.test "push", ->
+    fruits = ["apple", "blueberry"]
+    push fruits, "strawberry"
+    assert.deepEqual fruits, ["apple", "blueberry", "strawberry"]
+
+    citrus = ["lemon", "lime"]
+    push fruits, citrus
+    assert.deepEqual fruits, ["apple", "blueberry", "strawberry", ["lemon", "lime"]]
+
+    # Check that push accepts more than one element.
+    fruits = ["apple", "blueberry"]
+    push fruits, "strawberry", citrus
+    assert.deepEqual fruits, ["apple", "blueberry", "strawberry", ["lemon", "lime"]]
+
+    fruits = ["apple", "blueberry"]
+    push fruits, "strawberry", citrus...
+    assert.deepEqual fruits, ["apple", "blueberry", "strawberry", "lemon", "lime"]
+
   context.test "cat", ->
     bx = [6..9]
     rx = cat ax, bx
@@ -33,6 +51,36 @@ Amen.describe "Array functions", (context) ->
   context.test "slice", ->
     rx = slice 1, 2, ax
     assert (length rx) == 1 && (first rx) == 2
+
+    fruits = ["apple", "blueberry", "lemon", "lime", "orange", "strawberry", "cherry"]
+    citrus = slice 2, 5, fruits
+    assert.deepEqual citrus, ["lemon", "lime", "orange"]
+
+    citrus = slice 1, -2, fruits
+    assert.deepEqual citrus, ["blueberry", "lemon", "lime", "orange"]
+
+    string = "supercalifragilisticexpialidocious"
+    sub_string = slice 9, 20, string
+    assert.deepEqual sub_string, "fragilistic"
+
+    citrus = slice 2, 10, fruits
+    assert.deepEqual citrus, ["lemon", "lime", "orange", "strawberry", "cherry"]
+
+
+
+    # Slice is curried, so you can get cause it to return a function when you don't pass all three arguemnts.
+    snip = slice 2, 5
+
+    # And the new function takes only the remaining arugment (or arguments).
+    bx = [1..10]
+    cx = [11..20]
+
+    b = snip bx
+    c = snip cx
+    f = snip fruits
+    assert.deepEqual b, [3, 4, 5]
+    assert.deepEqual c, [13, 14, 15]
+    assert.deepEqual f, ['lemon', 'lime', 'orange']
 
   context.test "uniqueBy", ->
     numbers = [2, 3, 6, 9, 10, 14, 15, 18, 21, 22, 26, 27, 30, 33, 34, 39, 45, 51]
@@ -104,4 +152,4 @@ Amen.describe "Array functions", (context) ->
     assert.deepEqual output, [ 5 ]
 
     output = range 1, "foobar"
-    assert.deepEqual output, [] 
+    assert.deepEqual output, []
