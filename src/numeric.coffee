@@ -1,15 +1,15 @@
 {curry, partial, negate} = require "fairmont-core"
 
-gte = curry (x, y) -> y >= x
-lte = curry (x, y) -> y <= x
-gt = curry (x, y) -> y > x
-lt = curry (x, y) -> y < x
+gte = curry (x, y) -> x >= y
+lte = curry (x, y) -> x <= y
+gt = curry (x, y) -> x > y
+lt = curry (x, y) -> x < y
 
 add = curry (x, y) -> x + y
-sub = curry (x, y) -> y - x
+sub = curry (x, y) -> x - y
 mul = curry (x, y) -> x * y
-div = curry (x, y) -> y / x
-mod = curry (x, y) -> y % x == 0
+div = curry (x, y) -> x / y
+mod = curry (x, y) -> x % y == 0
 
 even = mod 2
 odd = negate even
