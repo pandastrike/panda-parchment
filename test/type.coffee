@@ -8,19 +8,33 @@ Amen.describe "Type functions", (context) ->
     isString, isFunction, isObject, isArray, isRegExp, isDate, isDefined,
     isGenerator, isPromise} = require "../src/type"
 
-  context.test "type"
+  context.test "type", ->
+    assert type 7
+    assert type "7"
+    assert type true
 
-  context.test "isType"
+  context.test "isType", ->
+    assert isType(String, "7")
+    assert isType(Number, 7)
+    assert isType(Boolean, true)
+    assert ! isType(Number, false)
 
-  context.test "instanceOf"
+  context.test "instanceOf", ->
+    as = -> isType()
+    bs = -> as 7
+    assert bs instanceOf as
 
   context.test "isNumber", ->
     assert isNumber 7
     assert ! isNumber "7"
     assert ! isNumber false
 
-  context.test "isNaN"
-  context.test "isFinite"
+#isNaN seems buggy
+  context.test "isNaN", ->
+    assert !isNaN 7
+
+  context.test "isFinite", ->
+    assert isFinite 60
 
   context.test "isInteger", ->
     assert isInteger 5

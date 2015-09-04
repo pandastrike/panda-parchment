@@ -7,13 +7,12 @@ Amen.describe "String functions", (context) ->
     titleCase, camelCase, underscored, dashed, plainText,
     htmlEscape, w, blank} = require "../src/string"
 
-  context.test "toString"
-    assert toString(12345) == "12345"
-    
-  context.test "toUpper"
+  context.test "toString", -> assert toString 12345 == "12345"
+
+  context.test "toUpper", ->
     assert toUpper("HellO WoRld") == "HELLO WORLD"
     
-  context.test "toLower"
+  context.test "toLower", ->
     assert toLower("HeLLo WoRLD") == "hello world"
 
   context.test "plainText", ->
