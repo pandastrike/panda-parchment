@@ -32,8 +32,6 @@ Amen.describe "Numeric functions", (context) ->
 
   context.test "odd", -> assert odd 5
 
-  context.test "min", -> assert 1, 5, 10 == 1
-
   context.test "min", -> assert min 1, 5, 10 == 1
 
   context.test "max", -> assert max 1, 5, 10 == 10
