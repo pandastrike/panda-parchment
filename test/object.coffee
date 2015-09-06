@@ -101,16 +101,17 @@ Amen.describe "Object functions", (context) ->
     assert (trim "  panda    ") == "panda"
 
   context.test "properties", ->
+    # Define a prototype with a property that uses JavaScript's native getter and setter.
     class A
       properties @::,
         foo:
           get: -> @_foo
           set: (v) -> @_foo = v
 
+    # Test with an instance of "A".
     a = new A
     a.foo = "bar"
-    assert a.foo == "bar"
-    assert a._foo?
+    assert a._foo == "bar"  # Proves the setter was used to create and set "_foo".
 
   context.test "has", ->
     panda =
@@ -168,20 +169,97 @@ Amen.describe "Object functions", (context) ->
 
 
   context.test "pick", ->
-    assert deepEqual (pick ((k, v) -> v?), {a: 1, b: null, c: 3}),
-      {a :1, c: 3}
+    fruits =
+      apples: 3
+      oranges: null
+      mangos: 12
+
+    f = (key, value) -> value?            # Only if the value is truthy
+    g = (key, value) -> value % 2 == 1    # Only if there is an odd number
+    h = (key, value) -> key == "mangos"   # Realy likes mangos?
+
+    assert.deepEqual (pick f, fruits), {apples: 3, mangos: 12}
+    assert.deepEqual (pick g, fruits), {apples: 3}
+    assert.deepEqual (pick h, fruits), {mangos: 12}
 
   context.test "omit", ->
-    assert deepEqual (omit ((k, v) -> v?), {a: 1, b: null, c: 3}),
-      {b: null}
+    fruits =
+      apples: 3
+      oranges: null
+      mangos: 12
+
+    f = (key, value) -> value?            # Only if the value is falsey
+    g = (key, value) -> value % 2 == 0    # Only if there is an even number
+    h = (key, value) -> key == "mangos"   # Realy hates mangos?
+
+    assert.deepEqual (omit f, fruits), {oranges: null}
+    assert.deepEqual (omit g, fruits), {apples: 3}
+    assert.deepEqual (omit h, fruits), {apples: 3, oranges: null}
 
   context.test "query", ->
-    snowWhite = name: "Snow White", dwarves: 7, enemies: [ "Evil Queen" ]
-    assert query {name: "Snow White"}, snowWhite
-    assert query {enemies: [ "Evil Queen" ]}, snowWhite
-    assert ! query {name: "Sleeping Beauty"}, snowWhite
-    assert ! query {enemies: [ "Maleficent" ]}, snowWhite
+    princess =
+      name: "Aurora"
+      alias:
+        name: "Sleeping Beauty"
+      dwarves: 7
+      enemy: "Maleficent"
 
-  context.test "toJSON"
+    # Query will find an object within a larger object.
+    assert query({name: "Aurora"}, princess) == true
+    assert query({name: "Belle"}, princess) == false
 
-  context.test "fromJSON"
+    # But query cannot find the sub-object within a nested structure.
+    findBeauty = query {name: "Sleeping Beauty"}
+    assert findBeauty(princess) == false
+    assert findBeauty(princess.alias) == true
+
+    # If the "search-term" or target are not an objects, query performs a deepEqual comparison
+    princesses = ["Ariel", "Aurora", "Belle", "Cinderella", "Jasmine", "Merida",
+      "Mulan", "Pocahontas", "Rapunzel", "Tiana", "Snow White"]
+
+    assert query({name: "Aurora"}, princesses) == false
+    assert query("Aurora", princesses) == false
+    assert query(11, princesses.length) == true
+
+  context.test "toJSON", ->
+    mage =
+      vitals:
+        hp: 50
+        mp: 100
+      attributes:
+        stamina: 10
+        strength: 10
+        intelligence: 50
+        agility: 20
+
+    string = toJSON mage
+    pretty = toJSON mage, true
+
+    assert string == '{"vitals":{"hp":50,"mp":100},"attributes":{"stamina":10,"strength":10,"intelligence":50,"agility":20}}'
+    assert pretty,
+    '{
+      "vitals": {
+        "hp": 50,
+        "mp": 100
+      },
+      "attributes": {
+        "stamina": 10,
+        "strength": 10,
+        "intelligence": 50,
+        "agility": 20
+      }
+    }'
+
+
+  context.test "fromJSON", ->
+    mage = fromJSON '{"vitals":{"hp":50,"mp":100},"attributes":{"stamina":10,"strength":10,"intelligence":50,"agility":20}}'
+
+    assert mage,
+      vitals:
+        hp: 50
+        mp: 100
+      attributes:
+        stamina: 10
+        strength: 10
+        intelligence: 50
+        agility: 20
