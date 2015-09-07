@@ -5,7 +5,7 @@ Amen.describe "String functions", (context) ->
 
   {toString, toUpper, toLower, capitalize,
     titleCase, camelCase, underscored, dashed, plainText,
-    htmlEscape, w, blank} = require "../src/string"
+    htmlEscape, w, blank, match, isMatch, replace} = require "../src/string"
 
   context.test "toString"
   context.test "toUpper"
@@ -39,3 +39,12 @@ Amen.describe "String functions", (context) ->
   context.test "blank", ->
     assert blank ""
     assert !blank "x"
+
+  context.test "isMatch", ->
+    assert (isMatch /foo/, "foobar")
+
+  context.test "match", ->
+    assert (isMatch /foo/, "foobar")[0] = "foo"
+
+  context.test "replace", ->
+    assert (replace /bar/, "baz", "foobar") == "foobaz"

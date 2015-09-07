@@ -1,3 +1,5 @@
+{curry} = require "fairmont-core"
+
 toString = (x) -> x.toString()
 
 toUpper = (s) -> s.toUpperCase()
@@ -44,8 +46,13 @@ w = (string) -> string.trim().split /\s+/
 
 blank = (s) -> s.length == 0
 
-match = curry (pattern, string) -> pattern.test string
+match = curry (pattern, string) -> string.match pattern
+
+isMatch = curry (pattern, string) -> pattern.test string
+
+replace = curry (pattern, replacement, string) ->
+  string.replace pattern, replacement
 
 module.exports = {toString, toUpper, toLower, capitalize,
   titleCase, camelCase, underscored, dashed, plainText,
-  htmlEscape, w, blank, match}
+  htmlEscape, w, blank, match, isMatch, replace}
