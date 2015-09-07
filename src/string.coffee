@@ -44,6 +44,8 @@ w = (string) -> string.trim().split /\s+/
 
 blank = (s) -> s.length == 0
 
+match = curry (pattern, string) -> pattern.test string
+
 module.exports = {toString, toUpper, toLower, capitalize,
   titleCase, camelCase, underscored, dashed, plainText,
-  htmlEscape, w, blank}
+  htmlEscape, w, blank, match}
