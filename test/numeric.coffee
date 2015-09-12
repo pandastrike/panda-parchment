@@ -36,8 +36,8 @@ Amen.describe "Numeric functions", (context) ->
 
   context.test "max", -> assert max(1, 5, 10) == 10
 
-  context.text "abs", -> assert abs(-5) == 5
+  context.test "abs", -> assert abs(-5) == 5
   
-  context.text "pow", -> assert pow 6, 2 == 36
+  context.test "pow", -> assert pow 6, 2 == 36
   
   
