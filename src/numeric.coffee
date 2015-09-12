@@ -17,4 +17,4 @@ odd = negate even
 {min, max, abs, pow} = Math
 
 module.exports = {gt, lt, gte, lte, add, sub, mul, div, mod,
-  even, odd, min, max, abs}
+  even, odd, min, max, abs, pow}
