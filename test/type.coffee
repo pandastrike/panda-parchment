@@ -20,9 +20,9 @@ Amen.describe "Type functions", (context) ->
     assert ! isType(Number, false)
 
   context.test "instanceOf", ->
-    as = -> isType()
-    bs = -> as 7
-    assert bs instanceOf as
+    a = -> isType()
+    b = new a
+    assert b instanceOf a
 
   context.test "isNumber", ->
     assert isNumber 7
