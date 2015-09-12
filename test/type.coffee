@@ -9,9 +9,9 @@ Amen.describe "Type functions", (context) ->
     isGenerator, isPromise} = require "../src/type"
 
   context.test "type", ->
-    assert type 7
-    assert type "7"
-    assert type true
+    assert type 7 == Number
+    assert type "7" == String
+    assert type true == Boolean
 
   context.test "isType", ->
     assert isType(String, "7")
