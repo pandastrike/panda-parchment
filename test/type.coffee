@@ -3,16 +3,16 @@ Amen = require "amen"
 
 Amen.describe "Type functions", (context) ->
 
-  {deepEqual, type, isType, instanceOf,
+  {deepEqual, prototype, isType, isMember,
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
     isString, isFunction, isObject, isArray, isRegExp, isDate, isDefined,
-    isGenerator, isPromise} = require "../src/type"
+    isGenerator, isPromise, Type, instanceOf} = require "../src/type"
 
-  context.test "type"
+  context.test "prototype"
 
   context.test "isType"
 
-  context.test "instanceOf"
+  context.test "isMember"
 
   context.test "isNumber", ->
     assert isNumber 7
@@ -72,4 +72,13 @@ Amen.describe "Type functions", (context) ->
     f = -> yield true
     assert isGenerator f
 
-  isPromise = (x) -> x?.then? && isFunction x.then
+  context.test "Type", ->
+    A = Type.define()
+    B = Type.define A
+    b = Type.create B
+
+    context.test "isType", ->
+      assert isType B, b
+
+    context.test "isMember", ->
+      assert isMember A, b
