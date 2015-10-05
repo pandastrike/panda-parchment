@@ -5,7 +5,7 @@ prototype = (value) -> if value? then Object.getPrototypeOf value
 isType = curry (type, value) -> type?.prototype == prototype value
 
 isMember = curry (type, value) ->
-  (isType type, value) || (isMember type, prototype value)
+  value? && ((isType type, value) || (isMember type, prototype value))
 
 isNumber = isType Number
 

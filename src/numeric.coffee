@@ -1,5 +1,8 @@
 {curry, partial, negate} = require "fairmont-core"
 
+eq = curry (x, y) -> x == y
+neq = curry (x, y) -> x != y
+
 gte = curry (x, y) -> y >= x
 lte = curry (x, y) -> y <= x
 gt = curry (x, y) -> y > x
@@ -16,5 +19,5 @@ odd = negate even
 
 {min, max, abs, pow} = Math
 
-module.exports = {gt, lt, gte, lte, add, sub, mul, div, mod,
+module.exports = {eq, neq, gt, lt, gte, lte, add, sub, mul, div, mod,
   even, odd, min, max, abs}

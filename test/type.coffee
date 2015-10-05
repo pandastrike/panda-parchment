@@ -18,6 +18,7 @@ Amen.describe "Type functions", (context) ->
     assert isNumber 7
     assert ! isNumber "7"
     assert ! isNumber false
+    assert isNumber.length == 1
 
   context.test "isNaN"
   context.test "isFinite"
@@ -53,6 +54,7 @@ Amen.describe "Type functions", (context) ->
   context.test "isFunction", ->
     assert isFunction ->
     assert !isFunction 7
+    assert isFunction.length == 1
 
   context.test "isObject", ->
     assert isObject {}
