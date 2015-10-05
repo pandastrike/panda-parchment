@@ -1,6 +1,6 @@
 {
   "name": "fairmont-helpers",
-  "version": "1.0.0-beta-23",
+  "version": "1.0.0-beta-24",
   "description": "True functional reactive programming for JavaScript.",
   "files": [
     "src/",
@@ -29,8 +29,8 @@
     "json": "^9.0.3"
   },
   "dependencies": {
-    "fairmont-core": "^1.0.0-beta-20",
-    "fairmont-multimethods": "^1.0.0-beta-19",
+    "fairmont-core": "^1.0.0-beta-23",
+    "fairmont-multimethods": "^1.0.0-beta-20",
     "coffee-script": "~1.9.3",
     "when": "^3.7.3"
   },
