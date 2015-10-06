@@ -3,7 +3,7 @@ Amen = require "amen"
 
 Amen.describe "Type functions", (context) ->
 
-  {deepEqual, prototype, isType, isMember,
+  {deepEqual, prototype, isType, isKind,
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
     isString, isFunction, isObject, isArray, isRegExp, isDate, isDefined,
     isGenerator, isPromise, Type, instanceOf} = require "../src/type"
@@ -82,5 +82,5 @@ Amen.describe "Type functions", (context) ->
     context.test "isType", ->
       assert isType B, b
 
-    context.test "isMember", ->
-      assert isMember A, b
+    context.test "isKind", ->
+      assert isKind A, b

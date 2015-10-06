@@ -2,10 +2,16 @@
 
 prototype = (value) -> if value? then Object.getPrototypeOf value
 
-isType = curry (type, value) -> type?.prototype == prototype value
+isPrototype = curry (p, value) ->
+  p? && value? && p == prototype value
 
-isMember = curry (type, value) ->
-  value? && ((isType type, value) || (isMember type, prototype value))
+isType = curry (type, value) -> isPrototype type?.prototype, value
+
+isTransitivePrototype = curry (p, value) ->
+  (isPrototype p, value) || (isPrototype p, (prototype value))
+
+isKind = curry (type, value) ->
+  isTransitivePrototype type?.prototype, value
 
 isNumber = isType Number
 
@@ -47,9 +53,8 @@ Type =
   create: (type) -> Object.create type?.prototype
   define: (parent = Object) -> prototype: Type.create parent
 
-module.exports = {prototype, isType, isMember,
+module.exports = {prototype, isPrototype, isTransitivePrototype,
+  isType, isKind, Type, instanceOf,
   isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
   isString, isFunction, isObject, isArray, isDefined,
-  isRegExp, isDate, isGenerator, isPromise,
-  instanceOf,
-  Type}
+  isRegExp, isDate, isGenerator, isPromise}
