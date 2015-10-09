@@ -2,16 +2,14 @@
 
 prototype = (value) -> if value? then Object.getPrototypeOf value
 
-isPrototype = curry (p, value) ->
-  p? && value? && p == prototype value
+isPrototype = curry (p, value) -> p? && p == prototype value
 
 isType = curry (type, value) -> isPrototype type?.prototype, value
 
 isTransitivePrototype = curry (p, value) ->
-  (isPrototype p, value) || (isPrototype p, (prototype value))
+  p? && (p == (q = prototype value) || (q && isTransitivePrototype p, q))
 
-isKind = curry (type, value) ->
-  isTransitivePrototype type?.prototype, value
+isKind = curry (type, value) -> isTransitivePrototype type?.prototype, value
 
 isNumber = isType Number
 

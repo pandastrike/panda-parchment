@@ -26,12 +26,12 @@
   "license": "ISC",
   "devDependencies": {
     "amen": "^1.0.0-alpha-03",
+    "coffee-script": "^1.10.0",
     "json": "^9.0.3"
   },
   "dependencies": {
     "fairmont-core": "^1.0.0-beta-23",
     "fairmont-multimethods": "^1.0.0-beta-20",
-    "coffee-script": "~1.9.3",
     "when": "^3.7.3"
   },
   "engine": "node >= 4.0.x"
