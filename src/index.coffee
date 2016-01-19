@@ -1,5 +1,6 @@
 Array = require "./array"
 Async = require "./async"
+Hash = require "./hash"
 Numeric = require "./numeric"
 Object = require "./object"
 String = require "./string"
@@ -8,4 +9,4 @@ Util = require "./util"
 
 {include} = Object
 
-include module.exports, Array, Async, Numeric, Object, String, Type, Util
+include module.exports, Array, Async, Hash, Numeric, Object, String, Type, Util
