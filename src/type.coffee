@@ -39,9 +39,11 @@ isError = isType Error
 
 isDefined = (x) -> x?
 
+isUndefined = (x) -> !x?
+
 GeneratorFunction = (-> yield null).constructor
 
-isGenerator = isType GeneratorFunction
+isGeneratorFunction = isType GeneratorFunction
 
 isPromise = (x) -> x?.then? && isFunction x.then
 
@@ -54,5 +56,5 @@ Type =
 module.exports = {prototype, isPrototype, isTransitivePrototype,
   isType, isKind, Type, instanceOf,
   isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
-  isString, isFunction, isObject, isArray, isDefined,
-  isRegExp, isDate, isGenerator, isPromise}
+  isString, isFunction, isObject, isArray, isDefined, isUndefined
+  isRegExp, isDate, isGeneratorFunction, isPromise}

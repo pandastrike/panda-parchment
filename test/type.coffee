@@ -6,7 +6,7 @@ Amen.describe "Type functions", (context) ->
   {deepEqual, prototype, isType, isKind,
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
     isString, isFunction, isObject, isArray, isRegExp, isDate, isDefined,
-    isGenerator, isPromise, Type, instanceOf} = require "../src/type"
+    isGeneratorFunction, isPromise, Type, instanceOf} = require "../src/type"
 
   context.test "prototype", ->
 
@@ -80,9 +80,9 @@ Amen.describe "Type functions", (context) ->
     assert isDefined {}
     assert !isDefined undefined
 
-  context.test "isGenerator", ->
+  context.test "isGeneratorFunction", ->
     f = -> yield true
-    assert isGenerator f
+    assert isGeneratorFunction f
 
   context.test "Type", ->
     A = Type.define()

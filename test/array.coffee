@@ -3,9 +3,15 @@ Amen = require "amen"
 
 Amen.describe "Array functions", (context) ->
 
-  {push, cat, slice, first, second, third, fourth, fifth, nth, last, rest,
-    includes, uniqueBy, unique, uniq, dupes, union, intersection,
-    difference, complement, remove, shuffle, range} = require "../src/array"
+  {
+    first, second, third, fourth, fifth, nth, last, rest,
+    empty, includes, findIndexOf, findLastIndexOf,
+    uniqueBy, unique, uniq, dupes,
+    union, intersection, difference, complement,
+    push, pop, shift, unshift, enqueue, dequeue,
+    splice, insert, remove, cat,
+    slice, join, fill,
+    shuffle, range, pluck, pair} = require "../src/array"
 
   # array-only version of empty, length
   # TODO: import from ... ?
@@ -25,75 +31,29 @@ Amen.describe "Array functions", (context) ->
   context.test "includes", ->
     assert (includes 3, ax) && !(includes 6, ax)
 
-  context.test "push", ->
-    fruits = ["apple", "blueberry"]
-    push fruits, "strawberry"
-    assert.deepEqual fruits, ["apple", "blueberry", "strawberry"]
+  context.test "push"
 
-    citrus = ["lemon", "lime"]
-    push fruits, citrus
-    assert.deepEqual fruits, ["apple", "blueberry", "strawberry", ["lemon", "lime"]]
-
-    # Check that push accepts more than one element.
-    fruits = ["apple", "blueberry"]
-    push fruits, "strawberry", citrus
-    assert.deepEqual fruits, ["apple", "blueberry", "strawberry", ["lemon", "lime"]]
-
-    fruits = ["apple", "blueberry"]
-    push fruits, "strawberry", citrus...
-    assert.deepEqual fruits, ["apple", "blueberry", "strawberry", "lemon", "lime"]
+  context.test "pop"
 
   context.test "cat", ->
-    bx = [6..9]
-    rx = cat ax, bx
-    assert (length rx) == 9 && (first rx) == 1 && (last rx) == 9
+    assert.deepEqual (cat [1..5], [6..10]), [1..10]
 
   context.test "slice", ->
-    rx = slice 1, 2, ax
-    assert (length rx) == 1 && (first rx) == 2
-
-    fruits = ["apple", "blueberry", "lemon", "lime", "orange", "strawberry", "cherry"]
-    citrus = slice 2, 5, fruits
-    assert.deepEqual citrus, ["lemon", "lime", "orange"]
-
-    citrus = slice 1, -2, fruits
-    assert.deepEqual citrus, ["blueberry", "lemon", "lime", "orange"]
-
-    string = "supercalifragilisticexpialidocious"
-    sub_string = slice 9, 20, string
-    assert.deepEqual sub_string, "fragilistic"
-
-    citrus = slice 2, 10, fruits
-    assert.deepEqual citrus, ["lemon", "lime", "orange", "strawberry", "cherry"]
-
-
-
-    # Slice is curried, so you can get cause it to return a function when you don't pass all three arguemnts.
-    snip = slice 2, 5
-
-    # And the new function takes only the remaining arugment (or arguments).
-    bx = [1..10]
-    cx = [11..20]
-
-    b = snip bx
-    c = snip cx
-    f = snip fruits
-    assert.deepEqual b, [3, 4, 5]
-    assert.deepEqual c, [13, 14, 15]
-    assert.deepEqual f, ['lemon', 'lime', 'orange']
+    assert.deepEqual (slice  1,  2, ax), [2]
+    assert.deepEqual (slice  2,  5, ax), [3,4,5]
+    assert.deepEqual (slice  1, -2, ax), [2,3]
+    assert.deepEqual (slice -3, -1, ax), [3,4]
+    assert.deepEqual (slice -3, -1, "0123456789"), "78"
 
   context.test "uniqueBy", ->
-    numbers = [2, 3, 6, 9, 10, 14, 15, 18, 21, 22, 26, 27, 30, 33, 34, 39, 45, 51]
-    f = (x) -> if x % 2 == 0 then x * 3 else x * 2
-
-    output = uniqueBy f, numbers
-    assert.deepEqual output, [6, 18, 30, 42, 54, 66, 78, 90, 102]
+    mod3 = (x) -> x % 3
+    assert.deepEqual (uniqueBy mod3, ax), [1,2,0]
 
   context.test "unique", ->
-    assert (last (unique (cat [1..5], [2..6]))) == 6
+    assert.deepEqual (unique [1, 2, 1, 2]), [1,2]
 
   context.test "dupes", ->
-    assert (first (dupes (cat [1..5], [2..6]))) == 2
+    assert.deepEqual (dupes [1,2,1,3,2]), [1,2]
 
   context.test "union", ->
     bx = [3..6]
@@ -112,44 +72,29 @@ Amen.describe "Array functions", (context) ->
 
   context.test "difference", ->
     bx = [3..6]
-    rx = difference ax, bx
-    assert (first rx) == 1 && (second rx) == 2 && (length rx) == 3
+    assert.deepEqual (difference ax, bx), [1,2,6]
 
   context.test "complement", ->
     bx = [3..6]
-    rx = complement ax, bx
-    assert (first rx) == 1 && (second rx) == 2 && (length rx) == 2
+    assert.deepEqual (complement ax, bx), [1,2]
+
+  context.test "insert", ->
+    assert.deepEqual (insert 1, 3, [4,2,1]), [4,3,2,1]
+    assert.deepEqual (insert -1, 3, [1,2,4]), [1..4]
 
   context.test "remove", ->
-    fruits = ["apple", "orange", "lemon", "apple", "lime", "apple"]
-
-    output = remove "orange", fruits
-    assert.deepEqual output, "orange"
-    assert.deepEqual fruits, ["apple", "lemon", "apple", "lime", "apple"]
-
-    output = remove "apple", fruits
-    assert.deepEqual output, "apple"
-    assert.deepEqual fruits, ["lemon", "apple", "lime", "apple"]
-
-    output = remove "orange", fruits
-    assert.deepEqual output, null
-    assert.deepEqual fruits, ["lemon", "apple", "lime", "apple"]
-
+    bx = [1..5]
+    assert.deepEqual (remove 3, bx), [1,2,4,5]
+    assert.deepEqual (remove 1, bx), [2,4,5]
+    assert.deepEqual (remove 5, bx), [2,4]
+    assert.deepEqual (remove 3, bx), [2,4]
 
   context.test "shuffle", ->
-    bx = [1..10]
-    rx = shuffle bx
-    assert.notDeepEqual bx, rx
+    assert.notDeepEqual (shuffle [1..10]), [1..10]
 
   context.test "range", ->
-    output = range 1, 5
-    assert.deepEqual output, [1, 2, 3, 4, 5]
+    assert.deepEqual (range 1, 5), [1, 2, 3, 4, 5]
+    assert.deepEqual (range 5, 1), [5, 4, 3, 2, 1]
 
-    output = range 5, 1
-    assert.deepEqual output, [5, 4, 3, 2, 1]
-
-    output = range 5, 5
-    assert.deepEqual output, [ 5 ]
-
-    output = range 1, "foobar"
-    assert.deepEqual output, []
+  context.test "join"
+  context.test "fill"

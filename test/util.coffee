@@ -82,18 +82,11 @@ Amen.describe "Utility functions", (context) ->
     assert 0 < single < multiple
 
   context.test "empty", ->
-    assert empty( [] )        == true
-    assert empty( "" )        == true
-    assert empty( {} )        == true
-    assert empty( null )      == true
-    assert empty( undefined ) == true
+    assert.equal empty( [] ), true
+    assert.equal empty( "" ), true
 
-    assert empty( 1 )     == false
-    assert empty( [1] )   == false
-    assert empty( "abc" ) == false
-    assert empty( a: 0 )  == false
-    assert empty( true )  == false
-    assert empty( false ) == false
+    assert.equal empty( [1] ), false
+    assert.equal empty( "abc" ), false
 
   context.test "length", ->
     assert length([]) == 0

@@ -6,6 +6,7 @@
 {isArray, isString, isObject} = require "./type"
 {blank} = require "./string"
 
+# TODO: move to core
 memoize = do (_hash = undefined) ->
   _hash = (x) -> x.toString()
   (fn, hash = _hash, memo = {}) ->
@@ -33,20 +34,19 @@ Method.define benchmark, isGenerator, (fn) ->
   yield fn()
   Date.now() - start
 
-empty = (x) ->
-  if isArray x
-    x.length == 0
-  else if isObject x
-    empty Object.keys x
-  else if isString x
-    blank x
-  else
-    !x?
+# empty and length work on both arrays and strings
+# and really anything with a meaningful length
+# attribute, so that's why they're here and not
+# in array...
 
+# TODO: multimethod variant of empty that allows
+# empty to be defined for any type
+
+empty = (x) -> x.length == 0
 length = (x) -> x.length
 
+assert = require "assert"
 deepEqual = (a, b) ->
-  assert = require "assert"
   try
     assert.deepEqual a, b
     true

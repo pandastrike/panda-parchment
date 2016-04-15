@@ -1,4 +1,4 @@
-{curry} = require "fairmont-core"
+{curry, compose} = require "fairmont-core"
 
 toString = (x) -> x.toString()
 
@@ -42,7 +42,11 @@ htmlEscape = do ->
   re = new RegExp( "#{entities.join('|')}", "g" )
   (string) -> string.replace( re, (s) -> map[s] )
 
-w = (string) -> string.trim().split /\s+/
+trim = (s) -> s.trim()
+
+split = curry (re, s) -> s.split re
+
+w = compose (split /\s+/), trim
 
 blank = (s) -> s.length == 0
 
@@ -55,4 +59,4 @@ replace = curry (pattern, replacement, string) ->
 
 module.exports = {toString, toUpper, toLower, capitalize,
   titleCase, camelCase, underscored, dashed, plainText,
-  htmlEscape, w, blank, match, isMatch, replace}
+  htmlEscape, split, w, blank, match, isMatch, replace}

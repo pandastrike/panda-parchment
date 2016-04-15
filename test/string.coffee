@@ -34,6 +34,10 @@ Amen.describe "String functions", (context) ->
     assert htmlEscape( "<a href='foo'>bar & baz</a>" ) ==
       "&lt;a href=&#39;foo&#39;&gt;bar &amp; baz&lt;&#x2F;a&gt;"
 
+  context.test "trim"
+
+  context.test "split"
+  
   context.test "w", -> assert (w "one two three").length == 3
 
   context.test "blank", ->

@@ -1,7 +1,7 @@
 {
   "name": "fairmont-helpers",
-  "version": "1.0.0-beta-27",
-  "description": "True functional reactive programming for JavaScript.",
+  "version": "1.0.0",
+  "description": "Functional and reactive programming for JavaScript.",
   "files": [
     "src/",
     "lib/",
@@ -9,11 +9,10 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "coffee -o lib/ -c src/*.*coffee",
     "test": "coffee test/index.coffee",
     "watch": "coffee -o lib/ -cw src/*.*coffee",
-    "version": "(node_modules/.bin/json -f package.json version > VERSION)",
-    "tag": "(cat VERSION | xargs -I version git tag -am version version) && git push --tags"
+    "prepublish": "coffee -o lib/ -c src/*.*coffee",
+    "postpublish": "(node_modules/.bin/json -f package.json version | xargs -I version git tag -am version version) && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -30,8 +29,8 @@
     "json": "^9.0.3"
   },
   "dependencies": {
-    "fairmont-core": "^1.0.0-beta-23",
-    "fairmont-multimethods": "^1.0.0-beta-20",
+    "fairmont-core": "1.0.0",
+    "fairmont-multimethods": "1.0.0",
     "when": "^3.7.3"
   },
   "engine": "node >= 4.0.x"

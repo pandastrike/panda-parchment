@@ -4,28 +4,64 @@
 {detach} = require "./object"
 {deepEqual} = require "./util"
 
+nth = curry (i, ax) -> ax[i - 1]
+first  = nth 1
+second = nth 2
+third  = nth 3
+fourth = nth 4
+fifth  = nth 5
+last = ([rest..., last]) -> last
+rest = ([first, rest...]) -> rest
+
 # array only version of empty, not exported
 empty = (x) -> x.length == 0
 
-push = curry (ax, a...) -> ax.push a... ; ax
+includes = if Array::includes
+  curry (a, ax) -> ax.includes a
+else
+  curry (a, ax) -> (ax.indexOf a ) != -1
+
+# find and findLast are defined in reactive
+# with specializations for array
+
+# curryable index variations that can use ? operator or equivalent
+# ex: if (i = findIndexOf ax, a)? then ...
+findIndexOf = curry (a, ax) -> if (i = ax.indexOf a) != -1 then i
+findLastIndexOf = curry (a, ax) -> if (i = ax.lastIndexOf a) != -1 then i
+
+# Array mutators
+push = curry (ax, a...) -> ax.push a...
+pop = detach Array::pop
+shift = detach Array::shift
+unshift = detach Array::unshift
+enqueue = unshift
+dequeue = pop
+
+# true splice without weird insertion option
+# or compose-breaking return value
+splice = curry (i, n, ax) ->
+  ax.splice i, n
+  ax
+
+insert = curry (i, a, ax) ->
+  ax.splice i, 0, a
+  ax
+remove = curry (a, ax) ->
+  (ax.splice i, 1) if (i = ax.indexOf( a )) != -1
+  ax
 
 cat = detach Array::concat
 
 slice = curry (i, j, ax) -> ax[i...j]
 
-nth = curry (i, ax) -> ax[i - 1]
-first = nth 1
-second = nth 2
-third = nth 3
-fourth = nth 4
-fifth = nth 5
+sort = curry binary detach Array::sort
+join = curry ternary detach Array::join
+fill = curry (ax, a) -> ax.fill a
 
-last = ([rest..., x]) -> x
+# Set operations...
 
-rest = slice 1, undefined
-
-includes = curry (x, ax) -> x in ax
-
+# TODO: some of these could be implemented in terms of producers
+# TODO: update for Set type in ES6
 uniqueBy = curry (f, ax) ->
   bx = []
   for a in ax
@@ -58,13 +94,6 @@ difference = curry (ax, bx) ->
 
 complement = curry (ax, bx) -> ax.filter (c) -> !(c in bx)
 
-remove = curry (element, ax) ->
-  if (index = ax.indexOf( element )) > -1
-    ax[index..index] = []
-    element
-  else
-    null
-
 shuffle = (ax) ->
   bx = cat ax
   unless bx.length <= 1
@@ -79,6 +108,17 @@ shuffle = (ax) ->
 
 range = curry (start, finish) -> [start..finish]
 
-module.exports = {push, cat, slice, first, second, third, fourth, fifth, nth,
-  last, rest, includes, uniqueBy, unique, uniq, dupes, union, intersection,
-  difference, complement, remove, shuffle, range}
+{random, round} = Math
+pluck = (ax) -> ax[(round random() * (ax.length - 1))]
+
+pair = curry (a, b) -> [a, b]
+
+module.exports = {
+  first, second, third, fourth, fifth, nth, last, rest,
+  empty, includes, findIndexOf, findLastIndexOf,
+  uniqueBy, unique, uniq, dupes,
+  union, intersection, difference, complement,
+  push, pop, shift, unshift, enqueue, dequeue,
+  splice, insert, remove, cat,
+  slice, join, fill,
+  shuffle, range, pluck, pair}
