@@ -30,7 +30,9 @@ findIndexOf = curry (a, ax) -> if (i = ax.indexOf a) != -1 then i
 findLastIndexOf = curry (a, ax) -> if (i = ax.lastIndexOf a) != -1 then i
 
 # Array mutators
-push = curry (ax, a...) -> ax.push a...
+push = curry (ax, a...) ->
+  ax.push a...
+  ax
 pop = detach Array::pop
 shift = detach Array::shift
 unshift = detach Array::unshift

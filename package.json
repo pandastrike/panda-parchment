@@ -29,8 +29,8 @@
     "json": "^9.0.3"
   },
   "dependencies": {
-    "fairmont-core": "1.0.0",
-    "fairmont-multimethods": "1.0.0",
+    "fairmont-core": "1.0.x",
+    "fairmont-multimethods": "1.0.x",
     "when": "^3.7.3"
   },
   "engine": "node >= 4.0.x"

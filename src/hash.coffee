@@ -4,7 +4,7 @@ Crypto = require "crypto"
 
 md5 = Method.create()
 
-Method.define md5, isString
+Method.define md5, isString,
   (string) -> Crypto.createHash('md5').update(string, 'utf-8').digest("hex")
 
 Method.define md5, isBuffer,
