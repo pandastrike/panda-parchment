@@ -29,6 +29,8 @@ isRegExp = isType RegExp
 
 isString = isType String
 
+isBuffer = isType Buffer
+
 isFunction = isType Function
 
 isObject = isType Object
@@ -56,5 +58,5 @@ Type =
 module.exports = {prototype, isPrototype, isTransitivePrototype,
   isType, isKind, Type, instanceOf,
   isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
-  isString, isFunction, isObject, isArray, isDefined, isUndefined
+  isString, isBuffer, isFunction, isObject, isArray, isDefined, isUndefined
   isRegExp, isDate, isGeneratorFunction, isPromise}

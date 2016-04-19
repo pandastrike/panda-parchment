@@ -5,8 +5,9 @@ Amen.describe "Type functions", (context) ->
 
   {deepEqual, prototype, isType, isKind,
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
-    isString, isFunction, isObject, isArray, isRegExp, isDate, isDefined,
-    isGeneratorFunction, isPromise, Type, instanceOf} = require "../src/type"
+    isString, isBuffer, isFunction, isObject, isArray,
+    isRegExp, isDate, isDefined, isGeneratorFunction, isPromise,
+    Type, instanceOf} = require "../src/type"
 
   context.test "prototype", ->
 
@@ -45,6 +46,9 @@ Amen.describe "Type functions", (context) ->
       context.test "isString", ->
         assert isString "x"
         assert !isString 7
+
+      context.test "isBuffer", ->
+        assert isBuffer (new Buffer "hello")
 
       context.test "isFunction", ->
         assert isFunction ->
