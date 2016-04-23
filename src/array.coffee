@@ -29,6 +29,9 @@ else
 findIndexOf = curry (a, ax) -> if (i = ax.indexOf a) != -1 then i
 findLastIndexOf = curry (a, ax) -> if (i = ax.lastIndexOf a) != -1 then i
 
+# reactive `any` is preferred but `some` is faster
+some = curry binary detach Array::some
+
 # Array mutators
 push = curry (ax, a...) ->
   ax.push a...
@@ -57,7 +60,7 @@ cat = detach Array::concat
 slice = curry (i, j, ax) -> ax[i...j]
 
 sort = curry binary detach Array::sort
-join = curry ternary detach Array::join
+join = curry binary detach Array::join
 fill = curry (ax, a) -> ax.fill a
 
 # Set operations...
