@@ -1,8 +1,7 @@
 {curry} = require "fairmont-core"
-{promise} = require "when"
 {Method} = require "fairmont-multimethods"
 {isFunction, isGenerator} = require "./type"
-{async} = require "./async"
+{promise, async} = require "./promise"
 {isArray, isString, isObject} = require "./type"
 {blank} = require "./string"
 

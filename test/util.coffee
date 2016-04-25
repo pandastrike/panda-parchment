@@ -1,7 +1,7 @@
 assert = require "assert"
 Amen = require "amen"
 
-{async, call} = require "../src/async"
+{async, call} = require "../src/promise"
 
 Amen.describe "Utility functions", (context) ->
 

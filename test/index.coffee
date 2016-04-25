@@ -3,10 +3,10 @@ targets = process.argv[2..]
 if targets.length == 0
   targets = [
     "array"
-    "async"
     "hash"
     "numeric"
     "object"
+    "promise"
     "string"
     "type"
     "util"
