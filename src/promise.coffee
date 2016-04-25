@@ -31,34 +31,34 @@ async = (g) ->
 
       it = g args...
 
-      _throw = (error) ->
-        try
-          it.throw error
-          # error was handled inside the generator
-          step()
-        catch error
+      bounce = ({done, error}) ->
+        if done
           reject error
+        else
+          try
+            follow it.throw error
+          catch error
+            reject error
+
+      follow = ({done, value}) ->
+        if done
+          if isPromise value
+            value
+            .then resolve
+            .catch reject
+          else
+            resolve value
+        else
+          if isPromise value
+            value
+            .then step
+            .catch (error) -> bounce {done, error}
+          else
+            step value
 
       do step = (value=null) ->
-
         try
-          {done, value} = it.next value
-
-          if done
-            if isPromise value
-              value
-              .then resolve
-              .catch reject
-            else
-              resolve value
-          else
-            if isPromise value
-              value
-              .then step
-              .catch _throw
-            else
-              step value
-
+          follow it.next value
         catch error
           reject error
 
