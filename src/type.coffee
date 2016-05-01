@@ -47,7 +47,7 @@ GeneratorFunction = (-> yield null).constructor
 
 isGeneratorFunction = isType GeneratorFunction
 
-isPromise = (x) -> x?.then? && isFunction x.then
+isPromise = isType Promise
 
 instanceOf = curry (t, x) -> x instanceof t
 

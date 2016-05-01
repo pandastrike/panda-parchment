@@ -1,7 +1,8 @@
 {isPromise, isObject, isFunction, isGeneratorFunction} = require "./type"
 
-promise = (executor) ->
-  new Promise executor
+promise = (executor) -> new Promise executor
+
+follow = (x) -> Promise.resolve x
 
 lift = (f) ->
   if isObject f
@@ -21,46 +22,31 @@ lift = (f) ->
         catch error
           reject error
 
+# This code is adapted from:
+# http://tc39.github.io/ecmascript-asyncawait/#intro
+
 async = (g) ->
 
-  return g unless isGeneratorFunction g
+  if !(isGeneratorFunction g)
+    throw new TypeError "#{g} is not a generator function"
 
   (args...) ->
-
+    self = this
     promise (resolve, reject) ->
-
-      it = g args...
-
-      bounce = ({done, error}) ->
-        if done
-          reject error
-        else
-          try
-            follow it.throw error
-          catch error
-            reject error
-
-      follow = ({done, value}) ->
-        if done
-          if isPromise value
-            value
-            .then resolve
-            .catch reject
-          else
-            resolve value
-        else
-          if isPromise value
-            value
-            .then step
-            .catch (error) -> bounce {done, error}
-          else
-            step value
-
-      do step = (value=null) ->
+      i = g.apply self, args
+      f = -> i.next()
+      do step = (f) ->
         try
-          follow it.next value
+          {done, value} = f()
         catch error
           reject error
+
+        if done
+          resolve value
+        else
+          follow value
+          .then (value) -> step -> i.next value
+          .catch (error) -> step -> i.throw error
 
 call = (f) -> do async f
 

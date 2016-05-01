@@ -1,6 +1,6 @@
 {
   "name": "fairmont-helpers",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Functional and reactive programming for JavaScript.",
   "files": [
     "src/",
@@ -24,14 +24,13 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "amen": "^1.0.0-alpha-03",
+    "amen": "^1.0.0",
     "coffee-script": "^1.10.0",
     "json": "^9.0.3"
   },
   "dependencies": {
     "fairmont-core": "1.0.x",
-    "fairmont-multimethods": "1.0.x",
-    "when": "^3.7.3"
+    "fairmont-multimethods": "1.0.x"
   },
-  "engine": "node >= 4.0.x"
+  "engine": "node >= 6.0.0"
 }
