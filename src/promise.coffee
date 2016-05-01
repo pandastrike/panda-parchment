@@ -50,4 +50,4 @@ async = (g) ->
 
 call = (f) -> do async f
 
-module.exports = {promise, lift, async, call}
+module.exports = {follow, promise, lift, async, call}
