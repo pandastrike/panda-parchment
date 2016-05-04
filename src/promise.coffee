@@ -1,8 +1,31 @@
 {isPromise, isObject, isFunction, isGeneratorFunction} = require "./type"
 
+unhandled = new Map
+
+# TODO: make this configurable?
+process.on "unhandledRejection", (reason, p) ->
+  console.warn "Warning: unhandled rejection for", p
+
+# Example, adapted from Node docs, that defers reporting
+#
+# process.on "unhandledRejection", (reason, p) ->
+#   unhandled.set p, reason
+#
+# process.on "rejectionHandled", (p) ->
+#   unhandled.delete p
+#
+# process.on "exit", ->
+#   unhandled.forEach (reason, p) ->
+#     console.warn "Warning: unhandled rejection for", p
+
 promise = (executor) -> new Promise executor
 
-follow = (x) -> Promise.resolve x
+reject = (x) -> Promise.reject x
+resolve = (x) -> Promise.resolve x
+
+# follow reads better in some cases and avoids naming
+# conflicts within promise executors
+follow = resolve
 
 lift = (f) ->
   if isObject f
@@ -50,4 +73,4 @@ async = (g) ->
 
 call = (f) -> do async f
 
-module.exports = {follow, promise, lift, async, call}
+module.exports = {promise, resolve, follow, reject, lift, async, call}

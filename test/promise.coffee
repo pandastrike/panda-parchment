@@ -1,17 +1,19 @@
 assert = require "assert"
 
-assert.rejects = (block) ->
-  block().then -> assert.fail "Missing expected promise rejection."
-  block().catch ->
+assert.rejects = (f) ->
+  f()
+  .then -> assert.fail "Missing expected promise rejection."
+  .catch ->
 
-assert.resolves = (block) ->
-  block().catch -> assert.fail "Missing expected promise resolution."
+assert.resolves = (f) ->
+  f()
+  .catch -> assert.fail "Missing expected promise resolution."
 
 Amen = require "amen"
 FS = require "fs"
 {join} = require "path"
 
-{promise, async, call, lift} = require "../src/promise"
+{promise, async, call, lift, resolve, reject} = require "../src/promise"
 
 Amen.describe "Promise helpers", (context) ->
 
@@ -26,11 +28,12 @@ Amen.describe "Promise helpers", (context) ->
 
       assert __filename in (yield ls __dirname)
 
-      good = (x) -> promise (resolve, reject) -> setImmediate -> resolve x
-      bad = (e) -> promise (resolve, reject) -> setImmediate -> reject e
-
       assert.resolves async ->
-        yield good true
+        yield resolve true
 
       assert.rejects async ->
-        yield bad new Error "this is a test error"
+        yield reject new Error "this is a test error"
+
+  context.test "unhandled rejection"
+    # Tricky to test without actually leaving rejections
+    # unhandled and waiting to see if they get reported
