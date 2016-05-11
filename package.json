@@ -29,6 +29,7 @@
     "json": "^9.0.3"
   },
   "dependencies": {
+    "base64-words": "^0.1.1",
     "fairmont-core": "1.0.x",
     "fairmont-multimethods": "1.0.x"
   },
