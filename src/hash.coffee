@@ -1,7 +1,7 @@
 Crypto = require "crypto"
 {Method} = require "fairmont-multimethods"
 {isBuffer, isString} = require "./type"
-Base64Words = require "./base64-words"
+Base64Words = require "base64-words"
 
 md5 = Method.create()
 
