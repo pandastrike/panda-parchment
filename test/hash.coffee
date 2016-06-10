@@ -1,9 +1,12 @@
 assert = require "assert"
 Amen = require "amen"
 
+{isString} = require "../src/type"
+
 Amen.describe "Hashing/Encoding Functions", (context) ->
 
-  {md5, base64, base64url, toBase64Words, fromBase64Words} = require "../src/hash"
+  {md5, base64, base64URL, toBase64Words, fromBase64Words,
+  randomBytes, randomKey, randomWords} = require "../src/hash"
 
   context.test "md5", ->
     assert (md5 "It was a dark and stormy night") ==
@@ -13,14 +16,24 @@ Amen.describe "Hashing/Encoding Functions", (context) ->
     assert (base64 "It was a dark and stormy night") ==
       "SXQgd2FzIGEgZGFyayBhbmQgc3Rvcm15IG5pZ2h0"
 
-  context.test "base64url", ->
-    assert (base64url "It was a dark and stormy night.") ==
+  context.test "base64URL", ->
+    assert (base64URL "It was a dark and stormy night.") ==
       "SXQgd2FzIGEgZGFyayBhbmQgc3Rvcm15IG5pZ2h0Lg"
 
   context.test "toBase64Words", ->
     assert (toBase64Words "1234566778") ==
-      "bulk-birch-bye-day-cal-fare-cargo-pn"
+      "bulk-birch-bye-day-cal-fare-cargo"
 
   context.test "fromBase64Words", ->
-    assert (fromBase64Words "bulk-birch-bye-day-cal-fare-cargo-pn") ==
-      "1234566778"
+    assert.equal "1234566778",
+      (fromBase64Words "bulk-birch-bye-day-cal-fare-cargo")
+      .toString "utf8"
+
+  context.test "randomBytes", ->
+    assert.equal 16, (yield randomBytes 16).length
+
+  context.test "randomKey", ->
+    assert isString yield randomKey 16
+
+  context.test "randomWords", ->
+    assert isString yield randomWords 16
