@@ -48,7 +48,7 @@ splice = curry (i, n, ax) ->
   ax.splice i, n
   ax
 
-insert = curry binary (ax, a, i=0) ->
+insert = curry ternary (ax, a, i) ->
   ax.splice i, 0, a
   ax
 
