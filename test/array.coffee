@@ -79,8 +79,8 @@ Amen.describe "Array functions", (context) ->
     assert.deepEqual (complement ax, bx), [1,2]
 
   context.test "insert", ->
-    assert.deepEqual (insert 1, 3, [4,2,1]), [4,3,2,1]
-    assert.deepEqual (insert -1, 3, [1,2,4]), [1..4]
+    assert.deepEqual (insert [4,2,1], 3, 1), [4,3,2,1]
+    assert.deepEqual (insert [1,2,4], 3, -1), [1..4]
 
   context.test "remove", ->
     bx = [1..5]

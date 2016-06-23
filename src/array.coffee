@@ -48,9 +48,10 @@ splice = curry (i, n, ax) ->
   ax.splice i, n
   ax
 
-insert = curry (i, a, ax) ->
+insert = curry binary (ax, a, i=0) ->
   ax.splice i, 0, a
   ax
+
 remove = curry (ax, a) ->
   (ax.splice i, 1) if (i = ax.indexOf( a )) != -1
   ax
