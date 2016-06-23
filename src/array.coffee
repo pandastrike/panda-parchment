@@ -51,7 +51,7 @@ splice = curry (i, n, ax) ->
 insert = curry (i, a, ax) ->
   ax.splice i, 0, a
   ax
-remove = curry (a, ax) ->
+remove = curry (ax, a) ->
   (ax.splice i, 1) if (i = ax.indexOf( a )) != -1
   ax
 

@@ -84,10 +84,10 @@ Amen.describe "Array functions", (context) ->
 
   context.test "remove", ->
     bx = [1..5]
-    assert.deepEqual (remove 3, bx), [1,2,4,5]
-    assert.deepEqual (remove 1, bx), [2,4,5]
-    assert.deepEqual (remove 5, bx), [2,4]
-    assert.deepEqual (remove 3, bx), [2,4]
+    assert.deepEqual (remove bx, 3), [1,2,4,5]
+    assert.deepEqual (remove bx, 1), [2,4,5]
+    assert.deepEqual (remove bx, 5), [2,4]
+    assert.deepEqual (remove bx, 3), [2,4]
 
   context.test "shuffle", ->
     assert.notDeepEqual (shuffle [1..10]), [1..10]
