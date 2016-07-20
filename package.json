@@ -1,6 +1,6 @@
 {
   "name": "fairmont-helpers",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Functional and reactive programming for JavaScript.",
   "files": [
     "src/",
