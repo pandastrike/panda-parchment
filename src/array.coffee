@@ -101,11 +101,15 @@ difference = curry (ax, bx) ->
 complement = curry (ax, bx) -> ax.filter (c) -> !(c in bx)
 
 # https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+# https://github.com/pandastrike/fairmont-helpers/pull/15/commits/e0f4e1483fe925975dac2b73c20f61996e4425ee
 shuffle = (ax) ->
   bx = cat ax
   i = bx.length
   unless i <= 1
     while --i > 0
+      # the distinguishing characteristic of fisher-yates is that the random 
+      # value generated is bounded by the iterator index (Math.random() * i)
+      # instead of the size of the array (Math.random() * bx.length)
       j = Math.floor Math.random() * (i + 1)
       [bx[i], bx[j]] = [bx[j], bx[i]]
     if deepEqual ax, bx then shuffle ax else bx
