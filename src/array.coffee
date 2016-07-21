@@ -100,13 +100,13 @@ difference = curry (ax, bx) ->
 
 complement = curry (ax, bx) -> ax.filter (c) -> !(c in bx)
 
+# https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 shuffle = (ax) ->
   bx = cat ax
-  unless bx.length <= 1
-    for b, i in bx
-      j = i
-      while j == i
-        j = Math.floor Math.random() * bx.length
+  i = bx.length
+  unless i <= 1
+    while --i > 0
+      j = Math.floor Math.random() * (i + 1)
       [bx[i], bx[j]] = [bx[j], bx[i]]
     if deepEqual ax, bx then shuffle ax else bx
   else
