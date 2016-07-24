@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pandastrike/fairmont-helpers.svg)](https://travis-ci.org/pandastrike/fairmont-helpers)
+
 # Fairmont-Helpers
 
 Fairmont-Helpers is a JavaScript library providing a variety of helper functions for dealing with everything from Arrays to Promises in a functional style.
