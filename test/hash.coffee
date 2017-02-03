@@ -2,11 +2,12 @@ assert = require "assert"
 Amen = require "amen"
 
 {isString} = require "../src/type"
+{replace, split} = require "../src/string"
 
 Amen.describe "Hashing/Encoding Functions", (context) ->
 
   {md5, base64, base64URL, toBase64Words, fromBase64Words,
-  randomBytes, randomKey, randomWords} = require "../src/hash"
+  randomBytes, randomKey, randomWord, randomWords} = require "../src/hash"
 
   context.test "md5", ->
     assert (md5 "It was a dark and stormy night") ==
@@ -22,11 +23,11 @@ Amen.describe "Hashing/Encoding Functions", (context) ->
 
   context.test "toBase64Words", ->
     assert (toBase64Words "1234566778") ==
-      "bulk-birch-bye-day-cal-fare-cargo"
+      "ducky-apron-finer-tulip-genre-finite-groom"
 
   context.test "fromBase64Words", ->
     assert.equal "1234566778",
-      (fromBase64Words "bulk-birch-bye-day-cal-fare-cargo")
+      (fromBase64Words "ducky-apron-finer-tulip-genre-finite-groom")
       .toString "utf8"
 
   context.test "randomBytes", ->
@@ -35,5 +36,19 @@ Amen.describe "Hashing/Encoding Functions", (context) ->
   context.test "randomKey", ->
     assert isString yield randomKey 16
 
+  context.test "randomWord", ->
+    assert isString yield randomWord()
+    assert.notEqual "", yield randomWord()
+
   context.test "randomWords", ->
     assert isString yield randomWords 16
+    assert.equal 10, (split "-", yield randomWords 16).length
+    assert.notEqual "", replace /-/g, "", yield randomWords 16
+
+    assert isString yield randomWords bytes: 8
+    assert.equal 5, (split "-", yield randomWords bytes: 8).length
+    assert.notEqual "", replace /-/g, "", yield randomWords bytes: 8
+
+    assert isString yield randomWords words: 3
+    assert.equal 3, (split "-", yield randomWords words: 3).length
+    assert.notEqual "", replace /-/g, "", yield randomWords words: 3

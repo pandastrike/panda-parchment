@@ -1,9 +1,10 @@
 fs = require "fs"
 Crypto = require "crypto"
 {Method} = require "fairmont-multimethods"
-{isBuffer, isString} = require "./type"
+{isBuffer, isInteger, isString} = require "./type"
 Base64Words = require "base64-words"
 {promise, async} = require "./promise"
+{join, push} = require "./array"
 
 md5 = Method.create()
 
@@ -53,9 +54,35 @@ else
           reject error
 
 randomKey = async (n) -> base64URL yield randomBytes n
-randomWords = async (n) -> toBase64Words yield randomBytes n
+
+# selects a random word from Base64Words.dictionary with uniform distribution
+randomWord = do ->
+  max = 0xffff - 0xffff % Base64Words.dictionary.length
+  async ->
+    loop
+      buffer = yield randomBytes 2
+      i = buffer.readUInt16LE()
+      if i < max
+        return Base64Words.dictionary[i % Base64Words.dictionary.length]
+
+randomWords = Method.create()
+
+Method.define randomWords, isInteger,
+  (bytes) -> randomWords bytes: bytes
+
+# number of words with entropy >= bytes
+Method.define randomWords, (({bytes}) -> isInteger bytes),
+  ({bytes}) ->
+    words = Math.ceil 8 * bytes / Math.log2 Base64Words.dictionary.length
+    randomWords words: words
+
+Method.define randomWords, (({words}) -> isInteger words),
+  async ({words}) ->
+    ax = []
+    push ax, yield randomWord() until words-- == 0
+    join ax, "-"
 
 module.exports = {md5,
   base64, base64URL,
   toBase64Words, fromBase64Words
-  randomBytes, randomKey, randomWords}
+  randomBytes, randomKey, randomWord, randomWords}
