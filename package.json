@@ -30,7 +30,7 @@
     "sinon": "^1.17.4"
   },
   "dependencies": {
-    "base64-words": "^0.1.1",
+    "base64-words": "^0.2.0",
     "fairmont-core": "1.0.x",
     "fairmont-multimethods": "1.0.x"
   },
