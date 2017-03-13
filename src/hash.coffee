@@ -38,7 +38,7 @@ randomBytes = unless process.platform == "win32"
   (n) ->
     promise (resolve, reject) ->
       fs.open "/dev/urandom", "r", (error, fd) ->
-        buffer = Buffer.alloc n
+        buffer = if Buffer.alloc then Buffer.alloc n else new Buffer n
         fs.read fd, buffer, 0, n, 0, (error, m) ->
           if n == m
             resolve buffer
