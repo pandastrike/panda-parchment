@@ -16,11 +16,11 @@ Check out the [wiki][] for an getting started guides, tutorials, and reference d
 
 ## Status
 
-[Fairmont][0] is still under heavy development and is `beta` quality, meaning you should probably not use it in your production code.
+[Fairmont][] is still under heavy development and is `beta` quality, meaning you should probably not use it in your production code.
 
 ## Roadmap
 
-You can get an idea of what we're planning by looking at the [issues list][200]. If you want something that isn't there, and you think it would be a good addition, please open a ticket.
+You can get an idea of what we're planning by looking at the [issues list][tickets]. If you want something that isn't there, and you think it would be a good addition, please open a ticket.
 
 [tickets]:https://github.com/pandastrike/fairmont/issues
 [Fairmont]:https://github.com/pandastrike/fairmont
