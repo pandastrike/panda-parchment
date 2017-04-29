@@ -8,8 +8,14 @@ Amen.describe "String functions", (context) ->
     htmlEscape, w, blank, match, isMatch, replace} = require "../src/string"
 
   context.test "toString"
+    value = 123
+    assert toString(value) == "123"
+  
   context.test "toUpper"
+    assert toUpper("HellO World") == "HELLO WORLD"
+    
   context.test "toLower"
+    assert toLower("HeLLo WoRLD") == "hello world"
 
   context.test "plainText", ->
     assert plainText("hello-world") == "hello world"
