@@ -1,30 +1,12 @@
-{isPromise, isObject, isFunction, isGeneratorFunction} = require "./type"
+{isObject, isFunction} = require "./type"
 
-unhandled = new Map
-
-# TODO: make this configurable?
-process.on "unhandledRejection", (reason, p) ->
-  console.warn "Warning: unhandled rejection for", p
-
-# Example, adapted from Node docs, that defers reporting
-#
-# process.on "unhandledRejection", (reason, p) ->
-#   unhandled.set p, reason
-#
-# process.on "rejectionHandled", (p) ->
-#   unhandled.delete p
-#
-# process.on "exit", ->
-#   unhandled.forEach (reason, p) ->
-#     console.warn "Warning: unhandled rejection for", p
-
-promise = (executor) -> new Promise executor
+promise = (f) -> new Promise f
 
 reject = (x) -> Promise.reject x
 resolve = (x) -> Promise.resolve x
 
 # follow reads better in some cases and avoids naming
-# conflicts within promise executors
+# conflicts within promise-returning functions
 follow = resolve
 
 lift = (f) ->
@@ -33,7 +15,7 @@ lift = (f) ->
     for key, value of f when isFunction value
       proxy[key] = lift value
     proxy
-  else
+  else if isFunction f
     (args...) ->
       promise (resolve, reject) ->
         try
@@ -44,33 +26,7 @@ lift = (f) ->
               reject error
         catch error
           reject error
+  else
+    f
 
-# This code is adapted from:
-# http://tc39.github.io/ecmascript-asyncawait/#intro
-
-async = (g) ->
-
-  if !(isGeneratorFunction g)
-    throw new TypeError "#{g} is not a generator function"
-
-  (args...) ->
-    self = this
-    promise (resolve, reject) ->
-      i = g.apply self, args
-      f = -> i.next()
-      do step = (f) ->
-        try
-          {done, value} = f()
-        catch error
-          reject error
-
-        if done
-          resolve value
-        else
-          follow value
-          .then (value) -> step -> i.next value
-          .catch (error) -> step -> i.throw error
-
-call = (f) -> do async f
-
-module.exports = {promise, resolve, follow, reject, lift, async, call}
+module.exports = {promise, resolve, follow, reject, lift}
