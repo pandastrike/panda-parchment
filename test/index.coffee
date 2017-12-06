@@ -8,7 +8,8 @@ if targets.length == 0
     "promise"
     "string"
     "type"
-    "util"
+    "utility"
   ]
 
+# TODO: how to set up targetted tests via build-tools?
 (require "./#{target}") for target in targets

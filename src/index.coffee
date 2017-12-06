@@ -4,7 +4,7 @@ Object = require "./object"
 Promise = require "./promise"
 String = require "./string"
 Type = require "./type"
-Util = require "./util"
+Util = require "./utility"
 
 {include} = Object
 

@@ -20,9 +20,15 @@ sleep = (interval) ->
 
 times = curry (fn, n) -> fn() until n-- == 0
 
-microseconds = ->
-  [seconds, nanoseconds] = process.hrtime()
-  seconds * 1000000 + nanoseconds / 1000
+microseconds = do ->
+  if process?.hrtime?
+    ->
+      [seconds, nanoseconds] = process.hrtime()
+      seconds * 1000000 + nanoseconds / 1000
+  else if window?.performance?.now?
+    -> window.performance.now()
+  else
+    -> Date.now() * 1000
 
 benchmark = Method.create()
 
