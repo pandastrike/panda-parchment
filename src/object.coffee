@@ -1,42 +1,7 @@
-{curry, negate} = require "fairmont-core"
-{isObject, isFunction} = require "./type"
-{deepEqual} = require "./util"
-
-include = extend = (object, mixins...) ->
-  for mixin in mixins
-    for key, value of mixin
-      object[key] = value
-  object
-
-merge = (objects...) ->
-
-  destination = {}
-  for object in objects
-    destination[k] = v for k, v of object
-  destination
-
-clone = (object) ->
-
-  if not object? or typeof object isnt 'object'
-    return object
-
-  if object instanceof Date
-    return new Date(object.getTime())
-
-  if object instanceof RegExp
-    flags = ''
-    flags += 'g' if object.global?
-    flags += 'i' if object.ignoreCase?
-    flags += 'm' if object.multiline?
-    flags += 'y' if object.sticky?
-    return new RegExp(object.source, flags)
-
-  _clone = new object.constructor()
-
-  for key of object
-    _clone[key] = (clone object[key])
-
-  return _clone
+{identity, curry, negate} = require "fairmont-core"
+{isObject, isArray, isFunction, isRegExp} = require "./type"
+{Method} = require "fairmont-multimethods"
+t = -> true
 
 property = curry (key, object) -> object[key]
 
@@ -72,13 +37,59 @@ pick = curry (f, x) ->
 
 omit = curry (f, x) -> pick (negate f), x
 
+include = extend = (object, mixins...) -> Object.assign object, mixins...
+merge = (objects...) -> Object.assign {}, objects...
+
+clone = Method.create()
+# TODO: handle additional cases
+# See Lodash implemention as a guide
+
+# Trivial case: return the same value
+Method.define clone, t, identity
+
+Method.define clone, isObject, (original) ->
+  copy = new original.constructor()
+  # TODO: this doesn't clone non-enumerable properties
+  for key of original
+    copy[key] = (clone original[key])
+  return copy
+
+# adapted from lodash as an example
+Method.define clone, isRegExp, do (flags=/\w*$/) ->
+  (original) ->
+    copy = new original.constructor original.source, (flags.exec original)
+    copy.lastIndex = original.lastIndex
+    copy
+
+# “deep” comparison, when applicable
+equal = Method.create default: (a, b) -> a == b
+
+# can't use unique and cat from array b/c array
+# depends on object (this file) for detach
+cat = detach Array::concat
+unique = (ax) -> Array.from new Set ax
+Method.define equal, isObject, isObject, (a, b) ->
+  (a == b) || do ->
+    for key in (unique cat (keys a), (keys b))
+      if ! equal a[key], b[key]
+        return false
+    true
+
+Method.define equal, isArray, isArray, (ax, bx) ->
+  (ax == bx) || do ->
+    return false if ax.length != bx.length
+    for i in [0..ax.length]
+      if !equal ax[i], bx[i]
+        return false
+    true
+
 query = curry (example, target) ->
   if (isObject example) && (isObject target)
     for k, v of example
       return false unless query v, target[k]
     return true
   else
-    deepEqual example, target
+    equal example, target
 
 toJSON = (x, pretty = false) ->
   if pretty
@@ -89,6 +100,6 @@ toJSON = (x, pretty = false) ->
 fromJSON = JSON.parse
 
 module.exports = {include, extend, merge, clone,
-  properties, property, delegate, bind, detach,
+  equal, properties, property, delegate, bind, detach,
   has, keys, values, pairs, pick, omit, query,
   toJSON, fromJSON}

@@ -3,13 +3,12 @@ Amen = require "amen"
 
 Amen.describe "Object functions", (context) ->
 
-  {include, extend, merge, clone,
+  {include, extend, merge, clone, equal,
     properties, property, delegate, bind, detach,
     has, keys, values, pairs, pick, omit, query,
-    toJSON, fromJSON} = require "../src/object"
+    toJSON, fromJSON} = require "../object"
 
   {compose} = require "fairmont-core"
-  {deepEqual} = require "../src/util"
 
   context.test "include && extend", ->
     stats = {hp: 50, mp: 100}
@@ -43,6 +42,10 @@ Amen.describe "Object functions", (context) ->
 
     assert (clone 1) == 1
 
+  context.test "equal", ->
+    assert equal 5, 5
+    assert equal { x: 5 }, { x: 5}
+    assert equal [1..3], [1..3]
 
   context.test "property", ->
     a = { foo: 1, bar: 2, baz: { foo: 2 }}
@@ -64,41 +67,11 @@ Amen.describe "Object functions", (context) ->
     assert a.bar() == "This is b"
 
   context.test "bind", ->
-    this.x = 9
-    foo =
-      x: 81
-      getX: -> this.x
-
-    assert foo.getX() == 81     # accesses foo's internal context
-
-    getX = foo.getX
-    assert getX() == 9          # "this" refers to the global context
-
-    boundGetX = bind getX, foo
-    assert boundGetX() == 81    # Now, boundGetX's "this" is bound to foo's context
-
-    foo.x = 11
-    assert boundGetX() == 11    # And the context is *shared*, not copied.
+    foo = x: 7, getX: -> @x
+    assert (bind foo.getX, foo)() == 7
 
   context.test "detach", ->
-    # Establishing an instance of prototype.
-    foo = ->
-    foo::x = 81
-    foo::f = (y) -> this.x / y
-
-    # Establishing secondary contexts.
-    this.x = 9
-    bar = x: 36
-
-    # Once detached, we may apply the other contexts to "f".
-    g = detach foo::f
-    assert (g this, 3) == 3
-    assert (g bar, 3) == 12
-
-
-    # Detaching reflective functions creates a function that only needs one argument (a context).
-    trim = detach String::trim
-    assert (trim "  panda    ") == "panda"
+    assert.deepEqual (detach Array::sort)([5,4,3,2,1]), [1,2,3,4,5]
 
   context.test "properties", ->
     # Define a prototype with a property that uses JavaScript's native getter and setter.
@@ -155,7 +128,7 @@ Amen.describe "Object functions", (context) ->
     assert.deepEqual (values panda), [3, 1, 12, 10]
 
   context.test "pairs", ->
-    assert deepEqual (pairs {a: 1, b: 2, c: 3}),
+    assert.deepEqual (pairs {a: 1, b: 2, c: 3}),
       [["a", 1], ["b", 2], ["c", 3]]
 
     obj =
