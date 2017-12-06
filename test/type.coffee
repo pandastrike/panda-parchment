@@ -7,7 +7,7 @@ Amen.describe "Type functions", (context) ->
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
     isString, isBuffer, isFunction, isObject, isArray,
     isRegExp, isDate, isDefined, isGeneratorFunction, isPromise,
-    Type, instanceOf} = require "../src/type"
+    Type, instanceOf} = require "../type"
 
   context.test "prototype", ->
 

@@ -4,7 +4,7 @@ Amen = require "amen"
 Amen.describe "Numeric functions", (context) ->
 
   {gt, lt, gte, lte, add, sub, mul, div, mod,
-    even, odd, min, max, abs} = require "../src/numeric"
+    even, odd, min, max, abs} = require "../numeric"
 
   context.test "lt", -> assert lt 6, 5
 

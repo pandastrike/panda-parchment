@@ -1,5 +1,4 @@
 Array = require "./array"
-Hash = require "./hash"
 Numeric = require "./numeric"
 Object = require "./object"
 Promise = require "./promise"
@@ -9,5 +8,5 @@ Util = require "./util"
 
 {include} = Object
 
-include module.exports, Array, Hash, Numeric, Object,
+include module.exports, Array, Numeric, Object,
   Promise, String, Type, Util

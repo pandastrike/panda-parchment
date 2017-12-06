@@ -2,7 +2,6 @@
   unary, binary, ternary} = require "fairmont-core"
 
 {detach} = require "./object"
-{deepEqual} = require "./util"
 
 nth = curry (i, ax) -> ax[i - 1]
 first  = nth 1
@@ -33,9 +32,7 @@ findLastIndexOf = curry (a, ax) -> if (i = ax.lastIndexOf a) != -1 then i
 some = curry binary detach Array::some
 
 # Array mutators
-push = curry (ax, a...) ->
-  ax.push a...
-  ax
+push = curry (ax, a...) -> ax.push a...; ax
 pop = detach Array::pop
 shift = detach Array::shift
 unshift = detach Array::unshift
@@ -67,7 +64,6 @@ fill = curry (ax, a) -> ax.fill a
 # Set operations...
 
 # TODO: some of these could be implemented in terms of producers
-# TODO: update for Set type in ES6
 uniqueBy = curry (f, ax) ->
   bx = []
   for a in ax
@@ -75,7 +71,8 @@ uniqueBy = curry (f, ax) ->
     (bx.push b) unless b in bx
   bx
 
-unique = uniq = uniqueBy identity
+unique = uniq = (ax) -> Array.from new Set ax
+
 
 dupes = ([a, ax...]) ->
   if empty ax
@@ -107,7 +104,7 @@ shuffle = (ax) ->
   i = bx.length
   unless i <= 1
     while --i > 0
-      # the distinguishing characteristic of fisher-yates is that the random 
+      # the distinguishing characteristic of fisher-yates is that the random
       # value generated is bounded by the iterator index (Math.random() * i)
       # instead of the size of the array (Math.random() * bx.length)
       j = Math.floor Math.random() * (i + 1)
