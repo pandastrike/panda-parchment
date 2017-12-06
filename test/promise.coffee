@@ -9,21 +9,22 @@ assert.resolves = (f) ->
   f()
   .catch -> assert.fail "Missing expected promise resolution."
 
-Amen = require "amen"
+{test, print} = require "amen"
 
-{promise, lift, resolve, reject} = require "../promise"
+import {promise, lift, resolve, reject} from "../promise"
 
-Amen.describe "Promise helpers", (context) ->
+do ->
+  print await test "promise helpers", [
+    test "lift", ->
 
-  context.test "lift", ->
+      foo =
+        bar: (callback) ->
+          callback null, true
+        baz: (callback) ->
+          callback true, false
 
-    foo =
-      bar: (callback) ->
-        callback null, true
-      baz: (callback) ->
-        callback true, false
+      _foo = lift foo
 
-    _foo = lift foo
-
-    assert.resolves -> _foo.bar()
-    assert.rejects -> _foo.baz()
+      assert.resolves -> _foo.bar()
+      assert.rejects -> _foo.baz()
+  ]

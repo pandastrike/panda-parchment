@@ -9,6 +9,7 @@ resolve = (x) -> Promise.resolve x
 # conflicts within promise-returning functions
 follow = resolve
 
+# TODO: handle other styles of callbacks
 lift = (f) ->
   if isObject f
     proxy = {}
