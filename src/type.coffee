@@ -49,6 +49,8 @@ isGeneratorFunction = isType GeneratorFunction
 
 isPromise = isType Promise
 
+isAsyncFunction = isType (-> await null).constructor
+
 instanceOf = curry (t, x) -> x instanceof t
 
 Type =
@@ -59,4 +61,4 @@ module.exports = {prototype, isPrototype, isTransitivePrototype,
   isType, isKind, Type, instanceOf,
   isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
   isString, isBuffer, isFunction, isObject, isArray, isDefined, isUndefined
-  isRegExp, isDate, isGeneratorFunction, isPromise}
+  isRegExp, isDate, isGeneratorFunction, isPromise, isAsyncFunction}
