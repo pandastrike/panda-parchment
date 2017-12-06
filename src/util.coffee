@@ -44,13 +44,5 @@ Method.define benchmark, isGenerator, (fn) ->
 empty = (x) -> x.length == 0
 length = (x) -> x.length
 
-assert = require "assert"
-deepEqual = (a, b) ->
-  try
-    assert.deepEqual a, b
-    true
-  catch
-    false
-
 module.exports = {times, sleep, timer, memoize,
-  times, benchmark, empty, length, deepEqual}
+  times, benchmark, empty, length}
