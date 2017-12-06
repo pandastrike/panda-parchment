@@ -1,8 +1,7 @@
 {curry} = require "fairmont-core"
 {Method} = require "fairmont-multimethods"
-{isFunction, isGenerator} = require "./type"
 {promise, async} = require "./promise"
-{isArray, isString, isObject} = require "./type"
+{isArray, isString, isObject, isFunction, isAsyncFunction} = require "./type"
 {blank} = require "./string"
 
 # TODO: move to core
@@ -21,17 +20,21 @@ sleep = (interval) ->
 
 times = curry (fn, n) -> fn() until n-- == 0
 
+microseconds = ->
+  [seconds, nanoseconds] = process.hrtime()
+  seconds * 1000000 + nanoseconds / 1000
+
 benchmark = Method.create()
 
 Method.define benchmark, isFunction, (fn) ->
-  start = Date.now()
+  start = microseconds()
   fn()
-  Date.now() - start
+  microseconds() - start
 
-Method.define benchmark, isGenerator, (fn) ->
-  start = Date.now()
-  yield fn()
-  Date.now() - start
+Method.define benchmark, isAsyncFunction, (fn) ->
+  start = microseconds()
+  await fn()
+  microseconds() - start
 
 # empty and length work on both arrays and strings
 # and really anything with a meaningful length
@@ -45,4 +48,4 @@ empty = (x) -> x.length == 0
 length = (x) -> x.length
 
 module.exports = {times, sleep, timer, memoize,
-  times, benchmark, empty, length}
+  times, microseconds, benchmark, empty, length}
