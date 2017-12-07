@@ -1,14 +1,8 @@
-{curry} = require "fairmont-core"
-{Method} = require "fairmont-multimethods"
-{promise, async} = require "./promise"
-{isArray, isString, isObject, isFunction, isAsyncFunction} = require "./type"
-{blank} = require "./string"
-
-# TODO: move to core
-memoize = do (_hash = undefined) ->
-  _hash = (x) -> x.toString()
-  (fn, hash = _hash, memo = {}) ->
-    (x) -> memo[hash x] ?= fn x
+import {curry} from "fairmont-core"
+import {Method} from "fairmont-multimethods"
+import {promise, async} from "./promise"
+import {isArray, isString, isObject, isFunction, isAsyncFunction} from "./type"
+import {blank} from "./string"
 
 timer = (wait, action) ->
   id = setTimeout(action, wait)
@@ -42,16 +36,4 @@ Method.define benchmark, isAsyncFunction, (fn) ->
   await fn()
   microseconds() - start
 
-# empty and length work on both arrays and strings
-# and really anything with a meaningful length
-# attribute, so that's why they're here and not
-# in array...
-
-# TODO: multimethod variant of empty that allows
-# empty to be defined for any type
-
-empty = (x) -> x.length == 0
-length = (x) -> x.length
-
-module.exports = {times, sleep, timer, memoize,
-  times, microseconds, benchmark, empty, length}
+export {sleep, timer, microseconds, benchmark, times}

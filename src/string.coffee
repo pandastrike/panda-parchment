@@ -1,4 +1,4 @@
-{curry, compose} = require "fairmont-core"
+import {curry, compose} from "fairmont-core"
 
 toString = (x) -> x.toString()
 
@@ -48,7 +48,7 @@ split = curry (re, s) -> s.split re
 
 w = compose (split /\s+/), trim
 
-blank = (s) -> s.length == 0
+blank = (s) -> s.constructor == String && s.length == 0
 
 match = curry (pattern, string) -> string.match pattern
 
@@ -57,6 +57,6 @@ isMatch = curry (pattern, string) -> pattern.test string
 replace = curry (pattern, replacement, string) ->
   string.replace pattern, replacement
 
-module.exports = {toString, toUpper, toLower, capitalize,
+export {toString, toUpper, toLower, capitalize,
   titleCase, camelCase, underscored, dashed, plainText,
   htmlEscape, split, w, blank, match, isMatch, replace}

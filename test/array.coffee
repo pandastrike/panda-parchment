@@ -1,7 +1,5 @@
-assert = require "assert"
-sinon = require "sinon"
-
-import {print, test} from "amen"
+import assert from "assert"
+import {test, print} from "amen"
 
 import {first, second, third, fourth, fifth, nth, last, rest,
   empty, includes, findIndexOf, findLastIndexOf, uniqueBy, unique, uniq, dupes,
@@ -9,8 +7,12 @@ import {first, second, third, fourth, fifth, nth, last, rest,
   enqueue, dequeue, splice, insert, remove, cat, slice, join, fill,
   shuffle, range, pluck, pair} from "../array"
 
+import sinon from "sinon"
+
 do ->
-  print await test "array functions", [
+
+  print await test "array helperrs", [
+
     test "first", -> assert (first [1..5]) == 1
     test "second", -> assert (second [1..5]) == 2
     test "third", -> assert (third [1..5]) == 3

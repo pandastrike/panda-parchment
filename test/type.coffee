@@ -1,13 +1,14 @@
 import assert from "assert"
 import {test, print} from "amen"
 
-import {deepEqual, prototype, isType, isKind,
+import {prototype, isType, isKind,
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
     isString, isBuffer, isFunction, isObject, isArray,
     isRegExp, isDate, isDefined, isGeneratorFunction, isPromise,
-    isAsyncFunction, Type, instanceOf} from "../type"
+    isAsyncFunction, Type, instanceOf, isEmpty} from "../type"
 
 do ->
+
   print await test "type helpers", [
 
     test "prototype", [
@@ -104,5 +105,15 @@ do ->
         test "isKind", ->
           assert isKind A, b
       ]
+
+    test "isEmpty", ->
+      assert isEmpty ""
+      assert ! isEmpty " "
+      assert isEmpty []
+      assert ! isEmpty [ 0 ]
+      assert isEmpty new Map
+      assert ! isEmpty new Map [[ "x", 1 ]]
+      assert isEmpty new Set
+      assert ! isEmpty new Set [ 0 ]
   ]
 ]

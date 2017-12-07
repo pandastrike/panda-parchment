@@ -5,17 +5,8 @@ import {times, sleep, timer, memoize,
     benchmark, empty, length} from "../utility"
 
 do ->
-  print await test "utility functions", [
-    test "memoize", do ->
-      count = 0
-      f = memoize (x) -> count++; x
-      [
-        test "runs the function", -> assert f(5) == 5 && count == 1
-        test "but only once for a given argument", ->
-          assert f(5) == 5 && count == 1
-        test "without affecting any other arguments", ->
-          assert f(6) == 6 && count == 2
-      ]
+
+  print await test "utility helpers", [
 
     test "timer", ->
       # We need an action to put into "timer",

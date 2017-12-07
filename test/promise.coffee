@@ -1,4 +1,7 @@
-assert = require "assert"
+import assert from "assert"
+import {test, print} from "amen"
+
+import {promise, rephrase, resolve, reject} from "../promise"
 
 assert.rejects = (f) ->
   f()
@@ -9,22 +12,20 @@ assert.resolves = (f) ->
   f()
   .catch -> assert.fail "Missing expected promise resolution."
 
-{test, print} = require "amen"
-
-import {promise, lift, resolve, reject} from "../promise"
-
 do ->
+
   print await test "promise helpers", [
-    test "lift", ->
 
-      foo =
-        bar: (callback) ->
-          callback null, true
-        baz: (callback) ->
-          callback true, false
+    test "rephrase", [
 
-      _foo = lift foo
+      test "node style", ->
+        foo =
+          bar: (callback) -> callback null, true
+          baz: (callback) -> callback true, false
 
-      assert.resolves -> _foo.bar()
-      assert.rejects -> _foo.baz()
+        _foo = rephrase "node", foo
+
+        assert.resolves -> _foo.bar()
+        assert.rejects -> _foo.baz()
+      ]
   ]

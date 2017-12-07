@@ -1,11 +1,11 @@
-assert = require "assert"
-{print, test} = require "amen"
+import assert from "assert"
+import {test, print} from "amen"
 
 import {gt, lt, gte, lte, add, sub, mul, div, mod,
   even, odd, min, max, abs} from "../numeric"
 
 do ->
-  print await test "numeric functions", [
+  print await test "numeric helpers", [
     test "gt"
     test "lt", -> assert lt 6, 5
     test "gte"

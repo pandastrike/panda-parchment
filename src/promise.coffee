@@ -1,4 +1,6 @@
-{isObject, isFunction} = require "./type"
+import {curry, binary} from "fairmont-core"
+import {Method} from "fairmont-multimethods"
+import {isDefined, isString, isObject, isFunction} from "./type"
 
 promise = (f) -> new Promise f
 
@@ -9,25 +11,39 @@ resolve = (x) -> Promise.resolve x
 # conflicts within promise-returning functions
 follow = resolve
 
-# TODO: handle other styles of callbacks
-lift = (f) ->
-  if isObject f
-    proxy = {}
-    for key, value of f when isFunction value
-      proxy[key] = lift value
-    proxy
-  else if isFunction f
-    (args...) ->
-      promise (resolve, reject) ->
-        try
-          f args..., (error, _args...) ->
-            unless error?
-              resolve _args...
-            else
-              reject error
-        catch error
-          reject error
-  else
-    f
+rephrase = Method.create
+  # for ordinary values, this does nothing
+  # includes async and generator functions
+  default: (callback, value) ->
+    console.log {callback, value}
+    value
 
-module.exports = {promise, resolve, follow, reject, lift}
+# for objects, we try to rephrase the values
+Method.define rephrase, isFunction, isObject, (callback, object) ->
+  proxy = {}
+  for key, value of object
+    proxy[key] = rephrase callback, value
+  proxy
+
+# real work happens here, when we have a function
+Method.define rephrase, isFunction, isFunction, (callback, f) ->
+  (args...) ->
+    promise (resolve, reject) ->
+      try
+        f args..., (callback resolve, reject)...
+      catch error
+        reject error
+
+callbacks =
+  node: (resolve, reject) -> [
+    (error, args...) ->
+      if error then (reject error) else (resolve args...)
+  ]
+  handlers: (resolve, reject) -> [ resolve, reject ]
+
+Method.define rephrase, isString, isDefined, (style, target) ->
+  rephrase callbacks[style], target
+
+rephrase = curry binary rephrase
+
+export {promise, resolve, follow, reject, rephrase}

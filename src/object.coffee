@@ -1,15 +1,8 @@
-{identity, curry, negate} = require "fairmont-core"
-{isObject, isArray, isFunction, isRegExp} = require "./type"
-{Method} = require "fairmont-multimethods"
-t = -> true
+import {identity, curry, negate} from "fairmont-core"
+import {Method} from "fairmont-multimethods"
+import {isObject, isArray, isFunction, isRegExp} from "./type"
 
 property = curry (key, object) -> object[key]
-
-delegate = (from, to) ->
-
-  for name, value of to when isFunction value
-    do (value) ->
-      from[name] = (args...) -> value.call to, args...
 
 bind = curry (f, x) -> f.bind x
 
@@ -40,12 +33,11 @@ omit = curry (f, x) -> pick (negate f), x
 include = extend = (object, mixins...) -> Object.assign object, mixins...
 merge = (objects...) -> Object.assign {}, objects...
 
-clone = Method.create()
+# Trivial case: return the same value
+clone = Method.create default: identity
+
 # TODO: handle additional cases
 # See Lodash implemention as a guide
-
-# Trivial case: return the same value
-Method.define clone, t, identity
 
 Method.define clone, isObject, (original) ->
   copy = new original.constructor()
@@ -99,7 +91,7 @@ toJSON = (x, pretty = false) ->
 
 fromJSON = JSON.parse
 
-module.exports = {include, extend, merge, clone,
-  equal, properties, property, delegate, bind, detach,
+export {include, extend, merge, clone,
+  equal, properties, property, bind, detach,
   has, keys, values, pairs, pick, omit, query,
   toJSON, fromJSON}

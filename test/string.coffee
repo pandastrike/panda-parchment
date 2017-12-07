@@ -1,12 +1,14 @@
 import assert from "assert"
 import {test, print} from "amen"
+
 import {toString, toUpper, toLower, capitalize,
   titleCase, camelCase, underscored, dashed, plainText,
   htmlEscape, w, blank, match, isMatch, replace} from "../string"
 
 do ->
-  
-  print await test "string functions", [
+
+  print await test "string helpers", [
+
     test "toString"
     test "toUpper"
     test "toLower"
