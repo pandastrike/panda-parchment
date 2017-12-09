@@ -1,10 +1,9 @@
 {
   "name": "fairmont-helpers",
   "version": "3.0.0",
-  "description": "Functional and reactive programming for JavaScript.",
+  "description": "Functional helpers for arrays, objects, strings, and types",
   "files": [
-    "build/npm",
-    "README.md"
+    "build/npm"
   ],
   "main": "build/npm/lib/index.js",
   "scripts": {
@@ -21,7 +20,7 @@
   "license": "ISC",
   "devDependencies": {
     "amen": "^2.0.2",
-    "fairmont-build-tools": "file:../fairmont-build-tools",
+    "fairmont-build-tools": "^1.0.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "power-assert": "^1.4.4",
     "sinon": "^1.17.4"
