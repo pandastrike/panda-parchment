@@ -5,7 +5,7 @@ import {prototype, isType, isKind,
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
     isString, isBuffer, isFunction, isObject, isArray,
     isRegExp, isDate, isDefined, isGeneratorFunction, isPromise,
-    isAsyncFunction, Type, instanceOf, isEmpty} from "../type"
+    isAsyncFunction, Type, instanceOf, isEmpty} from "../lib/type"
 
 do ->
 

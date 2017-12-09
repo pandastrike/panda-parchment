@@ -2,7 +2,7 @@ import assert from "assert"
 import {test, print} from "amen"
 
 import {times, sleep, timer, memoize,
-    benchmark, empty, length} from "../utility"
+    benchmark, empty, length} from "../lib/utility"
 
 do ->
 

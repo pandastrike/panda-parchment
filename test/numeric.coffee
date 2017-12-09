@@ -2,7 +2,7 @@ import assert from "assert"
 import {test, print} from "amen"
 
 import {gt, lt, gte, lte, add, sub, mul, div, mod,
-  even, odd, min, max, abs} from "../numeric"
+  even, odd, min, max, abs} from "../lib/numeric"
 
 do ->
   print await test "numeric helpers", [

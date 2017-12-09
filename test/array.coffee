@@ -5,7 +5,7 @@ import {first, second, third, fourth, fifth, nth, last, rest,
   empty, includes, findIndexOf, findLastIndexOf, uniqueBy, unique, uniq, dupes,
   union, intersection, difference, complement, push, pop, shift, unshift,
   enqueue, dequeue, splice, insert, remove, cat, slice, join, fill,
-  shuffle, range, pluck, pair} from "../array"
+  shuffle, range, pluck, pair} from "../lib/array"
 
 import sinon from "sinon"
 

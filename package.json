@@ -3,11 +3,10 @@
   "version": "3.0.0",
   "description": "Functional and reactive programming for JavaScript.",
   "files": [
-    "src/",
-    "lib/",
+    "build/npm",
     "README.md"
   ],
-  "main": "lib/index.js",
+  "main": "build/npm/lib/index.js",
   "scripts": {
     "test": "gulp test"
   },
@@ -22,7 +21,7 @@
   "license": "ISC",
   "devDependencies": {
     "amen": "^2.0.2",
-    "fairmont-build-tools": "file://Users/dyoder/repos/fairmont-build-tools",
+    "fairmont-build-tools": "file:../fairmont-build-tools",
     "gulp": "github:gulpjs/gulp#4.0",
     "power-assert": "^1.4.4",
     "sinon": "^1.17.4"
@@ -31,5 +30,5 @@
     "fairmont-core": "1.0.x",
     "fairmont-multimethods": "1.0.x"
   },
-  "engine": "node >= 6.1.0"
+  "engine": "node >= 6.10"
 }

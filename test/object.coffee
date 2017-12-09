@@ -4,9 +4,9 @@ import {test, print} from "amen"
 import {include, extend, merge, clone, equal,
   properties, property, bind, detach,
   has, keys, values, pairs, pick, omit, query,
-  toJSON, fromJSON} from "../object"
+  toJSON, fromJSON} from "../lib/object"
 
-import {isDefined} from "../type"
+import {isDefined} from "../lib/type"
 
 do ->
 
