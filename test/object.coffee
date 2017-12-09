@@ -1,265 +1,96 @@
-assert = require "assert"
-Amen = require "amen"
+import assert from "assert"
+import {test, print} from "amen"
 
-Amen.describe "Object functions", (context) ->
+import {include, extend, merge, clone, equal,
+  properties, property, bind, detach,
+  has, keys, values, pairs, pick, omit, query,
+  toJSON, fromJSON} from "../lib/object"
 
-  {include, extend, merge, clone,
-    properties, property, delegate, bind, detach,
-    has, keys, values, pairs, pick, omit, query,
-    toJSON, fromJSON} = require "../src/object"
+import {isDefined} from "../lib/type"
 
-  {compose} = require "fairmont-core"
-  {deepEqual} = require "../src/util"
+do ->
 
-  context.test "include && extend", ->
-    stats = {hp: 50, mp: 100}
+  print await test "object helpers", [
 
-    include stats, {stamina: 10, strength: 10}, {intelligence: 50, agility: 20}
-    assert.deepEqual Object.keys(stats), ["hp", "mp", "stamina", "strength", "intelligence", "agility"]
-    include stats, {stamina: 50}
-    assert stats.stamina == 50
+    test "include/extend", ->
+      a = x: 1, y: 2
+      b = z: 3
+      include a, b
+      assert.deepEqual a, {x: 1, y: 2, z: 3}
 
-    stats = {hp: 50, mp: 25}
-    extend stats, {stamina: 10, strength: 10}, {intelligence: 50, agility: 20}
-    assert.deepEqual Object.keys(stats), ["hp", "mp", "stamina", "strength", "intelligence", "agility"]
-    assert.deepEqual Object.keys(stats), ["hp", "mp", "stamina", "strength", "intelligence", "agility"]
+    test "merge", ->
+      a = x: 1, y: 2
+      b = z: 3
+      c = merge a, b
+      assert.deepEqual a, {x: 1, y: 2}
+      assert.deepEqual c, {x: 1, y: 2, z: 3}
 
-  context.test "merge", ->
-    stats = merge {hp: 50, mp: 100}, {stamina: 10, strength: 10}, {intelligence: 50, agility: 20}
-    assert.deepEqual Object.keys(stats), ["hp", "mp", "stamina", "strength", "intelligence", "agility"]
+    test "clone", do (scenario=null) ->
 
-  context.test "clone", ->
-    person =
-      name: "Steve Jobs"
-      address:
-        street: "1 Infinite Loop"
-        city: "Cupertino, CA"
-        zip: 95014
-      birthdate: new Date 'Feb 24, 1955'
-      regex: /foo.*/igm
+      scenario = (original) ->
+        ->
+          copy = clone original
+          assert original != copy
+          assert.deepEqual original, copy
+      [
+        test "shallow", scenario x: 1, y: 2
+        test "deep", [
+          test "simple", scenario x: 1, y: { z: 3}
+          test "with regexp", scenario  x: 1, y: { z: /foo/gi }
+        ]
+      ]
 
-    assert.notEqual  (clone person), person
-    assert.deepEqual (clone person), person
+    test "equal", ->
+      assert equal 1, 1
+      assert !equal 1, 2
+      assert equal " ", " "
+      assert !equal "", " "
+      assert equal { x: 1 }, { x: 1}
+      assert !equal { x: 1 }, { x: 2}
+      assert equal [1..3], [1..3]
+      assert !equal [1..3], [1..4]
 
-    assert (clone 1) == 1
+    test "property", -> assert (property "x", { x: 1 }) == 1
 
+    test "bind", -> assert (bind (-> @x), {x: 1})() == 1
 
-  context.test "property", ->
-    a = { foo: 1, bar: 2, baz: { foo: 2 }}
-    assert (property "foo", a) == 1
-    bazFoo = (compose (property "foo"), (property "baz"))
-    assert (bazFoo a) == 2
+    test "detach", ->
+      assert.deepEqual (detach Array::sort)([5,4,3,2,1]), [1,2,3,4,5]
 
-  context.test "delegate", ->
-    a =
-      foo: -> this.bar()
-      bar: -> "This is a"
+    test "properties", ->
+      properties (a = {}), x: get: (-> @_x), set: ((x) -> @_x = x)
+      a.x = 1
+      assert a._x == 1
+      a._x = 2
+      assert a.x == 2
 
-    b =
-      bar: -> "This is b"
+    test "has", ->
+      assert (has "x", x: 1)
+      assert !(has "y", x: 1)
 
-    assert a.foo() == "This is a"
-    delegate a, b
-    assert a.foo() == "This is b"
-    assert a.bar() == "This is b"
+    test "keys", ->
+      assert.deepEqual (keys x: 1, y: 2), [ "x", "y" ]
 
-  context.test "bind", ->
-    this.x = 9
-    foo =
-      x: 81
-      getX: -> this.x
+    test "values", ->
+      assert.deepEqual (values x: 1, y: 2), [ 1, 2 ]
 
-    assert foo.getX() == 81     # accesses foo's internal context
+    test "pairs", ->
+      assert.deepEqual (pairs {a: 1, b: 2, c: 3}),
+        [["a", 1], ["b", 2], ["c", 3]]
 
-    getX = foo.getX
-    assert getX() == 9          # "this" refers to the global context
+    test "pick", ->
+      assert.deepEqual (pick ((k,v) -> v?), x: 1, y: null), { x: 1 }
 
-    boundGetX = bind getX, foo
-    assert boundGetX() == 81    # Now, boundGetX's "this" is bound to foo's context
+    test "omit", ->
+      assert.deepEqual (omit ((k,v) -> v?), x: 1, y: null), { y: undefined }
 
-    foo.x = 11
-    assert boundGetX() == 11    # And the context is *shared*, not copied.
+    test "query", ->
+      assert query { x: 1 }, { x: 1, y: 2 }
+      assert ! query { x: 2 }, { x: 1, y: 2 }
+      assert query 1, 1
+      assert !query 1, 2
 
-  context.test "detach", ->
-    # Establishing an instance of prototype.
-    foo = ->
-    foo::x = 81
-    foo::f = (y) -> this.x / y
+    test "toJSON/fromJSON", ->
+      assert.deepEqual (fromJSON toJSON x: 1, y: 2), x: 1, y: 2
 
-    # Establishing secondary contexts.
-    this.x = 9
-    bar = x: 36
-
-    # Once detached, we may apply the other contexts to "f".
-    g = detach foo::f
-    assert (g this, 3) == 3
-    assert (g bar, 3) == 12
-
-
-    # Detaching reflective functions creates a function that only needs one argument (a context).
-    trim = detach String::trim
-    assert (trim "  panda    ") == "panda"
-
-  context.test "properties", ->
-    # Define a prototype with a property that uses JavaScript's native getter and setter.
-    class A
-      properties @::,
-        foo:
-          get: -> @_foo
-          set: (v) -> @_foo = v
-
-    # Test with an instance of "A".
-    a = new A
-    a.foo = "bar"
-    assert a._foo == "bar"  # Proves the setter was used to create and set "_foo".
-
-  context.test "has", ->
-    panda =
-      color: "black and white"
-      limbs: 4
-
-    fish =
-      color: "silver"
-      limbs: 0
-
-    car =
-      color: "red"
-      wheels: 4
-
-    assert (has "limbs", panda) == true
-    assert (has "limbs", fish) == true
-    assert (has "limbs", car) == false
-
-    # has is curried, so we can create a function that always checks for the same property.
-    wheelCheck = has "wheels"
-    assert (wheelCheck panda) == false
-    assert (wheelCheck fish) == false
-    assert (wheelCheck car) == true
-
-  context.test "keys", ->
-    panda =
-      c: 3
-      v: 1
-      q: 12
-      t: 10
-
-    assert.deepEqual (keys panda), ["c", "v", "q", "t"]
-
-  context.test "values", ->
-    panda =
-      c: 3
-      v: 1
-      q: 12
-      t: 10
-
-    assert.deepEqual (values panda), [3, 1, 12, 10]
-
-  context.test "pairs", ->
-    assert deepEqual (pairs {a: 1, b: 2, c: 3}),
-      [["a", 1], ["b", 2], ["c", 3]]
-
-    obj =
-      a:
-        foo: 100
-        bar: 200
-      b: 2
-      c: 3
-
-    assert.deepEqual (pairs obj), [ [ 'a', { foo: 100, bar: 200 } ], [ 'b', 2 ], [ 'c', 3 ] ]
-
-
-  context.test "pick", ->
-    fruits =
-      apples: 3
-      oranges: null
-      mangos: 12
-
-    f = (key, value) -> value?            # Only if the value is truthy
-    g = (key, value) -> value % 2 == 1    # Only if there is an odd number
-    h = (key, value) -> key == "mangos"   # Realy likes mangos?
-
-    assert.deepEqual (pick f, fruits), {apples: 3, mangos: 12}
-    assert.deepEqual (pick g, fruits), {apples: 3}
-    assert.deepEqual (pick h, fruits), {mangos: 12}
-
-  context.test "omit", ->
-    fruits =
-      apples: 3
-      oranges: null
-      mangos: 12
-
-    f = (key, value) -> value?            # Only if the value is falsey
-    g = (key, value) -> value % 2 == 0    # Only if there is an even number
-    h = (key, value) -> key == "mangos"   # Realy hates mangos?
-
-    assert.deepEqual (omit f, fruits), {oranges: null}
-    assert.deepEqual (omit g, fruits), {apples: 3}
-    assert.deepEqual (omit h, fruits), {apples: 3, oranges: null}
-
-  context.test "query", ->
-    princess =
-      name: "Aurora"
-      alias:
-        name: "Sleeping Beauty"
-      dwarves: 7
-      enemy: "Maleficent"
-
-    # Query will find an object within a larger object.
-    assert query({name: "Aurora"}, princess) == true
-    assert query({name: "Belle"}, princess) == false
-
-    # But query cannot find the sub-object within a nested structure.
-    findBeauty = query {name: "Sleeping Beauty"}
-    assert findBeauty(princess) == false
-    assert findBeauty(princess.alias) == true
-
-    # If the "search-term" or target are not an objects, query performs a deepEqual comparison
-    princesses = ["Ariel", "Aurora", "Belle", "Cinderella", "Jasmine", "Merida",
-      "Mulan", "Pocahontas", "Rapunzel", "Tiana", "Snow White"]
-
-    assert query({name: "Aurora"}, princesses) == false
-    assert query("Aurora", princesses) == false
-    assert query(11, princesses.length) == true
-
-  context.test "toJSON", ->
-    mage =
-      vitals:
-        hp: 50
-        mp: 100
-      attributes:
-        stamina: 10
-        strength: 10
-        intelligence: 50
-        agility: 20
-
-    string = toJSON mage
-    pretty = toJSON mage, true
-
-    assert string == '{"vitals":{"hp":50,"mp":100},"attributes":{"stamina":10,"strength":10,"intelligence":50,"agility":20}}'
-    assert pretty,
-    '{
-      "vitals": {
-        "hp": 50,
-        "mp": 100
-      },
-      "attributes": {
-        "stamina": 10,
-        "strength": 10,
-        "intelligence": 50,
-        "agility": 20
-      }
-    }'
-
-
-  context.test "fromJSON", ->
-    mage = fromJSON '{"vitals":{"hp":50,"mp":100},"attributes":{"stamina":10,"strength":10,"intelligence":50,"agility":20}}'
-
-    assert mage,
-      vitals:
-        hp: 50
-        mp: 100
-      attributes:
-        stamina: 10
-        strength: 10
-        intelligence: 50
-        agility: 20
+  ]

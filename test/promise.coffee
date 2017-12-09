@@ -1,4 +1,7 @@
-assert = require "assert"
+import assert from "assert"
+import {test, print} from "amen"
+
+import {promise, rephrase, resolve, reject} from "../lib/promise"
 
 assert.rejects = (f) ->
   f()
@@ -9,31 +12,20 @@ assert.resolves = (f) ->
   f()
   .catch -> assert.fail "Missing expected promise resolution."
 
-Amen = require "amen"
-FS = require "fs"
-{join} = require "path"
+do ->
 
-{promise, async, call, lift, resolve, reject} = require "../src/promise"
+  print await test "promise helpers", [
 
-Amen.describe "Promise helpers", (context) ->
+    test "rephrase", [
 
-  context.test "lift", ->
+      test "node style", ->
+        foo =
+          bar: (callback) -> callback null, true
+          baz: (callback) -> callback true, false
 
-    readdir = lift FS.readdir
+        _foo = rephrase "node", foo
 
-    context.test "async", ->
-
-      ls = async (root) ->
-        join root, path for path in (yield readdir root)
-
-      assert __filename in (yield ls __dirname)
-
-      assert.resolves async ->
-        yield resolve true
-
-      assert.rejects async ->
-        yield reject new Error "this is a test error"
-
-  context.test "unhandled rejection"
-    # Tricky to test without actually leaving rejections
-    # unhandled and waiting to see if they get reported
+        assert.resolves -> _foo.bar()
+        assert.rejects -> _foo.baz()
+      ]
+  ]

@@ -1,18 +1,13 @@
 {
   "name": "fairmont-helpers",
-  "version": "2.0.1",
-  "description": "Functional and reactive programming for JavaScript.",
+  "version": "3.0.0",
+  "description": "Functional helpers for arrays, objects, strings, and types",
   "files": [
-    "src/",
-    "lib/",
-    "README.md"
+    "build/npm"
   ],
-  "main": "lib/index.js",
+  "main": "build/npm/lib/index.js",
   "scripts": {
-    "test": "coffee test/index.coffee",
-    "watch": "coffee -o lib/ -cw src/*.*coffee",
-    "prepublish": "coffee -o lib/ -c src/*.*coffee",
-    "postpublish": "(node_modules/.bin/json -f package.json version | xargs -I version git tag -am version version) && git push --tags"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -24,15 +19,15 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "amen": "^1.0.0",
-    "coffee-script": "^1.10.0",
-    "json": "^9.0.3",
+    "amen": "^2.0.2",
+    "fairmont-build-tools": "^1.0.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "power-assert": "^1.4.4",
     "sinon": "^1.17.4"
   },
   "dependencies": {
-    "base64-words": "^0.2.0",
     "fairmont-core": "1.0.x",
     "fairmont-multimethods": "1.0.x"
   },
-  "engine": "node >= 6.0.0"
+  "engine": "node >= 6.10"
 }

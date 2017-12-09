@@ -1,54 +1,58 @@
-assert = require "assert"
-Amen = require "amen"
+import assert from "assert"
+import {test, print} from "amen"
 
-Amen.describe "String functions", (context) ->
+import {toString, toUpper, toLower, capitalize,
+  titleCase, camelCase, underscored, dashed, plainText,
+  htmlEscape, w, blank, match, isMatch, replace} from "../lib/string"
 
-  {toString, toUpper, toLower, capitalize,
-    titleCase, camelCase, underscored, dashed, plainText,
-    htmlEscape, w, blank, match, isMatch, replace} = require "../src/string"
+do ->
 
-  context.test "toString"
-  context.test "toUpper"
-  context.test "toLower"
+  print await test "string helpers", [
 
-  context.test "plainText", ->
-    assert plainText("hello-world") == "hello world"
-    assert plainText("Hello World") == "hello world"
+    test "toString"
+    test "toUpper"
+    test "toLower"
 
-  context.test "capitalize", ->
-    assert capitalize( "hello world" ) == "Hello world"
+    test "plainText", ->
+      assert plainText("hello-world") == "hello world"
+      assert plainText("Hello World") == "hello world"
 
-  context.test "titleCase", ->
-    assert titleCase( "hello woRld" ) == "Hello World"
+    test "capitalize", ->
+      assert capitalize( "hello world" ) == "Hello world"
 
-  context.test "camelCase", ->
-    assert camelCase( "Hello World" ) == "helloWorld"
+    test "titleCase", ->
+      assert titleCase( "hello woRld" ) == "Hello World"
 
-  context.test "underscored", ->
-    assert underscored( "Hello World" ) == "hello_world"
+    test "camelCase", ->
+      assert camelCase( "Hello World" ) == "helloWorld"
 
-  context.test "dashed", ->
-    assert dashed( "Hello World" ) == "hello-world"
+    test "underscored", ->
+      assert underscored( "Hello World" ) == "hello_world"
 
-  context.test "htmlEscape", ->
-    assert htmlEscape( "<a href='foo'>bar & baz</a>" ) ==
-      "&lt;a href=&#39;foo&#39;&gt;bar &amp; baz&lt;&#x2F;a&gt;"
+    test "dashed", ->
+      assert dashed( "Hello World" ) == "hello-world"
 
-  context.test "trim"
+    test "htmlEscape", ->
+      assert htmlEscape( "<a href='foo'>bar & baz</a>" ) ==
+        "&lt;a href=&#39;foo&#39;&gt;bar &amp; baz&lt;&#x2F;a&gt;"
 
-  context.test "split"
-  
-  context.test "w", -> assert (w "one two three").length == 3
+    test "trim"
 
-  context.test "blank", ->
-    assert blank ""
-    assert !blank "x"
+    test "split"
 
-  context.test "isMatch", ->
-    assert (isMatch /foo/, "foobar")
+    test "w", -> assert (w "one two three").length == 3
 
-  context.test "match", ->
-    assert (isMatch /foo/, "foobar")[0] = "foo"
+    test "blank", ->
+      assert blank ""
+      assert !blank "x"
 
-  context.test "replace", ->
-    assert (replace /bar/, "baz", "foobar") == "foobaz"
+    test "isMatch", ->
+      assert (isMatch /foo/, "foobar")
+
+    # test "match", ->
+    #   assert (isMatch /foo/, "foobar")[0] = "foo"
+    #
+    test "replace", ->
+      assert (replace /bar/, "baz", "foobar") == "foobaz"
+
+]

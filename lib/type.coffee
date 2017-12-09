@@ -1,4 +1,5 @@
-{curry}  = require "fairmont-core"
+import {curry} from "fairmont-core"
+import {Method} from "fairmont-multimethods"
 
 prototype = (value) -> if value? then Object.getPrototypeOf value
 
@@ -49,14 +50,31 @@ isGeneratorFunction = isType GeneratorFunction
 
 isPromise = isType Promise
 
+isAsyncFunction = isType (-> await null).constructor
+
 instanceOf = curry (t, x) -> x instanceof t
 
 Type =
   create: (type) -> Object.create type?.prototype
   define: (parent = Object) -> prototype: Type.create parent
 
-module.exports = {prototype, isPrototype, isTransitivePrototype,
+size = length = Method.create default: (x) ->
+  throw new TypeError "size: not valid for type #{x.constructor}"
+
+hasLength = (x) -> x.length?
+hasByteLength = (x) -> x.byteLength?
+hasSize = (x) -> x.size?
+
+Method.define size, hasByteLength, (x) -> x.byteLength
+Method.define size, isObject, (x) -> (keys x).length
+Method.define size, hasSize, (x) -> x.size
+Method.define size, hasLength, (x) -> x.length
+
+isEmpty = (x) -> (size x) == 0
+
+export {prototype, isPrototype, isTransitivePrototype,
   isType, isKind, Type, instanceOf,
   isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
   isString, isBuffer, isFunction, isObject, isArray, isDefined, isUndefined
-  isRegExp, isDate, isGeneratorFunction, isPromise}
+  isRegExp, isDate, isGeneratorFunction, isPromise, isAsyncFunction,
+  size, length, isEmpty}

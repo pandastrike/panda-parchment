@@ -1,8 +1,7 @@
-{curry, flip, compose, partial, _, identity,
-  unary, binary, ternary} = require "fairmont-core"
+import {curry, flip, compose, partial, _, identity,
+  unary, binary, ternary} from "fairmont-core"
 
-{detach} = require "./object"
-{deepEqual} = require "./util"
+import {detach} from "./object"
 
 nth = curry (i, ax) -> ax[i - 1]
 first  = nth 1
@@ -33,9 +32,7 @@ findLastIndexOf = curry (a, ax) -> if (i = ax.lastIndexOf a) != -1 then i
 some = curry binary detach Array::some
 
 # Array mutators
-push = curry (ax, a...) ->
-  ax.push a...
-  ax
+push = curry (ax, a...) -> ax.push a...; ax
 pop = detach Array::pop
 shift = detach Array::shift
 unshift = detach Array::unshift
@@ -67,7 +64,6 @@ fill = curry (ax, a) -> ax.fill a
 # Set operations...
 
 # TODO: some of these could be implemented in terms of producers
-# TODO: update for Set type in ES6
 uniqueBy = curry (f, ax) ->
   bx = []
   for a in ax
@@ -75,7 +71,7 @@ uniqueBy = curry (f, ax) ->
     (bx.push b) unless b in bx
   bx
 
-unique = uniq = uniqueBy identity
+unique = uniq = (ax) -> Array.from new Set ax
 
 dupes = ([a, ax...]) ->
   if empty ax
@@ -101,13 +97,13 @@ difference = curry (ax, bx) ->
 complement = curry (ax, bx) -> ax.filter (c) -> !(c in bx)
 
 # https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-# https://github.com/pandastrike/fairmont-helpers/pull/15/commits/e0f4e1483fe925975dac2b73c20f61996e4425ee
+# 
 shuffle = (ax) ->
   bx = cat ax
   i = bx.length
   unless i <= 1
     while --i > 0
-      # the distinguishing characteristic of fisher-yates is that the random 
+      # the distinguishing characteristic of fisher-yates is that the random
       # value generated is bounded by the iterator index (Math.random() * i)
       # instead of the size of the array (Math.random() * bx.length)
       j = Math.floor Math.random() * (i + 1)
@@ -123,8 +119,7 @@ pluck = (ax) -> ax[(round random() * (ax.length - 1))]
 
 pair = curry (a, b) -> [a, b]
 
-module.exports = {
-  first, second, third, fourth, fifth, nth, last, rest,
+export {first, second, third, fourth, fifth, nth, last, rest,
   empty, includes, findIndexOf, findLastIndexOf,
   uniqueBy, unique, uniq, dupes,
   union, intersection, difference, complement,

@@ -1,112 +1,96 @@
-assert = require "assert"
-Amen = require "amen"
-sinon = require "sinon"
+import assert from "assert"
+import {test, print} from "amen"
 
-Amen.describe "Array functions", (context) ->
+import {first, second, third, fourth, fifth, nth, last, rest,
+  empty, includes, findIndexOf, findLastIndexOf, uniqueBy, unique, uniq, dupes,
+  union, intersection, difference, complement, push, pop, shift, unshift,
+  enqueue, dequeue, splice, insert, remove, cat, slice, join, fill,
+  shuffle, range, pluck, pair} from "../lib/array"
 
-  {
-    first, second, third, fourth, fifth, nth, last, rest,
-    empty, includes, findIndexOf, findLastIndexOf,
-    uniqueBy, unique, uniq, dupes,
-    union, intersection, difference, complement,
-    push, pop, shift, unshift, enqueue, dequeue,
-    splice, insert, remove, cat,
-    slice, join, fill,
-    shuffle, range, pluck, pair} = require "../src/array"
+import sinon from "sinon"
 
-  # array-only version of empty, length
-  # TODO: import from ... ?
-  length = (ax) -> ax.length
-  empty = (ax) -> (length ax) == 0
+do ->
 
-  ax = [1..5]
+  print await test "array helperrs", [
 
-  context.test "first", -> assert (first ax) == 1
-  context.test "second", -> assert (second ax) == 2
-  context.test "third", -> assert (third ax) == 3
-  context.test "fourth", -> assert (fourth ax) == 4
-  context.test "fifth", -> assert (fifth ax) == 5
-  context.test "nth", -> assert (nth 3, ax) == 3
-  context.test "last", -> assert (last ax) == 5
-  context.test "rest", -> assert (first rest ax) == 2
-  context.test "includes", ->
-    assert (includes 3, ax) && !(includes 6, ax)
+    test "first", -> assert (first [1..5]) == 1
+    test "second", -> assert (second [1..5]) == 2
+    test "third", -> assert (third [1..5]) == 3
+    test "fourth", -> assert (fourth [1..5]) == 4
+    test "fifth", -> assert (fifth [1..5]) == 5
+    test "nth", -> assert (nth 3, [1..5]) == 3
+    test "last", -> assert (last [1..5]) == 5
+    test "rest", -> assert (first rest [1..5]) == 2
+    test "includes", -> assert (includes 3, [1..5]) && !(includes 6, [1..5])
+    test "findIndexOf"
+    test "findLastIndexOf"
+    test "push/enqueue", -> assert.deepEqual (push [1..4], 5), [1..5]
+    test "pop/dequeue", -> assert (pop [1..5]) == 5
+    test "shift"
+    test "unshift"
+    test "splice"
+    test "cat", -> assert.deepEqual (cat [1..5], [6..10]), [1..10]
 
-  context.test "push"
+    test "slice", ->
+      assert.deepEqual (slice  1,  2, [1..5]), [2]
+      assert.deepEqual (slice  2,  5, [1..5]), [3,4,5]
+      assert.deepEqual (slice  1, -2, [1..5]), [2,3]
+      assert.deepEqual (slice -3, -1, [1..5]), [3,4]
+      assert.deepEqual (slice -3, -1, "0123456789"), "78"
 
-  context.test "pop"
+    test "splice"
 
-  context.test "cat", ->
-    assert.deepEqual (cat [1..5], [6..10]), [1..10]
+    test "uniqueBy", ->
+      mod3 = (x) -> x % 3
+      assert.deepEqual (uniqueBy mod3, [1..5]), [1,2,0]
 
-  context.test "slice", ->
-    assert.deepEqual (slice  1,  2, ax), [2]
-    assert.deepEqual (slice  2,  5, ax), [3,4,5]
-    assert.deepEqual (slice  1, -2, ax), [2,3]
-    assert.deepEqual (slice -3, -1, ax), [3,4]
-    assert.deepEqual (slice -3, -1, "0123456789"), "78"
+    test "unique", ->
+      assert.deepEqual (unique [[1..4]..., [4..1]...]), [1..4]
 
-  context.test "uniqueBy", ->
-    mod3 = (x) -> x % 3
-    assert.deepEqual (uniqueBy mod3, ax), [1,2,0]
+    test "dupes", ->
+      assert.deepEqual (dupes [[1..3]..., [2..1]...]), [1,2]
 
-  context.test "unique", ->
-    assert.deepEqual (unique [1, 2, 1, 2]), [1,2]
+    test "union", ->
+      assert.deepEqual (union [1..6], [4..10]), [1..10]
 
-  context.test "dupes", ->
-    assert.deepEqual (dupes [1,2,1,3,2]), [1,2]
+    test "intersection", ->
+      assert.deepEqual (intersection [1..6], [4..10]), [4..6]
 
-  context.test "union", ->
-    bx = [3..6]
-    rx = union ax, bx
-    assert (empty (dupes rx))
-    assert (length (unique rx)) == (length rx)
+    test "difference", ->
+      assert.deepEqual (difference [1..9], [2..10]), [1,10]
 
-  context.test "intersection", ->
-    assert (empty (intersection [1, 2], [3, 4]))
-    assert (empty (intersection [1, 1], [2, 2]))
-    assert (empty (intersection [], [1, 2, 3]))
-    assert (empty (intersection [1, 2, 3], []))
-    assert (empty (intersection [1, 2], [2, 3], [3, 4]))
-    assert (first intersection [1, 2], [2, 3]) == 2
-    assert (first intersection [1, 2], [2, 3], [3, 2]) == 2
+    test "complement", ->
+      assert.deepEqual (complement [1..5], [3..6]), [1,2]
 
-  context.test "difference", ->
-    bx = [3..6]
-    assert.deepEqual (difference ax, bx), [1,2,6]
+    test "insert", ->
+      assert.deepEqual (insert [4,2,1], 3, 1), [4,3,2,1]
+      assert.deepEqual (insert [1,2,4], 3, -1), [1..4]
+      assert.deepEqual (insert [2..4], 1, 0), [1..4]
 
-  context.test "complement", ->
-    bx = [3..6]
-    assert.deepEqual (complement ax, bx), [1,2]
+    test "remove", ->
+      assert.deepEqual (remove [1..5], 3), [1,2,4,5]
+      assert.deepEqual (remove [1..5], 6), [1..5]
 
-  context.test "insert", ->
-    assert.deepEqual (insert [4,2,1], 3, 1), [4,3,2,1]
-    assert.deepEqual (insert [1,2,4], 3, -1), [1..4]
-    assert.deepEqual (insert [2..4], 1, 0), [1..4]
+    test "shuffle", ->
+      # use a sinon sandbox b/c we're mocking globals
+      sinon.test ->
+        # stubbing Math.random() allows us to determine the algorithm used
+        # by expecting a specific result
+        sinon.stub(Math, "random").returns 0.8
+        # "Given Math.random() always returns 0.8..."
+        # * if the biased j = (i * array.size) algorithm is used,
+        #   the expected result is: [ 9, 1, 2, 3, 4, 5, 6, 7, 10, 8 ]
+        # * if the fisher-yates algorithm used, the expected result is:
+        fisher_yates = [ 1, 2, 3, 4, 10, 5, 6, 7, 8, 9 ]
+        assert.deepEqual (shuffle [1..10]), fisher_yates
 
-  context.test "remove", ->
-    bx = [1..5]
-    assert.deepEqual (remove bx, 3), [1,2,4,5]
-    assert.deepEqual (remove bx, 1), [2,4,5]
-    assert.deepEqual (remove bx, 5), [2,4]
-    assert.deepEqual (remove bx, 3), [2,4]
+    test "range", ->
+      assert.deepEqual (range 1, 5), [1..5]
+      assert.deepEqual (range 5, 1), [5..1]
 
-  context.test "shuffle", ->
-    # use a sinon sandbox b/c we're mocking globals
-    sinon.test ->
-      # stubbing Math.random() allows us to determine the algorithm used
-      # by expecting a specific result
-      sinon.stub(Math, "random").returns 0.8
-      # "Given Math.random() always returns 0.8..."
-      # * if the biased j = (i * array.size) algorithm is used,
-      #   the expected result is: [ 9, 1, 2, 3, 4, 5, 6, 7, 10, 8 ]
-      # * if the fisher-yates algorithm used, the expected result is:
-      fisher_yates = [ 1, 2, 3, 4, 10, 5, 6, 7, 8, 9 ]
-      assert.deepEqual (shuffle [1..10]), fisher_yates
+    test "join"
+    test "fill"
+    test "pluck"
+    test "pair"
 
-  context.test "range", ->
-    assert.deepEqual (range 1, 5), [1, 2, 3, 4, 5]
-    assert.deepEqual (range 5, 1), [5, 4, 3, 2, 1]
-
-  context.test "join"
-  context.test "fill"
+  ]
