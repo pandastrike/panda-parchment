@@ -29,7 +29,7 @@ exports.isType = isType = (0, _fairmontCore.curry)(function (type, value) {
 
 exports.isTransitivePrototype = isTransitivePrototype = (0, _fairmontCore.curry)(function (p, value) {
   var q;
-  return p != null && (p === (q = prototype(value)) || q && isTransitivePrototype(p, q));
+  return p != null && (p === (q = prototype(value)) || q != null && isTransitivePrototype(p, q));
 });
 
 exports.isKind = isKind = (0, _fairmontCore.curry)(function (type, value) {
