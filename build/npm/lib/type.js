@@ -98,12 +98,12 @@ exports.instanceOf = instanceOf = (0, _fairmontCore.curry)(function (t, x) {
 
 exports.Type = Type = {
   create: function (type) {
-    return Object.create(type != null ? type.prototype : void 0);
+    if (type != null) {
+      return new type();
+    }
   },
   define: function (parent = Object) {
-    return {
-      prototype: Type.create(parent)
-    };
+    return class extends parent {};
   }
 };
 

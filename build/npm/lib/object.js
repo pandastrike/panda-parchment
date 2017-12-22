@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fromJSON = exports.toJSON = exports.query = exports.omit = exports.pick = exports.pairs = exports.values = exports.keys = exports.has = exports.detach = exports.bind = exports.property = exports.properties = exports.equal = exports.clone = exports.merge = exports.extend = exports.include = undefined;
+exports.fromJSON = exports.toJSON = exports.equal = exports.clone = exports.merge = exports.extend = exports.include = exports.assign = exports.query = exports.omit = exports.pick = exports.pairs = exports.values = exports.keys = exports.has = exports.methods = exports.properties = exports.detach = exports.bind = exports.property = undefined;
 
 var _fairmontCore = require("fairmont-core");
 
@@ -11,7 +11,7 @@ var _fairmontMultimethods = require("fairmont-multimethods");
 
 var _type = require("./type");
 
-var bind, cat, clone, detach, equal, extend, fromJSON, has, include, keys, merge, omit, pairs, pick, properties, property, query, toJSON, unique, values;
+var assign, bind, cat, clone, detach, equal, extend, fromJSON, has, include, keys, merge, methods, omit, pairs, pick, properties, property, query, toJSON, unique, values;
 
 exports.property = property = (0, _fairmontCore.curry)(function (key, object) {
   return object[key];
@@ -27,23 +27,33 @@ exports.detach = detach = function (f) {
   });
 };
 
-exports.properties = properties = function () {
-  var defaults;
-  defaults = {
-    enumerable: true,
-    configurable: true
-  };
-  return function (object, properties) {
-    var key, results, value;
-    results = [];
-    for (key in properties) {
-      value = properties[key];
-      include(value, defaults);
-      results.push(Object.defineProperty(object, key, value));
+exports.properties = properties = function (target, descriptions) {
+  var description, name, results;
+  results = [];
+  for (name in descriptions) {
+    description = descriptions[name];
+    if (description.enumerable == null) {
+      description.enumerable = true;
     }
-    return results;
-  };
-}();
+    if (description.configurable == null) {
+      description.configurable = true;
+    }
+    results.push(Object.defineProperty(target, name, description));
+  }
+  return results;
+};
+
+exports.methods = methods = function (target, definitions) {
+  var f, name, results;
+  results = [];
+  for (name in definitions) {
+    f = definitions[name];
+    results.push(Object.defineProperty(target, name, {
+      value: f
+    }));
+  }
+  return results;
+};
 
 exports.has = has = (0, _fairmontCore.curry)(function (p, x) {
   return x[p] != null;
@@ -87,8 +97,23 @@ exports.omit = omit = (0, _fairmontCore.curry)(function (f, x) {
   return pick((0, _fairmontCore.negate)(f), x);
 });
 
-exports.include = include = exports.extend = extend = function (object, ...mixins) {
-  return Object.assign(object, ...mixins);
+exports.query = query = (0, _fairmontCore.curry)(function (example, target) {
+  var k, v;
+  if ((0, _type.isObject)(example) && (0, _type.isObject)(target)) {
+    for (k in example) {
+      v = example[k];
+      if (!query(v, target[k])) {
+        return false;
+      }
+    }
+    return true;
+  } else {
+    return equal(example, target);
+  }
+});
+
+exports.include = include = exports.extend = extend = exports.assign = assign = function (target, ...sources) {
+  return Object.assign(target, ...sources);
 };
 
 exports.merge = merge = function (...objects) {
@@ -166,21 +191,6 @@ _fairmontMultimethods.Method.define(equal, _type.isArray, _type.isArray, functio
   }();
 });
 
-exports.query = query = (0, _fairmontCore.curry)(function (example, target) {
-  var k, v;
-  if ((0, _type.isObject)(example) && (0, _type.isObject)(target)) {
-    for (k in example) {
-      v = example[k];
-      if (!query(v, target[k])) {
-        return false;
-      }
-    }
-    return true;
-  } else {
-    return equal(example, target);
-  }
-});
-
 exports.toJSON = toJSON = function (x, pretty = false) {
   if (pretty) {
     return JSON.stringify(x, null, 2);
@@ -191,15 +201,11 @@ exports.toJSON = toJSON = function (x, pretty = false) {
 
 exports.fromJSON = fromJSON = JSON.parse;
 
-exports.include = include;
-exports.extend = extend;
-exports.merge = merge;
-exports.clone = clone;
-exports.equal = equal;
-exports.properties = properties;
 exports.property = property;
 exports.bind = bind;
 exports.detach = detach;
+exports.properties = properties;
+exports.methods = methods;
 exports.has = has;
 exports.keys = keys;
 exports.values = values;
@@ -207,5 +213,11 @@ exports.pairs = pairs;
 exports.pick = pick;
 exports.omit = omit;
 exports.query = query;
+exports.assign = assign;
+exports.include = include;
+exports.extend = extend;
+exports.merge = merge;
+exports.clone = clone;
+exports.equal = equal;
 exports.toJSON = toJSON;
 exports.fromJSON = fromJSON;

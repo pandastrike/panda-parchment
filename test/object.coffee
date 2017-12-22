@@ -1,9 +1,12 @@
 import assert from "assert"
 import {test, print} from "amen"
 
-import {include, extend, merge, clone, equal,
-  properties, property, bind, detach,
-  has, keys, values, pairs, pick, omit, query,
+import {property, bind, detach,
+  properties, methods,
+  has, keys, values, pairs,
+  pick, omit, query,
+  assign, include, extend, merge,
+  clone, equal,
   toJSON, fromJSON} from "../lib/object"
 
 import {isDefined} from "../lib/type"
@@ -63,6 +66,10 @@ do ->
       assert a._x == 1
       a._x = 2
       assert a.x == 2
+
+    test "methods", ->
+      methods (a = {}), x: (-> true), y: (-> false)
+      assert a.x() && !a.y()
 
     test "has", ->
       assert (has "x", x: 1)

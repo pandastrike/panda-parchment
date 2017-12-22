@@ -55,8 +55,8 @@ isAsyncFunction = isType (-> await null).constructor
 instanceOf = curry (t, x) -> x instanceof t
 
 Type =
-  create: (type) -> Object.create type?.prototype
-  define: (parent = Object) -> prototype: Type.create parent
+  create: (type) -> if type? then new type
+  define: (parent = Object) -> class extends parent
 
 size = length = Method.create default: (x) ->
   throw new TypeError "size: not valid for type #{x.constructor}"

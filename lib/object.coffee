@@ -8,12 +8,15 @@ bind = curry (f, x) -> f.bind x
 
 detach = (f) -> curry (x, args...) -> f.apply x, args
 
-properties = do ->
-  defaults = enumerable: true, configurable: true
-  (object, properties) ->
-    for key, value of properties
-      include value, defaults
-      Object.defineProperty object, key, value
+properties = (target, descriptions) ->
+  for name, description of descriptions
+    description.enumerable ?= true
+    description.configurable ?= true
+    Object.defineProperty target, name, description
+
+methods = (target, definitions) ->
+  for name, f of definitions
+    Object.defineProperty target, name, value: f
 
 has = curry (p, x) -> x[p]?
 
@@ -30,7 +33,17 @@ pick = curry (f, x) ->
 
 omit = curry (f, x) -> pick (negate f), x
 
-include = extend = (object, mixins...) -> Object.assign object, mixins...
+query = curry (example, target) ->
+  if (isObject example) && (isObject target)
+    for k, v of example
+      return false unless query v, target[k]
+    return true
+  else
+    equal example, target
+
+include = extend = assign = (target, sources...) ->
+  Object.assign target, sources...
+
 merge = (objects...) -> Object.assign {}, objects...
 
 # Trivial case: return the same value
@@ -75,14 +88,6 @@ Method.define equal, isArray, isArray, (ax, bx) ->
         return false
     true
 
-query = curry (example, target) ->
-  if (isObject example) && (isObject target)
-    for k, v of example
-      return false unless query v, target[k]
-    return true
-  else
-    equal example, target
-
 toJSON = (x, pretty = false) ->
   if pretty
     JSON.stringify x, null, 2
@@ -91,7 +96,10 @@ toJSON = (x, pretty = false) ->
 
 fromJSON = JSON.parse
 
-export {include, extend, merge, clone,
-  equal, properties, property, bind, detach,
-  has, keys, values, pairs, pick, omit, query,
-  toJSON, fromJSON}
+export {property, bind, detach,
+properties, methods,
+has, keys, values, pairs,
+pick, omit, query,
+assign, include, extend, merge,
+clone, equal,
+toJSON, fromJSON}
