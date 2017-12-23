@@ -16,7 +16,9 @@ properties = (target, descriptions) ->
 
 methods = (target, definitions) ->
   for name, f of definitions
-    Object.defineProperty target, name, value: f
+    Object.defineProperty target, name,
+      value: f
+      configurable: true
 
 has = curry (p, x) -> x[p]?
 
