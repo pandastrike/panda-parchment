@@ -1,6 +1,6 @@
 {
   "name": "fairmont-helpers",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Functional helpers for arrays, objects, strings, and types",
   "files": [
     "build/npm"
@@ -26,8 +26,8 @@
     "sinon": "^1.17.4"
   },
   "dependencies": {
-    "fairmont-core": "1.0.x",
-    "fairmont-multimethods": "1.0.x"
+    "fairmont-core": "^2.1.2",
+    "fairmont-multimethods": "^2.0.2"
   },
   "engine": "node >= 6.10"
 }
