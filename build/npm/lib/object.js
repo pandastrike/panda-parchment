@@ -50,7 +50,8 @@ exports.methods = methods = function (target, definitions) {
     f = definitions[name];
     results.push(Object.defineProperty(target, name, {
       value: f,
-      configurable: true
+      configurable: true,
+      writeable: true
     }));
   }
   return results;
