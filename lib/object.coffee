@@ -19,7 +19,7 @@ methods = (target, definitions) ->
     Object.defineProperty target, name,
       value: f
       configurable: true
-      writeable: true
+      writable: true
 
 has = curry (p, x) -> x[p]?
 
