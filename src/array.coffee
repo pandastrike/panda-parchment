@@ -1,5 +1,5 @@
 import {curry, flip, compose, partial, _, identity,
-  unary, binary, ternary} from "fairmont-core"
+  unary, binary, ternary} from "panda-garden"
 
 import {detach} from "./object"
 

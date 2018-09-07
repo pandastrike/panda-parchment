@@ -5,7 +5,7 @@ import {prototype, isType, isKind,
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
     isString, isBuffer, isFunction, isObject, isArray,
     isRegExp, isDate, isDefined, isGeneratorFunction, isPromise,
-    isAsyncFunction, Type, instanceOf, isEmpty} from "../lib/type"
+    isAsyncFunction, Type, instanceOf, isEmpty} from "../src/type"
 
 do ->
 
@@ -50,7 +50,7 @@ do ->
           assert !isString 7
 
         test "isBuffer", ->
-          assert isBuffer (new Buffer "hello")
+          assert isBuffer (Buffer.from "hello")
 
         test "isFunction", ->
           assert isFunction ->

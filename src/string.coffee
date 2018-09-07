@@ -1,4 +1,4 @@
-import {curry, compose} from "fairmont-core"
+import {curry, compose} from "panda-garden"
 
 toString = (x) -> x.toString()
 

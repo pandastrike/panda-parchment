@@ -1,4 +1,4 @@
-import {curry, partial, negate} from "fairmont-core"
+import {curry, partial, negate} from "panda-garden"
 
 eq = curry (x, y) -> x == y
 neq = curry (x, y) -> x != y

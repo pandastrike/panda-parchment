@@ -1,26 +1,19 @@
 "use strict";
 
-var _powerAssertRecorder = function () { function PowerAssertRecorder() { this.captured = []; } PowerAssertRecorder.prototype._capt = function _capt(value, espath) { this.captured.push({ value: value, espath: espath }); return value; }; PowerAssertRecorder.prototype._expr = function _expr(value, source) { var capturedValues = this.captured; this.captured = []; return { powerAssertContext: { value: value, events: capturedValues }, source: source }; }; return PowerAssertRecorder; }();
+var _assert = require("assert");
 
-var _powerAssert = require("power-assert");
-
-var _powerAssert2 = _interopRequireDefault(_powerAssert);
+var _assert2 = _interopRequireDefault(_assert);
 
 var _amen = require("amen");
 
-var _object = require("../lib/object");
+var _object = require("../src/object");
 
-var _type = require("../lib/type");
+var _type = require("../src/type");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-_asyncToGenerator(function* () {
-  return (0, _amen.print)((yield (0, _amen.test)("object helpers", [(0, _amen.test)("include/extend", function () {
-    var _rec = new _powerAssertRecorder(),
-        _rec2 = new _powerAssertRecorder();
-
+(async function () {
+  return (0, _amen.print)((await (0, _amen.test)("object helpers", [(0, _amen.test)("include/extend", function () {
     var a, b;
     a = {
       x: 1,
@@ -30,25 +23,12 @@ _asyncToGenerator(function* () {
       z: 3
     };
     (0, _object.include)(a, b);
-    return _powerAssert2.default.deepEqual(_rec._expr(_rec._capt(a, "arguments/0"), {
-      content: "assert.deepEqual(a, { x: 1, y: 2, z: 3 })",
-      filepath: "object.coffee",
-      line: 22
-    }), _rec2._expr(_rec2._capt({
+    return _assert2.default.deepEqual(a, {
       x: 1,
       y: 2,
       z: 3
-    }, "arguments/1"), {
-      content: "assert.deepEqual(a, { x: 1, y: 2, z: 3 })",
-      filepath: "object.coffee",
-      line: 22
-    }));
+    });
   }), (0, _amen.test)("merge", function () {
-    var _rec3 = new _powerAssertRecorder(),
-        _rec4 = new _powerAssertRecorder(),
-        _rec5 = new _powerAssertRecorder(),
-        _rec6 = new _powerAssertRecorder();
-
     var a, b, c;
     a = {
       x: 1,
@@ -58,54 +38,22 @@ _asyncToGenerator(function* () {
       z: 3
     };
     c = (0, _object.merge)(a, b);
-    _powerAssert2.default.deepEqual(_rec3._expr(_rec3._capt(a, "arguments/0"), {
-      content: "assert.deepEqual(a, { x: 1, y: 2 })",
-      filepath: "object.coffee",
-      line: 28
-    }), _rec4._expr(_rec4._capt({
+    _assert2.default.deepEqual(a, {
       x: 1,
       y: 2
-    }, "arguments/1"), {
-      content: "assert.deepEqual(a, { x: 1, y: 2 })",
-      filepath: "object.coffee",
-      line: 28
-    }));
-    return _powerAssert2.default.deepEqual(_rec5._expr(_rec5._capt(c, "arguments/0"), {
-      content: "assert.deepEqual(c, { x: 1, y: 2, z: 3 })",
-      filepath: "object.coffee",
-      line: 29
-    }), _rec6._expr(_rec6._capt({
+    });
+    return _assert2.default.deepEqual(c, {
       x: 1,
       y: 2,
       z: 3
-    }, "arguments/1"), {
-      content: "assert.deepEqual(c, { x: 1, y: 2, z: 3 })",
-      filepath: "object.coffee",
-      line: 29
-    }));
+    });
   }), (0, _amen.test)("clone", function (scenario) {
     scenario = function (original) {
       return function () {
-        var _rec7 = new _powerAssertRecorder(),
-            _rec8 = new _powerAssertRecorder(),
-            _rec9 = new _powerAssertRecorder();
-
         var copy;
         copy = (0, _object.clone)(original);
-        (0, _powerAssert2.default)(_rec7._expr(_rec7._capt(_rec7._capt(original, "arguments/0/left") !== _rec7._capt(copy, "arguments/0/right"), "arguments/0"), {
-          content: "assert(original !== copy)",
-          filepath: "object.coffee",
-          line: 36
-        }));
-        return _powerAssert2.default.deepEqual(_rec8._expr(_rec8._capt(original, "arguments/0"), {
-          content: "assert.deepEqual(original, copy)",
-          filepath: "object.coffee",
-          line: 37
-        }), _rec9._expr(_rec9._capt(copy, "arguments/1"), {
-          content: "assert.deepEqual(original, copy)",
-          filepath: "object.coffee",
-          line: 37
-        }));
+        (0, _assert2.default)(original !== copy);
+        return _assert2.default.deepEqual(original, copy);
       };
     };
     return [(0, _amen.test)("shallow", scenario({
@@ -123,102 +71,35 @@ _asyncToGenerator(function* () {
       }
     }))])];
   }(null)), (0, _amen.test)("equal", function () {
-    var _rec10 = new _powerAssertRecorder(),
-        _rec11 = new _powerAssertRecorder(),
-        _rec12 = new _powerAssertRecorder(),
-        _rec13 = new _powerAssertRecorder(),
-        _rec14 = new _powerAssertRecorder(),
-        _rec15 = new _powerAssertRecorder(),
-        _rec16 = new _powerAssertRecorder(),
-        _rec17 = new _powerAssertRecorder();
-
-    (0, _powerAssert2.default)(_rec10._expr(_rec10._capt((0, _object.equal)(1, 1), "arguments/0"), {
-      content: "assert(equal(1, 1))",
-      filepath: "object.coffee",
-      line: 47
-    }));
-    (0, _powerAssert2.default)(_rec11._expr(_rec11._capt(!_rec11._capt((0, _object.equal)(1, 2), "arguments/0/argument"), "arguments/0"), {
-      content: "assert(!equal(1, 2))",
-      filepath: "object.coffee",
-      line: 48
-    }));
-    (0, _powerAssert2.default)(_rec12._expr(_rec12._capt((0, _object.equal)(" ", " "), "arguments/0"), {
-      content: "assert(equal(\" \", \" \"))",
-      filepath: "object.coffee",
-      line: 49
-    }));
-    (0, _powerAssert2.default)(_rec13._expr(_rec13._capt(!_rec13._capt((0, _object.equal)("", " "), "arguments/0/argument"), "arguments/0"), {
-      content: "assert(!equal(\"\", \" \"))",
-      filepath: "object.coffee",
-      line: 50
-    }));
-    (0, _powerAssert2.default)(_rec14._expr(_rec14._capt((0, _object.equal)(_rec14._capt({
+    (0, _assert2.default)((0, _object.equal)(1, 1));
+    (0, _assert2.default)(!(0, _object.equal)(1, 2));
+    (0, _assert2.default)((0, _object.equal)(" ", " "));
+    (0, _assert2.default)(!(0, _object.equal)("", " "));
+    (0, _assert2.default)((0, _object.equal)({
       x: 1
-    }, "arguments/0/arguments/0"), _rec14._capt({
+    }, {
       x: 1
-    }, "arguments/0/arguments/1")), "arguments/0"), {
-      content: "assert(equal({ x: 1 }, { x: 1 }))",
-      filepath: "object.coffee",
-      line: 51
     }));
-    (0, _powerAssert2.default)(_rec15._expr(_rec15._capt(!_rec15._capt((0, _object.equal)(_rec15._capt({
+    (0, _assert2.default)(!(0, _object.equal)({
       x: 1
-    }, "arguments/0/argument/arguments/0"), _rec15._capt({
+    }, {
       x: 2
-    }, "arguments/0/argument/arguments/1")), "arguments/0/argument"), "arguments/0"), {
-      content: "assert(!equal({ x: 1 }, { x: 2 }))",
-      filepath: "object.coffee",
-      line: 52
     }));
-    (0, _powerAssert2.default)(_rec16._expr(_rec16._capt((0, _object.equal)(_rec16._capt([1, 2, 3], "arguments/0/arguments/0"), _rec16._capt([1, 2, 3], "arguments/0/arguments/1")), "arguments/0"), {
-      content: "assert(equal([1, 2, 3], [1, 2, 3]))",
-      filepath: "object.coffee",
-      line: 53
-    }));
-    return (0, _powerAssert2.default)(_rec17._expr(_rec17._capt(!_rec17._capt((0, _object.equal)(_rec17._capt([1, 2, 3], "arguments/0/argument/arguments/0"), _rec17._capt([1, 2, 3, 4], "arguments/0/argument/arguments/1")), "arguments/0/argument"), "arguments/0"), {
-      content: "assert(!equal([1, 2, 3], [1, 2, 3, 4]))",
-      filepath: "object.coffee",
-      line: 54
-    }));
+    (0, _assert2.default)((0, _object.equal)([1, 2, 3], [1, 2, 3]));
+    return (0, _assert2.default)(!(0, _object.equal)([1, 2, 3], [1, 2, 3, 4]));
   }), (0, _amen.test)("property", function () {
-    var _rec18 = new _powerAssertRecorder();
-
-    return (0, _powerAssert2.default)(_rec18._expr(_rec18._capt(_rec18._capt((0, _object.property)("x", _rec18._capt({
+    return (0, _assert2.default)((0, _object.property)("x", {
       x: 1
-    }, "arguments/0/left/arguments/1")), "arguments/0/left") === 1, "arguments/0"), {
-      content: "assert(property(\"x\", { x: 1 }) === 1)",
-      filepath: "object.coffee",
-      line: 56
-    }));
+    }) === 1);
   }), (0, _amen.test)("bind", function () {
-    var _rec19 = new _powerAssertRecorder();
-
-    return (0, _powerAssert2.default)(_rec19._expr(_rec19._capt(_rec19._capt((0, _object.bind)(function () {
+    return (0, _assert2.default)((0, _object.bind)(function () {
       return this.x;
-    }, _rec19._capt({
+    }, {
       x: 1
-    }, "arguments/0/left/callee/arguments/1"))(), "arguments/0/left") === 1, "arguments/0"), {
-      content: "assert(bind(function () { return this.x; }, { x: 1 })() === 1)",
-      filepath: "object.coffee",
-      line: 58
-    }));
+    })() === 1);
   }), (0, _amen.test)("detach", function () {
-    var _rec20 = new _powerAssertRecorder(),
-        _rec21 = new _powerAssertRecorder();
-
-    return _powerAssert2.default.deepEqual(_rec20._expr(_rec20._capt((0, _object.detach)(_rec20._capt(_rec20._capt(_rec20._capt(Array, "arguments/0/callee/arguments/0/object/object").prototype, "arguments/0/callee/arguments/0/object").sort, "arguments/0/callee/arguments/0"))(_rec20._capt([5, 4, 3, 2, 1], "arguments/0/arguments/0")), "arguments/0"), {
-      content: "assert.deepEqual(detach(Array.prototype.sort)([5, 4, 3, 2, 1]), [1, 2, 3, 4, 5])",
-      filepath: "object.coffee",
-      line: 61
-    }), _rec21._expr(_rec21._capt([1, 2, 3, 4, 5], "arguments/1"), {
-      content: "assert.deepEqual(detach(Array.prototype.sort)([5, 4, 3, 2, 1]), [1, 2, 3, 4, 5])",
-      filepath: "object.coffee",
-      line: 61
-    }));
+    return _assert2.default.deepEqual((0, _object.detach)(Array.prototype.sort)([5, 4, 3, 2, 1]), [1, 2, 3, 4, 5]);
   }), (0, _amen.test)("properties", function () {
-    var _rec22 = new _powerAssertRecorder(),
-        _rec23 = new _powerAssertRecorder();
-
     var a;
     (0, _object.properties)(a = {}, {
       x: {
@@ -231,20 +112,10 @@ _asyncToGenerator(function* () {
       }
     });
     a.x = 1;
-    (0, _powerAssert2.default)(_rec22._expr(_rec22._capt(_rec22._capt(_rec22._capt(a, "arguments/0/left/object")._x, "arguments/0/left") === 1, "arguments/0"), {
-      content: "assert(a._x === 1)",
-      filepath: "object.coffee",
-      line: 66
-    }));
+    (0, _assert2.default)(a._x === 1);
     a._x = 2;
-    return (0, _powerAssert2.default)(_rec23._expr(_rec23._capt(_rec23._capt(_rec23._capt(a, "arguments/0/left/object").x, "arguments/0/left") === 2, "arguments/0"), {
-      content: "assert(a.x === 2)",
-      filepath: "object.coffee",
-      line: 68
-    }));
+    return (0, _assert2.default)(a.x === 2);
   }), (0, _amen.test)("methods", function () {
-    var _rec24 = new _powerAssertRecorder();
-
     var a;
     (0, _object.methods)(a = {}, {
       x: function () {
@@ -254,172 +125,72 @@ _asyncToGenerator(function* () {
         return false;
       }
     });
-    return (0, _powerAssert2.default)(_rec24._expr(_rec24._capt(_rec24._capt(_rec24._capt(a, "arguments/0/left/callee/object").x(), "arguments/0/left") && _rec24._capt(!_rec24._capt(_rec24._capt(a, "arguments/0/right/argument/callee/object").y(), "arguments/0/right/argument"), "arguments/0/right"), "arguments/0"), {
-      content: "assert(a.x() && !a.y())",
-      filepath: "object.coffee",
-      line: 72
-    }));
+    return (0, _assert2.default)(a.x() && !a.y());
   }), (0, _amen.test)("has", function () {
-    var _rec25 = new _powerAssertRecorder(),
-        _rec26 = new _powerAssertRecorder();
-
-    (0, _powerAssert2.default)(_rec25._expr(_rec25._capt((0, _object.has)("x", _rec25._capt({
+    (0, _assert2.default)((0, _object.has)("x", {
       x: 1
-    }, "arguments/0/arguments/1")), "arguments/0"), {
-      content: "assert(has(\"x\", { x: 1 }))",
-      filepath: "object.coffee",
-      line: 75
     }));
-    return (0, _powerAssert2.default)(_rec26._expr(_rec26._capt(!_rec26._capt((0, _object.has)("y", _rec26._capt({
+    return (0, _assert2.default)(!(0, _object.has)("y", {
       x: 1
-    }, "arguments/0/argument/arguments/1")), "arguments/0/argument"), "arguments/0"), {
-      content: "assert(!has(\"y\", { x: 1 }))",
-      filepath: "object.coffee",
-      line: 76
     }));
   }), (0, _amen.test)("keys", function () {
-    var _rec27 = new _powerAssertRecorder(),
-        _rec28 = new _powerAssertRecorder();
-
-    return _powerAssert2.default.deepEqual(_rec27._expr(_rec27._capt((0, _object.keys)(_rec27._capt({
+    return _assert2.default.deepEqual((0, _object.keys)({
       x: 1,
       y: 2
-    }, "arguments/0/arguments/0")), "arguments/0"), {
-      content: "assert.deepEqual(keys({ x: 1, y: 2 }), [\"x\", \"y\"])",
-      filepath: "object.coffee",
-      line: 79
-    }), _rec28._expr(_rec28._capt(["x", "y"], "arguments/1"), {
-      content: "assert.deepEqual(keys({ x: 1, y: 2 }), [\"x\", \"y\"])",
-      filepath: "object.coffee",
-      line: 79
-    }));
+    }), ["x", "y"]);
   }), (0, _amen.test)("values", function () {
-    var _rec29 = new _powerAssertRecorder(),
-        _rec30 = new _powerAssertRecorder();
-
-    return _powerAssert2.default.deepEqual(_rec29._expr(_rec29._capt((0, _object.values)(_rec29._capt({
+    return _assert2.default.deepEqual((0, _object.values)({
       x: 1,
       y: 2
-    }, "arguments/0/arguments/0")), "arguments/0"), {
-      content: "assert.deepEqual(values({ x: 1, y: 2 }), [1, 2])",
-      filepath: "object.coffee",
-      line: 82
-    }), _rec30._expr(_rec30._capt([1, 2], "arguments/1"), {
-      content: "assert.deepEqual(values({ x: 1, y: 2 }), [1, 2])",
-      filepath: "object.coffee",
-      line: 82
-    }));
+    }), [1, 2]);
   }), (0, _amen.test)("pairs", function () {
-    var _rec31 = new _powerAssertRecorder(),
-        _rec32 = new _powerAssertRecorder();
-
-    return _powerAssert2.default.deepEqual(_rec31._expr(_rec31._capt((0, _object.pairs)(_rec31._capt({
+    return _assert2.default.deepEqual((0, _object.pairs)({
       a: 1,
       b: 2,
       c: 3
-    }, "arguments/0/arguments/0")), "arguments/0"), {
-      content: "assert.deepEqual(pairs({ a: 1, b: 2, c: 3 }), [[\"a\", 1], [\"b\", 2], [\"c\", 3]])",
-      filepath: "object.coffee",
-      line: 85
-    }), _rec32._expr(_rec32._capt([_rec32._capt(["a", 1], "arguments/1/elements/0"), _rec32._capt(["b", 2], "arguments/1/elements/1"), _rec32._capt(["c", 3], "arguments/1/elements/2")], "arguments/1"), {
-      content: "assert.deepEqual(pairs({ a: 1, b: 2, c: 3 }), [[\"a\", 1], [\"b\", 2], [\"c\", 3]])",
-      filepath: "object.coffee",
-      line: 85
-    }));
+    }), [["a", 1], ["b", 2], ["c", 3]]);
   }), (0, _amen.test)("pick", function () {
-    var _rec33 = new _powerAssertRecorder(),
-        _rec34 = new _powerAssertRecorder();
-
-    return _powerAssert2.default.deepEqual(_rec33._expr(_rec33._capt((0, _object.pick)(function (k, v) {
+    return _assert2.default.deepEqual((0, _object.pick)(function (k, v) {
       return v != null;
-    }, _rec33._capt({
+    }, {
       x: 1,
       y: null
-    }, "arguments/0/arguments/1")), "arguments/0"), {
-      content: "assert.deepEqual(pick(function (k, v) { return v != null; }, { x: 1, y: null }), { x: 1 })",
-      filepath: "object.coffee",
-      line: 89
-    }), _rec34._expr(_rec34._capt({
+    }), {
       x: 1
-    }, "arguments/1"), {
-      content: "assert.deepEqual(pick(function (k, v) { return v != null; }, { x: 1, y: null }), { x: 1 })",
-      filepath: "object.coffee",
-      line: 89
-    }));
+    });
   }), (0, _amen.test)("omit", function () {
-    var _rec35 = new _powerAssertRecorder(),
-        _rec36 = new _powerAssertRecorder();
-
-    return _powerAssert2.default.deepEqual(_rec35._expr(_rec35._capt((0, _object.omit)(function (k, v) {
+    return _assert2.default.deepEqual((0, _object.omit)(function (k, v) {
       return v != null;
-    }, _rec35._capt({
+    }, {
       x: 1,
       y: null
-    }, "arguments/0/arguments/1")), "arguments/0"), {
-      content: "assert.deepEqual(omit(function (k, v) { return v != null; }, { x: 1, y: null }), { y: void 0 })",
-      filepath: "object.coffee",
-      line: 92
-    }), _rec36._expr(_rec36._capt({
-      y: _rec36._capt(void 0, "arguments/1/properties/0/value")
-    }, "arguments/1"), {
-      content: "assert.deepEqual(omit(function (k, v) { return v != null; }, { x: 1, y: null }), { y: void 0 })",
-      filepath: "object.coffee",
-      line: 92
-    }));
+    }), {
+      y: void 0
+    });
   }), (0, _amen.test)("query", function () {
-    var _rec37 = new _powerAssertRecorder(),
-        _rec38 = new _powerAssertRecorder(),
-        _rec39 = new _powerAssertRecorder(),
-        _rec40 = new _powerAssertRecorder();
-
-    (0, _powerAssert2.default)(_rec37._expr(_rec37._capt((0, _object.query)(_rec37._capt({
+    (0, _assert2.default)((0, _object.query)({
       x: 1
-    }, "arguments/0/arguments/0"), _rec37._capt({
+    }, {
       x: 1,
       y: 2
-    }, "arguments/0/arguments/1")), "arguments/0"), {
-      content: "assert(query({ x: 1 }, { x: 1, y: 2 }))",
-      filepath: "object.coffee",
-      line: 95
     }));
-    (0, _powerAssert2.default)(_rec38._expr(_rec38._capt(!_rec38._capt((0, _object.query)(_rec38._capt({
+    (0, _assert2.default)(!(0, _object.query)({
       x: 2
-    }, "arguments/0/argument/arguments/0"), _rec38._capt({
+    }, {
       x: 1,
       y: 2
-    }, "arguments/0/argument/arguments/1")), "arguments/0/argument"), "arguments/0"), {
-      content: "assert(!query({ x: 2 }, { x: 1, y: 2 }))",
-      filepath: "object.coffee",
-      line: 96
     }));
-    (0, _powerAssert2.default)(_rec39._expr(_rec39._capt((0, _object.query)(1, 1), "arguments/0"), {
-      content: "assert(query(1, 1))",
-      filepath: "object.coffee",
-      line: 97
-    }));
-    return (0, _powerAssert2.default)(_rec40._expr(_rec40._capt(!_rec40._capt((0, _object.query)(1, 2), "arguments/0/argument"), "arguments/0"), {
-      content: "assert(!query(1, 2))",
-      filepath: "object.coffee",
-      line: 98
-    }));
+    (0, _assert2.default)((0, _object.query)(1, 1));
+    return (0, _assert2.default)(!(0, _object.query)(1, 2));
   }), (0, _amen.test)("toJSON/fromJSON", function () {
-    var _rec41 = new _powerAssertRecorder(),
-        _rec42 = new _powerAssertRecorder();
-
-    return _powerAssert2.default.deepEqual(_rec41._expr(_rec41._capt((0, _object.fromJSON)(_rec41._capt((0, _object.toJSON)(_rec41._capt({
+    return _assert2.default.deepEqual((0, _object.fromJSON)((0, _object.toJSON)({
       x: 1,
       y: 2
-    }, "arguments/0/arguments/0/arguments/0")), "arguments/0/arguments/0")), "arguments/0"), {
-      content: "assert.deepEqual(fromJSON(toJSON({ x: 1, y: 2 })), { x: 1, y: 2 })",
-      filepath: "object.coffee",
-      line: 101
-    }), _rec42._expr(_rec42._capt({
+    })), {
       x: 1,
       y: 2
-    }, "arguments/1"), {
-      content: "assert.deepEqual(fromJSON(toJSON({ x: 1, y: 2 })), { x: 1, y: 2 })",
-      filepath: "object.coffee",
-      line: 101
-    }));
+    });
   })])));
 })();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsib2JqZWN0LmNvZmZlZSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLEFBQU87Ozs7QUFDUCxBQUFRLEFBQU07O0FBRWQsQUFBUSxBQUFVLEFBQU0sQUFDdEIsQUFBWSxBQUNaLEFBQUssQUFBTSxBQUFRLEFBQ25CLEFBQU0sQUFBTSxBQUNaLEFBQVEsQUFBUyxBQUFRLEFBQ3pCLEFBQU8sQUFDUCxBQUFROztBQUVWLEFBQVE7Ozs7QUFFTCxDQUFBOzJCQUVLLHNCQUFNLEFBQUssbUNBRWYsQUFBSyxrQkFBa0IsWUFDckI7UUFBQSxHQUFBO0FBQUE7QUFBSSxTQUFBLEFBQUc7QUFBRyxTQUFOLEFBQVM7QUFBVDtBQUNKO0FBQUksU0FBQSxBQUFHO0FBQUg7QUFDSix5QkFBQSxBQUFRLEdBQVIsQUFBVzs0QkFDWCxBQUFPLFVBQVAsQUFBaUI7QUFBSSxTQUFELEFBQUk7QUFBRyxTQUFQLEFBQVU7QUFBRyxTQUpaLEFBSXJCLEFBQW9CLEFBQWdCO0FBQWhCLEtBQXBCLEFBQU07QUFOeUIsQUFFakMsR0FBQSxDQUZpQyxrQkFRakMsQUFBSyxTQUFTLFlBQ1o7UUFBQSxHQUFBLEdBQUE7QUFBQTtBQUFJLFNBQUEsQUFBRztBQUFHLFNBQU4sQUFBUztBQUFUO0FBQ0o7QUFBSSxTQUFBLEFBQUc7QUFBSDtBQUNKLFFBQUksbUJBQUEsQUFBTSxHQUFOLEFBQVM7QUFDYixBQUFNLHFCQUFOLEFBQU8sVUFBUCxBQUFpQjtBQUFJLFNBQUQsQUFBSTtBQUFHLFNBQTNCLEFBQW9CLEFBQVU7QUFBVjs0QkFDcEIsQUFBTyxVQUFQLEFBQWlCO0FBQUksU0FBRCxBQUFJO0FBQUcsU0FBUCxBQUFVO0FBQUcsU0FMckIsQUFLWixBQUFvQixBQUFnQjtBQUFoQixLQUFwQixBQUFNO0FBYnlCLEFBUWpDLEdBQUEsR0FPQSxnQkFBQSxBQUFLLFNBQVksVUFBQSxBQUFDO0FBRWhCLGVBQVcsVUFBQSxBQUFDO2FBQ1YsWUFDRTtZ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QUFHLFNBQTVDLEFBQWtCLEFBQW9CLEFBQVM7QUFBVDtBQUFrQixTQUQ3QyxBQUNYLEFBQXNELEFBQUs7QUFBTCxLQUF0RCxBQUFNO0FBekV5QixBQXdFakMsR0FBQSxtQkFHQSxBQUFLLFFBQVE7NEJBQ1gsQUFBTyw0QkFBaUIsVUFBQSxBQUFDLEdBQUQsQUFBRzthQUFNLEtBQVQ7QUFBTixBQUFLLEtBQUwsQUFBSztBQUFlLFNBQUEsQUFBRztBQUFHLFNBQTVDLEFBQWtCLEFBQW9CLEFBQVM7QUFBVDtBQUFrQixTQUFHLEtBRGhELEFBQ1gsQUFBc0Q7QUFBQSxLQUF0RCxBQUFNO0FBNUV5QixBQTJFakMsR0FBQSxtQkFHQSxBQUFLLFNBQVM7QUFDWjtBQUFlLFNBQVIsQUFBTSxBQUFLO0FBQUwsS0FBTjtBQUFrQixTQUFGLEFBQUs7QUFBRyxTQUEvQixBQUFPLEFBQWdCLEFBQVc7QUFBWDtBQUN2QiwwQkFBTztBQUFVLFNBQVIsQUFBTSxBQUFLO0FBQUwsS0FBTjtBQUFrQixTQUFGLEFBQUs7QUFBRyxTQUFqQyxBQUFTLEFBQWdCLEFBQVc7QUFBWDtBQUN6QiwwQkFBTyxtQkFBQSxBQUFNLEdBQWIsQUFBTyxBQUFTO1dBQ2hCLHNCQUFPLENBQUMsbUJBQUEsQUFBTSxHQUpGLEFBSVosQUFBUSxBQUFTO0FBbEZjLEFBOEVqQyxHQUFBLG1CQU1BLEFBQUssbUJBQW1COzRCQUN0QixBQUFPO0FBQTJCLFNBQUEsQUFBRztBQUFHLFNBQXhDLEFBQWtCLEFBQVMsQUFBTyxBQUFTO0FBQVQsS0FBUCxDQUFUO0FBQTZCLFNBQUEsQUFBRztBQUFHLFNBRC9CLEFBQ3RCLEFBQStDLEFBQVM7QUFBVCxLQUEvQyxBQUFNO0FBdkZULEFBRUQsQUFBTSxBQUFNLEFBQXVCLEFBb0ZqQyxHQUFBLEVBcEZVLENBQVosQUFBTTtBQUZSLEFBQUciLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgYXNzZXJ0IGZyb20gXCJhc3NlcnRcIlxuaW1wb3J0IHt0ZXN0LCBwcmludH0gZnJvbSBcImFtZW5cIlxuXG5pbXBvcnQge3Byb3BlcnR5LCBiaW5kLCBkZXRhY2gsXG4gIHByb3BlcnRpZXMsIG1ldGhvZHMsXG4gIGhhcywga2V5cywgdmFsdWVzLCBwYWlycyxcbiAgcGljaywgb21pdCwgcXVlcnksXG4gIGFzc2lnbiwgaW5jbHVkZSwgZXh0ZW5kLCBtZXJnZSxcbiAgY2xvbmUsIGVxdWFsLFxuICB0b0pTT04sIGZyb21KU09OfSBmcm9tIFwiLi4vc3JjL29iamVjdFwiXG5cbmltcG9ydCB7aXNEZWZpbmVkfSBmcm9tIFwiLi4vc3JjL3R5cGVcIlxuXG5kbyAtPlxuXG4gIHByaW50IGF3YWl0IHRlc3QgXCJvYmplY3QgaGVscGVyc1wiLCBbXG5cbiAgICB0ZXN0IFwiaW5jbHVkZS9leHRlbmRcIiwgLT5cbiAgICAgIGEgPSB4OiAxLCB5OiAyXG4gICAgICBiID0gejogM1xuICAgICAgaW5jbHVkZSBhLCBiXG4gICAgICBhc3NlcnQuZGVlcEVxdWFsIGEsIHt4OiAxLCB5OiAyLCB6OiAzfVxuXG4gICAgdGVzdCBcIm1lcmdlXCIsIC0+XG4gICAgICBhID0geDogMSwgeTogMlxuICAgICAgYiA9IHo6IDNcbiAgICAgIGMgPSBtZXJnZSBhLCBiXG4gICAgICBhc3NlcnQuZGVlcEVxdWFsIGEsIHt4OiAxLCB5OiAyfVxuICAgICAgYXNzZXJ0LmRlZXBFcXVhbCBjLCB7eDogMSwgeTogMiwgejogM31cblxuICAgIHRlc3QgXCJjbG9uZVwiLCBkbyAoc2NlbmFyaW89bnVsbCkgLT5cblxuICAgICAgc2NlbmFyaW8gPSAob3JpZ2luYWwpIC0+XG4gICAgICAgIC0+XG4gICAgICAgICAgY29weSA9IGNsb25lIG9yaWdpbmFsXG4gICAgICAgICAgYXNzZXJ0IG9yaWdpbmFsICE9IGNvcHlcbiAgICAgICAgICBhc3NlcnQuZGVlcEVxdWFsIG9yaWdpbmFsLCBjb3B5XG4gICAgICBbXG4gICAgICAgIHRlc3QgXCJzaGFsbG93XCIsIHNjZW5hcmlvIHg6IDEsIHk6IDJcbiAgICAgICAgdGVzdCBcImRlZXBcIiwgW1xuICAgICAgICAgIHRlc3QgXCJzaW1wbGVcIiwgc2NlbmFyaW8geDogMSwgeTogeyB6OiAzfVxuICAgICAgICAgIHRlc3QgXCJ3aXRoIHJlZ2V4cFwiLCBzY2VuYXJpbyAgeDogMSwgeTogeyB6OiAvZm9vL2dpIH1cbiAgICAgICAgXVxuICAgICAgXVxuXG4gICAgdGVzdCBcImVxdWFsXCIsIC0+XG4gICAgICBhc3NlcnQgZXF1YWwgMSwgMVxuICAgICAgYXNzZXJ0ICFlcXVhbCAxLCAyXG4gICAgICBhc3NlcnQgZXF1YWwgXCIgXCIsIFwiIFwiXG4gICAgICBhc3NlcnQgIWVxdWFsIFwiXCIsIFwiIFwiXG4gICAgICBhc3NlcnQgZXF1YWwgeyB4OiAxIH0sIHsgeDogMX1cbiAgICAgIGFzc2VydCAhZXF1YWwgeyB4OiAxIH0sIHsgeDogMn1cbiAgICAgIGFzc2VydCBlcXVhbCBbMS4uM10sIFsxLi4zXVxuICAgICAgYXNzZXJ0ICFlcXVhbCBbMS4uM10sIFsxLi40XVxuXG4gICAgdGVzdCBcInByb3BlcnR5XCIsIC0+IGFzc2VydCAocHJvcGVydHkgXCJ4XCIsIHsgeDogMSB9KSA9PSAxXG5cbiAgICB0ZXN0IFwiYmluZFwiLCAtPiBhc3NlcnQgKGJpbmQgKC0+IEB4KSwge3g6IDF9KSgpID09IDFcblxuICAgIHRlc3QgXCJkZXRhY2hcIiwgLT5cbiAgICAgIGFzc2VydC5kZWVwRXF1YWwgKGRldGFjaCBBcnJheTo6c29ydCkoWzUsNCwzLDIsMV0pLCBbMSwyLDMsNCw1XVxuXG4gICAgdGVzdCBcInByb3BlcnRpZXNcIiwgLT5cbiAgICAgIHByb3BlcnRpZXMgKGEgPSB7fSksIHg6IGdldDogKC0+IEBfeCksIHNldDogKCh4KSAtPiBAX3ggPSB4KVxuICAgICAgYS54ID0gMVxuICAgICAgYXNzZXJ0IGEuX3ggPT0gMVxuICAgICAgYS5feCA9IDJcbiAgICAgIGFzc2VydCBhLnggPT0gMlxuXG4gICAgdGVzdCBcIm1ldGhvZHNcIiwgLT5cbiAgICAgIG1ldGhvZHMgKGEgPSB7fSksIHg6ICgtPiB0cnVlKSwgeTogKC0+IGZhbHNlKVxuICAgICAgYXNzZXJ0IGEueCgpICYmICFhLnkoKVxuXG4gICAgdGVzdCBcImhhc1wiLCAtPlxuICAgICAgYXNzZXJ0IChoYXMgXCJ4XCIsIHg6IDEpXG4gICAgICBhc3NlcnQgIShoYXMgXCJ5XCIsIHg6IDEpXG5cbiAgICB0ZXN0IFwia2V5c1wiLCAtPlxuICAgICAgYXNzZXJ0LmRlZXBFcXVhbCAoa2V5cyB4OiAxLCB5OiAyKSwgWyBcInhcIiwgXCJ5XCIgXVxuXG4gICAgdGVzdCBcInZhbHVlc1wiLCAtPlxuICAgICAgYXNzZXJ0LmRlZXBFcXVhbCAodmFsdWVzIHg6IDEsIHk6IDIpLCBbIDEsIDIgXVxuXG4gICAgdGVzdCBcInBhaXJzXCIsIC0+XG4gICAgICBhc3NlcnQuZGVlcEVxdWFsIChwYWlycyB7YTogMSwgYjogMiwgYzogM30pLFxuICAgICAgICBbW1wiYVwiLCAxXSwgW1wiYlwiLCAyXSwgW1wiY1wiLCAzXV1cblxuICAgIHRlc3QgXCJwaWNrXCIsIC0+XG4gICAgICBhc3NlcnQuZGVlcEVxdWFsIChwaWNrICgoayx2KSAtPiB2PyksIHg6IDEsIHk6IG51bGwpLCB7IHg6IDEgfVxuXG4gICAgdGVzdCBcIm9taXRcIiwgLT5cbiAgICAgIGFzc2VydC5kZWVwRXF1YWwgKG9taXQgKChrLHYpIC0+IHY/KSwgeDogMSwgeTogbnVsbCksIHsgeTogdW5kZWZpbmVkIH1cblxuICAgIHRlc3QgXCJxdWVyeVwiLCAtPlxuICAgICAgYXNzZXJ0IHF1ZXJ5IHsgeDogMSB9LCB7IHg6IDEsIHk6IDIgfVxuICAgICAgYXNzZXJ0ICEgcXVlcnkgeyB4OiAyIH0sIHsgeDogMSwgeTogMiB9XG4gICAgICBhc3NlcnQgcXVlcnkgMSwgMVxuICAgICAgYXNzZXJ0ICFxdWVyeSAxLCAyXG5cbiAgICB0ZXN0IFwidG9KU09OL2Zyb21KU09OXCIsIC0+XG4gICAgICBhc3NlcnQuZGVlcEVxdWFsIChmcm9tSlNPTiB0b0pTT04geDogMSwgeTogMiksIHg6IDEsIHk6IDJcblxuICBdXG4iXX0=
+//# sourceURL=object.coffee

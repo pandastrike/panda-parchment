@@ -1,7 +1,7 @@
 import assert from "assert"
 import {test, print} from "amen"
 
-import {promise, rephrase, resolve, reject} from "../lib/promise"
+import {promise, rephrase, resolve, reject} from "../src/promise"
 
 assert.rejects = (f) ->
   f()

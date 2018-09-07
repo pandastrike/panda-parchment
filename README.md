@@ -1,27 +1,7 @@
-[![Build Status](https://travis-ci.org/pandastrike/fairmont-helpers.svg)](https://travis-ci.org/pandastrike/fairmont-helpers)
+# Panda Parchment
 
-# Fairmont-Helpers
-
-Fairmont-Helpers is a JavaScript library providing a variety of helper functions for dealing with everything from Arrays to Promises in a functional style.
-It's part of the [Fairmont][] library.
-You can use it by itself, or simply as part of the [Fairmont][] library.
+Parchment is a JavaScript library providing a variety of helper functions for dealing with everything from Arrays to Promises in a functional style.
 
 ## Installation
 
-`npm install fairmont-helpers`
-
-## Documentation
-
-Check out the [wiki][] for an getting started guides, tutorials, and reference documentation.
-
-## Status
-
-[Fairmont][] is still under heavy development and is `beta` quality, meaning you should probably not use it in your production code.
-
-## Roadmap
-
-You can get an idea of what we're planning by looking at the [issues list][tickets]. If you want something that isn't there, and you think it would be a good addition, please open a ticket.
-
-[tickets]:https://github.com/pandastrike/fairmont/issues
-[Fairmont]:https://github.com/pandastrike/fairmont
-[wiki]:https://github.com/pandastrike/fairmont/wiki
+`npm i panda-parchment`

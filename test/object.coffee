@@ -7,9 +7,9 @@ import {property, bind, detach,
   pick, omit, query,
   assign, include, extend, merge,
   clone, equal,
-  toJSON, fromJSON} from "../lib/object"
+  toJSON, fromJSON} from "../src/object"
 
-import {isDefined} from "../lib/type"
+import {isDefined} from "../src/type"
 
 do ->
 

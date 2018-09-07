@@ -1,33 +1,32 @@
 {
-  "name": "fairmont-helpers",
-  "version": "3.3.2",
-  "description": "Functional helpers for arrays, objects, strings, and types",
+  "name": "panda-parchment",
+  "version": "4.0.0",
+  "description": "JavaScript helpers for use in functional programming.",
   "files": [
     "build/npm"
   ],
-  "main": "build/npm/lib/index.js",
+  "main": "build/npm/src/index.js",
   "scripts": {
     "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/pandastrike/fairmont-helpers.git"
+    "url": "git://github.com/pandastrike/panda-parchment.git"
   },
   "keywords": [],
   "authors": [
     "Dan Yoder"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "amen": "^2.0.2",
-    "fairmont-build-tools": "^1.0.0",
+    "babel-preset-env": "^1.7.0",
     "gulp": "github:gulpjs/gulp#4.0",
-    "power-assert": "^1.4.4",
-    "sinon": "^1.17.4"
+    "panda-builder": "^2.0.0"
   },
   "dependencies": {
-    "fairmont-core": "^2.1.2",
-    "fairmont-multimethods": "^2.0.2"
+    "panda-garden": "^1.0.0",
+    "panda-generics": "^1.0.0"
   },
-  "engine": "node >= 6.10"
+  "engine": "node >= 8.10"
 }

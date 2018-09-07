@@ -1,5 +1,5 @@
-import {identity, curry, negate} from "fairmont-core"
-import {Method} from "fairmont-multimethods"
+import {identity, curry, negate} from "panda-garden"
+import {Method} from "panda-generics"
 import {isObject, isArray, isFunction, isRegExp} from "./type"
 
 property = curry (key, object) -> object[key]

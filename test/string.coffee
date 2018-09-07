@@ -3,7 +3,7 @@ import {test, print} from "amen"
 
 import {toString, toUpper, toLower, capitalize,
   titleCase, camelCase, underscored, dashed, plainText,
-  htmlEscape, w, blank, match, isMatch, replace} from "../lib/string"
+  htmlEscape, w, blank, match, isMatch, replace} from "../src/string"
 
 do ->
 

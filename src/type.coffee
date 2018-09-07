@@ -1,5 +1,5 @@
-import {curry} from "fairmont-core"
-import {Method} from "fairmont-multimethods"
+import {curry} from "panda-garden"
+import {Method} from "panda-generics"
 
 prototype = (value) -> if value? then Object.getPrototypeOf value
 
@@ -32,7 +32,7 @@ isString = isType String
 
 isBuffer = isType Buffer
 
-isFunction = isType Function
+isRegularFunction = isType Function
 
 isObject = isType Object
 
@@ -51,6 +51,8 @@ isGeneratorFunction = isType GeneratorFunction
 isPromise = isType Promise
 
 isAsyncFunction = isType (-> await null).constructor
+
+isFunction = isKind Function
 
 instanceOf = curry (t, x) -> x instanceof t
 
@@ -73,8 +75,8 @@ Method.define size, hasLength, (x) -> x.length
 isEmpty = (x) -> (size x) == 0
 
 export {prototype, isPrototype, isTransitivePrototype,
-  isType, isKind, Type, instanceOf,
-  isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
-  isString, isBuffer, isFunction, isObject, isArray, isDefined, isUndefined
-  isRegExp, isDate, isGeneratorFunction, isPromise, isAsyncFunction,
+  isType, isKind, Type, instanceOf, isDefined, isUndefined,
+  isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat, isBuffer,
+  isString, isObject, isArray, isRegExp, isDate, isPromise,
+  isRegularFunction, isGeneratorFunction, isAsyncFunction, isFunction,
   size, length, isEmpty}

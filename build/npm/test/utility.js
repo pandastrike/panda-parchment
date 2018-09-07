@@ -1,23 +1,17 @@
 "use strict";
 
-var _powerAssertRecorder = function () { function PowerAssertRecorder() { this.captured = []; } PowerAssertRecorder.prototype._capt = function _capt(value, espath) { this.captured.push({ value: value, espath: espath }); return value; }; PowerAssertRecorder.prototype._expr = function _expr(value, source) { var capturedValues = this.captured; this.captured = []; return { powerAssertContext: { value: value, events: capturedValues }, source: source }; }; return PowerAssertRecorder; }();
+var _assert = require("assert");
 
-var _powerAssert = require("power-assert");
-
-var _powerAssert2 = _interopRequireDefault(_powerAssert);
+var _assert2 = _interopRequireDefault(_assert);
 
 var _amen = require("amen");
 
-var _utility = require("../lib/utility");
+var _utility = require("../src/utility");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-_asyncToGenerator(function* () {
-  return (0, _amen.print)((yield (0, _amen.test)("utility helpers", [(0, _amen.test)("timer", function () {
-    var _rec = new _powerAssertRecorder();
-
+(async function () {
+  return (0, _amen.print)((await (0, _amen.test)("utility helpers", [(0, _amen.test)("timer", function () {
     var cancel, tooLate, x;
     // We need an action to put into "timer",
     // but we'll cancel it before it runs.
@@ -28,38 +22,18 @@ _asyncToGenerator(function* () {
     cancel = (0, _utility.timer)(10000, tooLate);
     // 10s is too long to wait.  Cancel it!!
     cancel();
-    return (0, _powerAssert2.default)(_rec._expr(_rec._capt(_rec._capt(x, "arguments/0/left") === 5, "arguments/0"), {
-      content: "assert(x === 5)",
-      filepath: "utility.coffee",
-      line: 20
-    })); // We kept tooLong from executing.
-  }), (0, _amen.test)("sleep", [(0, _amen.test)("microseconds/benchmark", _asyncToGenerator(function* () {
-    var _rec2 = new _powerAssertRecorder();
-
-    return (0, _powerAssert2.default)(_rec2._expr(_rec2._capt(_rec2._capt((yield (0, _utility.benchmark)(_asyncToGenerator(function* () {
-      return yield (0, _utility.sleep)(100);
-    }))), "arguments/0/left") > _rec2._capt(100 * 1000, "arguments/0/right"), "arguments/0"), {
-      content: "assert((await benchmark(async function () { return await sleep(100); })) > 100 * 1000)",
-      filepath: "utility.coffee",
-      line: 24,
-      async: true
-    }));
-  }))]), (0, _amen.test)("times", function () {
-    var _rec3 = new _powerAssertRecorder(),
-        _rec4 = new _powerAssertRecorder();
-
+    return (0, _assert2.default)(x === 5); // We kept tooLong from executing.
+  }), (0, _amen.test)("sleep", [(0, _amen.test)("microseconds/benchmark", async function () {
+    return (0, _assert2.default)((await (0, _utility.benchmark)(async function () {
+      return await (0, _utility.sleep)(100);
+    })) > 100 * 1000);
+  })]), (0, _amen.test)("times", function () {
     var n;
     n = 0;
-    return _powerAssert2.default.deepEqual(_rec3._expr(_rec3._capt((0, _utility.times)(function () {
+    return _assert2.default.deepEqual((0, _utility.times)(function () {
       return ++n;
-    }, 3), "arguments/0"), {
-      content: "assert.deepEqual(times(function () { return ++n; }, 3), [1, 2, 3])",
-      filepath: "utility.coffee",
-      line: 29
-    }), _rec4._expr(_rec4._capt([1, 2, 3], "arguments/1"), {
-      content: "assert.deepEqual(times(function () { return ++n; }, 3), [1, 2, 3])",
-      filepath: "utility.coffee",
-      line: 29
-    }));
+    }, 3), [1, 2, 3]);
   })])));
 })();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsidXRpbGl0eS5jb2ZmZWUiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxBQUFPOzs7O0FBQ1AsQUFBUSxBQUFNOztBQUVkLEFBQVEsQUFBTyxBQUFPLEFBQU8sQUFDekIsQUFBVyxBQUFPOzs7O0FBRW5CLENBQUE7MkJBRUssc0JBQU0sQUFBSyxvQ0FFZixBQUFLLFNBQVM7UUFHWixRQUFBLFNBQUE7OztBQUFBLFFBQUk7QUFDSixjQUFVO2FBQUEsQUFBRzs7QUFDYixhQUFTLG9CQUFBLEFBQU0sT0FGZixBQUVTLEFBQWE7O0FBR3RCO1dBQ0Esc0JBQU8sTUFUSyxBQVNaLEFBQVksR0FOWixDQUhZO0FBRm9CLEFBRWxDLEdBQUEsQ0FGa0Msa0JBYWxDLEFBQUssMEJBQ0gsQUFBSywwQkFBMEI7V0FDN0IsdUJBQVEsOEJBQWlCO0FBQUcsYUFBQSxNQUFNLG9CQUFULEFBQUcsQUFBTSxBQUFNO0FBQWpDLEFBQUMsQUFBTSxBQUFVLEFBQXdCLEtBQWxDLEFBQVUsQ0FBakIsQUFBQyxJQUF5QyxNQURwQixBQUM3QixBQUFnRCxBQUFPO0FBZnpCLEFBYWxDLEFBQWMsQUFDWixHQUFBLENBRFksQ0FBZCxtQkFLQSxBQUFLLFNBQVMsWUFDWjtRQUFBO0FBQUEsUUFBSTs0QkFDSixBQUFPLDhCQUFrQjthQUFHLEVBQUgsQUFBSztBQUFaLEFBQU0sS0FBTixBQUFNLEVBQXhCLEFBQWtCLEFBQWdCLEVBQWxDLEFBQU0sRUFBZ0MsQ0FBQSxBQUFDLEdBQUQsQUFBSSxHQUY5QixBQUVaLEFBQXNDLEFBQU87QUF0QmhELEFBRUQsQUFBTSxBQUFNLEFBQXdCLEFBa0JsQyxHQUFBLEVBbEJVLENBQVosQUFBTTtBQUZSLEFBQUciLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgYXNzZXJ0IGZyb20gXCJhc3NlcnRcIlxuaW1wb3J0IHt0ZXN0LCBwcmludH0gZnJvbSBcImFtZW5cIlxuXG5pbXBvcnQge3RpbWVzLCBzbGVlcCwgdGltZXIsIG1lbW9pemUsXG4gICAgYmVuY2htYXJrLCBlbXB0eSwgbGVuZ3RofSBmcm9tIFwiLi4vc3JjL3V0aWxpdHlcIlxuXG5kbyAtPlxuXG4gIHByaW50IGF3YWl0IHRlc3QgXCJ1dGlsaXR5IGhlbHBlcnNcIiwgW1xuXG4gICAgdGVzdCBcInRpbWVyXCIsIC0+XG4gICAgICAjIFdlIG5lZWQgYW4gYWN0aW9uIHRvIHB1dCBpbnRvIFwidGltZXJcIixcbiAgICAgICMgYnV0IHdlJ2xsIGNhbmNlbCBpdCBiZWZvcmUgaXQgcnVucy5cbiAgICAgIHggPSA1XG4gICAgICB0b29MYXRlID0gLT4geCsrXG4gICAgICBjYW5jZWwgPSB0aW1lciAxMDAwMCwgdG9vTGF0ZVxuXG4gICAgICAjIDEwcyBpcyB0b28gbG9uZyB0byB3YWl0LiAgQ2FuY2VsIGl0ISFcbiAgICAgIGNhbmNlbCgpXG4gICAgICBhc3NlcnQgeCA9PSA1ICAgIyBXZSBrZXB0IHRvb0xvbmcgZnJvbSBleGVjdXRpbmcuXG5cbiAgICB0ZXN0IFwic2xlZXBcIiwgW1xuICAgICAgdGVzdCBcIm1pY3Jvc2Vjb25kcy9iZW5jaG1hcmtcIiwgLT5cbiAgICAgICAgYXNzZXJ0IChhd2FpdCBiZW5jaG1hcmsgKC0+IGF3YWl0IHNsZWVwIDEwMCkpID4gKDEwMCAqIDEwMDApXG4gICAgXVxuXG4gICAgdGVzdCBcInRpbWVzXCIsIC0+XG4gICAgICBuID0gMFxuICAgICAgYXNzZXJ0LmRlZXBFcXVhbCAodGltZXMgKC0+ICsrbiksIDMpLCBbMSwgMiwgM11cbiBdXG4iXX0=
+//# sourceURL=utility.coffee
