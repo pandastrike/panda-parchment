@@ -15,7 +15,6 @@ rephrase = Method.create
   # for ordinary values, this does nothing
   # includes async and generator functions
   default: (callback, value) ->
-    console.log {callback, value}
     value
 
 # for objects, we try to rephrase the values

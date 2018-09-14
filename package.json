@@ -1,6 +1,6 @@
 {
   "name": "panda-parchment",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "JavaScript helpers for use in functional programming.",
   "files": [
     "build/npm"
@@ -19,7 +19,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "amen": "^2.0.2",
+    "amen": "^2.0.5",
     "babel-preset-env": "^1.7.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "panda-builder": "^2.0.0"
