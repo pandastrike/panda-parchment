@@ -1,3 +1,5 @@
+import {success} from "amen"
+
 targets = process.argv[2..]
 
 if targets.length == 0
@@ -13,3 +15,7 @@ if targets.length == 0
 
 # TODO: how to set up targetted tests via build-tools?
 (require "./#{target}") for target in targets
+
+setExitStatus = -> process.exit if success then 0 else 1
+
+setTimeout setExitStatus, 1000
