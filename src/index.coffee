@@ -4,9 +4,9 @@ Object = require "./object"
 Promise = require "./promise"
 String = require "./string"
 Type = require "./type"
-Util = require "./utility"
+Time = require "./time"
 
 {include} = Object
 
 include module.exports, Array, Numeric, Object,
-  Promise, String, Type, Util
+  Promise, String, Type, Time

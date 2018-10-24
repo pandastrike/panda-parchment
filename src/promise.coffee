@@ -11,38 +11,6 @@ resolve = (x) -> Promise.resolve x
 # conflicts within promise-returning functions
 follow = resolve
 
-rephrase = Method.create
-  # for ordinary values, this does nothing
-  # includes async and generator functions
-  default: (callback, value) ->
-    value
+all = (px) -> Promise.all px
 
-# for objects, we try to rephrase the values
-Method.define rephrase, isFunction, isObject, (callback, object) ->
-  proxy = {}
-  for key, value of object
-    proxy[key] = rephrase callback, value
-  proxy
-
-# real work happens here, when we have a function
-Method.define rephrase, isFunction, isFunction, (callback, f) ->
-  (args...) ->
-    promise (resolve, reject) ->
-      try
-        f args..., (callback resolve, reject)...
-      catch error
-        reject error
-
-callbacks =
-  node: (resolve, reject) -> [
-    (error, args...) ->
-      if error then (reject error) else (resolve args...)
-  ]
-  handlers: (resolve, reject) -> [ resolve, reject ]
-
-Method.define rephrase, isString, isDefined, (style, target) ->
-  rephrase callbacks[style], target
-
-rephrase = curry binary rephrase
-
-export {promise, resolve, follow, reject, rephrase}
+export {promise, resolve, follow, reject, all}

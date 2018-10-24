@@ -2,11 +2,11 @@ import assert from "assert"
 import {test, print} from "amen"
 
 import {times, sleep, timer, memoize,
-    benchmark, empty, length} from "../src/utility"
+    benchmark, empty, length} from "../src/time"
 
 do ->
 
-  print await test "utility helpers", [
+  print await test "time helpers", [
 
     test "timer", ->
       # We need an action to put into "timer",

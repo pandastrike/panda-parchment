@@ -12,6 +12,10 @@ isTransitivePrototype = curry (p, value) ->
 
 isKind = curry (type, value) -> isTransitivePrototype type?.prototype, value
 
+# TODO: is this correct? to check generally for a derived type
+# needs tests ....
+isDerived = curry (type, value) -> isKind type, value::
+
 isNumber = isType Number
 
 isNaN = (n) -> Number.isNaN n
