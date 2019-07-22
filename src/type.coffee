@@ -72,7 +72,7 @@ hasByteLength = (x) -> x.byteLength?
 hasSize = (x) -> x.size?
 
 Method.define size, hasByteLength, (x) -> x.byteLength
-Method.define size, isObject, (x) -> (keys x).length
+Method.define size, isObject, (x) -> (Object.keys x).length
 Method.define size, hasSize, (x) -> x.size
 Method.define size, hasLength, (x) -> x.length
 

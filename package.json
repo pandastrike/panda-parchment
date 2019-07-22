@@ -1,6 +1,6 @@
 {
   "name": "panda-parchment",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "JavaScript helpers for use in functional programming.",
   "files": [
     "build/npm"

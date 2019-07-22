@@ -111,6 +111,8 @@ do ->
       assert ! isEmpty " "
       assert isEmpty []
       assert ! isEmpty [ 0 ]
+      assert isEmpty {}
+      assert ! isEmpty x: 1
       assert isEmpty new Map
       assert ! isEmpty new Map [[ "x", 1 ]]
       assert isEmpty new Set
