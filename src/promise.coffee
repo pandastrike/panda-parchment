@@ -1,5 +1,4 @@
 import {curry, binary} from "panda-garden"
-import {Method} from "panda-generics"
 import {isDefined, isString, isObject, isFunction} from "./type"
 
 promise = (f) -> new Promise f

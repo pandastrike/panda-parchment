@@ -1,6 +1,8 @@
 import {identity, curry, negate} from "panda-garden"
-import {Method} from "panda-generics"
+import Method from "panda-generics"
 import {isObject, isArray, isFunction, isRegExp} from "./type"
+
+{create, define} = Method
 
 property = curry (key, object) -> object[key]
 
@@ -50,12 +52,15 @@ include = extend = assign = (target, sources...) ->
 merge = (objects...) -> Object.assign {}, objects...
 
 # Trivial case: return the same value
-clone = Method.create default: identity
+clone = create
+  name: "clone"
+  description: "Creates a deep clone of an entity."
+  default: identity
 
 # TODO: handle additional cases
 # See Lodash implemention as a guide
 
-Method.define clone, isObject, (original) ->
+define clone, isObject, (original) ->
   copy = new original.constructor()
   # TODO: this doesn't clone non-enumerable properties
   for key of original
@@ -63,27 +68,30 @@ Method.define clone, isObject, (original) ->
   return copy
 
 # adapted from lodash as an example
-Method.define clone, isRegExp, do (flags=/\w*$/) ->
+define clone, isRegExp, do (flags=/\w*$/) ->
   (original) ->
     copy = new original.constructor original.source, (flags.exec original)
     copy.lastIndex = original.lastIndex
     copy
 
 # “deep” comparison, when applicable
-equal = Method.create default: (a, b) -> a == b
+equal = create
+  name: "equal"
+  description: "Performs a deep comparison of two entities."
+  default: (a, b) -> a == b
 
 # can't use unique and cat from array b/c array
 # depends on object (this file) for detach
 cat = detach Array::concat
 unique = (ax) -> Array.from new Set ax
-Method.define equal, isObject, isObject, (a, b) ->
+define equal, isObject, isObject, (a, b) ->
   (a == b) || do ->
     for key in (unique cat (keys a), (keys b))
       if ! equal a[key], b[key]
         return false
     true
 
-Method.define equal, isArray, isArray, (ax, bx) ->
+define equal, isArray, isArray, (ax, bx) ->
   (ax == bx) || do ->
     return false if ax.length != bx.length
     for i in [0..ax.length]

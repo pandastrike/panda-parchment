@@ -1,8 +1,10 @@
 import {curry} from "panda-garden"
-import {Method} from "panda-generics"
+import Method from "panda-generics"
 import {promise, async} from "./promise"
 import {isArray, isString, isObject, isFunction, isAsyncFunction} from "./type"
 import {blank} from "./string"
+
+{create, define} = Method
 
 timer = (wait, action) ->
   id = setTimeout(action, wait)
@@ -24,14 +26,16 @@ microseconds = do ->
   else
     -> Date.now() * 1000
 
-benchmark = Method.create()
+benchmark = create
+  name: "benchmark"
+  description: "Times a function's execution with up to microsecond resolution"
 
-Method.define benchmark, isFunction, (fn) ->
+define benchmark, isFunction, (fn) ->
   start = microseconds()
   fn()
   microseconds() - start
 
-Method.define benchmark, isAsyncFunction, (fn) ->
+define benchmark, isAsyncFunction, (fn) ->
   start = microseconds()
   await fn()
   microseconds() - start

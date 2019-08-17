@@ -1,5 +1,7 @@
 import {curry} from "panda-garden"
-import {Method} from "panda-generics"
+import Method from "panda-generics"
+
+{create, define} = Method
 
 prototype = (value) -> if value? then Object.getPrototypeOf value
 
@@ -64,17 +66,20 @@ Type =
   create: (type) -> if type? then new type
   define: (parent = Object) -> class extends parent
 
-size = length = Method.create default: (x) ->
-  throw new TypeError "size: not valid for type #{x.constructor}"
+size = length = create
+  name: "size"
+  description: "Returns the size of a given entity, if it has one."
+  default: (x) ->
+    throw new TypeError "size: not valid for type #{x.constructor}"
 
 hasLength = (x) -> x.length?
 hasByteLength = (x) -> x.byteLength?
 hasSize = (x) -> x.size?
 
-Method.define size, hasByteLength, (x) -> x.byteLength
-Method.define size, isObject, (x) -> (Object.keys x).length
-Method.define size, hasSize, (x) -> x.size
-Method.define size, hasLength, (x) -> x.length
+define size, hasByteLength, (x) -> x.byteLength
+define size, isObject, (x) -> (Object.keys x).length
+define size, hasSize, (x) -> x.size
+define size, hasLength, (x) -> x.length
 
 isEmpty = (x) -> (size x) == 0
 
