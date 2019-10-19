@@ -1,4 +1,4 @@
-import {identity, curry, negate} from "panda-garden"
+import {curry, negate} from "panda-garden"
 import Method from "panda-generics"
 import {isObject, isArray, isFunction, isRegExp} from "./type"
 
@@ -51,29 +51,6 @@ include = extend = assign = (target, sources...) ->
 
 merge = (objects...) -> Object.assign {}, objects...
 
-# Trivial case: return the same value
-clone = create
-  name: "clone"
-  description: "Creates a deep clone of an entity."
-  default: identity
-
-# TODO: handle additional cases
-# See Lodash implemention as a guide
-
-define clone, isObject, (original) ->
-  copy = new original.constructor()
-  # TODO: this doesn't clone non-enumerable properties
-  for key of original
-    copy[key] = (clone original[key])
-  return copy
-
-# adapted from lodash as an example
-define clone, isRegExp, do (flags=/\w*$/) ->
-  (original) ->
-    copy = new original.constructor original.source, (flags.exec original)
-    copy.lastIndex = original.lastIndex
-    copy
-
 # “deep” comparison, when applicable
 equal = create
   name: "equal"
@@ -112,5 +89,5 @@ properties, methods,
 has, keys, values, pairs,
 pick, omit, query,
 assign, include, extend, merge,
-clone, equal,
+equal,
 toJSON, fromJSON}

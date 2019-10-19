@@ -36,13 +36,17 @@ isRegExp = isType RegExp
 
 isString = isType String
 
-isBuffer = isType Buffer
-
 isRegularFunction = isType Function
 
 isObject = isType Object
 
 isArray = isType Array
+
+isMap = isType Map
+
+isWeakMap = isType WeakMap
+
+isSet = isType Set
 
 isError = isType Error
 
@@ -83,9 +87,22 @@ define size, hasLength, (x) -> x.length
 
 isEmpty = (x) -> (size x) == 0
 
+# Only works in Node.js
+isBuffer = isType Buffer
+
+# Only works in browser. There is no global property named TypedArray.
+isArrayBuffer = isType ArrayBuffer
+isDataView = isType DataView
+isTypedArray = isKind prototype Uint8Array
+
 export {prototype, isPrototype, isTransitivePrototype,
-  isType, isKind, Type, instanceOf, isDefined, isUndefined,
-  isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat, isBuffer,
-  isString, isObject, isArray, isRegExp, isDate, isPromise,
+  isType, isKind, Type, instanceOf,
+  isDefined, isUndefined,
+  isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat, isString, isDate,
+  isObject, isArray, isMap, isWeakMap, isSet,
+  isError, isRegExp, isPromise,
   isRegularFunction, isGeneratorFunction, isAsyncFunction, isFunction,
-  size, length, isEmpty}
+  size, length, isEmpty,
+  isBuffer,
+  isArrayBuffer, isDataView, isTypedArray
+}

@@ -6,7 +6,7 @@ import {property, bind, detach,
   has, keys, values, pairs,
   pick, omit, query,
   assign, include, extend, merge,
-  clone, equal,
+  equal,
   toJSON, fromJSON} from "../src/object"
 
 import {isDefined} from "../src/type"
@@ -27,21 +27,6 @@ do ->
       c = merge a, b
       assert.deepEqual a, {x: 1, y: 2}
       assert.deepEqual c, {x: 1, y: 2, z: 3}
-
-    test "clone", do (scenario=null) ->
-
-      scenario = (original) ->
-        ->
-          copy = clone original
-          assert original != copy
-          assert.deepEqual original, copy
-      [
-        test "shallow", scenario x: 1, y: 2
-        test "deep", [
-          test "simple", scenario x: 1, y: { z: 3}
-          test "with regexp", scenario  x: 1, y: { z: /foo/gi }
-        ]
-      ]
 
     test "equal", ->
       assert equal 1, 1

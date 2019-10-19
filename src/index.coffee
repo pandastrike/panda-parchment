@@ -1,12 +1,8 @@
-Array = require "./array"
-Numeric = require "./numeric"
-Object = require "./object"
-Promise = require "./promise"
-String = require "./string"
-Type = require "./type"
-Time = require "./time"
-
-{include} = Object
-
-include module.exports, Array, Numeric, Object,
-  Promise, String, Type, Time
+export * from "./array"
+export * from "./clone"
+export * from "./numeric"
+export * from "./object"
+export * from "./promise"
+export * from "./string"
+export * from "./type"
+export * from "./time"
