@@ -1,3 +1,4 @@
+import {identity} from "panda-garden"
 import Method from "panda-generics"
 import {
   isSymbol, isRegExp,
@@ -21,17 +22,6 @@ define clone, isObject, (original) ->
   for key, value of original
     copy[clone key] = clone value
   copy
-
-
-define clone, isSymbol, (original) ->
-  Object Symbol.prototype.valueOf original
-
-define clone, isRegExp, do (flags=/\w*$/) ->
-  (original) ->
-    copy = new original.constructor original.source, (flags.exec original)
-    copy.lastIndex = original.lastIndex
-    copy
-
 
 
 define clone, isArrayBuffer, (original) ->
@@ -72,11 +62,19 @@ define clone, isSet, (original) ->
 
 isPrimitive = (x) -> (isBoolean x) || (isNumber x) || (isString x)
 
-define clone, isPrimitive, (original) ->
-  original
+define clone, isPrimitive, identity
 
 define clone, isDate, (original) ->
   new original.constructor original
+
+define clone, isSymbol, (original) ->
+  original.valueOf()
+
+define clone, isRegExp, do (flags=/\w*$/) ->
+  (original) ->
+    copy = new original.constructor original.source, (flags.exec original)
+    copy.lastIndex = original.lastIndex
+    copy
 
 
 

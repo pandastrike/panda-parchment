@@ -33,7 +33,7 @@ do ->
 
       test "regexp", scenario  x: 1, y: { z: /foo/gi }
       test "date", scenario  x: 1, y: { z: new Date() }
-      test "symbol", scenario  x: 1, y: { [Symbol "z"]: new Date() }
+      test "symbol", scenario  x: 1, y: { z: [Symbol "z"] }
 
       test "array", scenario x: 1, y: { z: [1, 2, 3] }
       test "set", scenario x: 1, y: { z: new Set [1, 2, 3] }
