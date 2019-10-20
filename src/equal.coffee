@@ -58,9 +58,7 @@ define equal, isError, isError, (a, b) ->
   (equal a.name, b.name) && (equal a.message, b.message)
 
 define equal, isSymbol, isSymbol, (a, b) ->
-  console.log (Symbol.prototype.valueOf a)
-  console.log (Symbol.prototype.valueOf b)
-  equal (Symbol.prototype.valueOf a), (Symbol.prototype.valueOf b)
+  a.valueOf() == b.valueOf()
 
 
 

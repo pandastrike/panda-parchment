@@ -31,9 +31,6 @@ define clone, isRegExp, do (flags=/\w*$/) ->
 
 
 
-define clone, isBuffer, (original) ->
-  Buffer.from original
-
 define clone, isArrayBuffer, (original) ->
   copy = new original.constructor original.byteLength
   new Uint8Array(copy).set new Uint8Array original
@@ -46,6 +43,9 @@ define clone, isTypedArray, (original) ->
 define clone, isDataView, (original) ->
   new original.constructor (clone original.buffer),
     original.byteOffset, original.byteLength
+
+define clone, isBuffer, (original) ->
+  Buffer.from original
 
 
 

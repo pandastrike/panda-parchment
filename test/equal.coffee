@@ -37,11 +37,11 @@ do ->
       assert equal A, new Date A
       await sleep 1
       assert ! equal A, new Date()
-    # test "symbol", ->
-    #   assert equal ([Symbol.for "panda"]: "bear"),
-    #     ([Symbol.for "panda"]: "bear")
-    #   assert ! equal ([Symbol.for "p"]: "bear"),
-    #     ([Symbol.for "panda"]: "bear")
+    test "symbol", ->
+      A = Symbol "panda"
+      assert equal A, A
+      assert ! equal (Symbol "panda"), (Symbol "panda")
+      assert ! equal (Symbol "panda"), (Symbol "bear")
     test "error", ->
       assert equal (new Error "panda"), (new Error "panda")
       assert ! equal (new Error "panda"), (new Error "foobar")
@@ -64,9 +64,12 @@ do ->
     test "buffer", ->
       assert equal (Buffer.from "panda"), (Buffer.from "panda")
       assert ! equal (Buffer.from "panda" ), (Buffer.from "foobar")
-
-
-    # These need a browser context to be tested.
-    test "array buffer"
-    test "data view"
+    test "array buffer", ->
+      assert equal (new ArrayBuffer 8), (new ArrayBuffer 8)
+      assert ! equal (new ArrayBuffer 6), (new ArrayBuffer 8)
+    test "data view", ->
+      assert equal (new DataView new ArrayBuffer 8),
+        (new DataView new ArrayBuffer 8)
+      assert ! equal (new DataView new ArrayBuffer 6),
+        (new DataView new ArrayBuffer 8)
   ]

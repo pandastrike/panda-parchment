@@ -30,6 +30,8 @@ isFloat = (n) -> n == +n && n != (n|0)
 
 isBoolean = isType Boolean
 
+isSymbol = isType Symbol
+
 isDate = isType Date
 
 isRegExp = isType RegExp
@@ -98,9 +100,10 @@ isTypedArray = isKind prototype Uint8Array
 export {prototype, isPrototype, isTransitivePrototype,
   isType, isKind, Type, instanceOf,
   isDefined, isUndefined,
-  isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat, isString, isDate,
+  isBoolean, isString, isSymbol
+  isNumber, isNaN, isFinite, isInteger, isFloat,
+  isDate, isError, isRegExp, isPromise,
   isObject, isArray, isMap, isWeakMap, isSet,
-  isError, isRegExp, isPromise,
   isRegularFunction, isGeneratorFunction, isAsyncFunction, isFunction,
   size, length, isEmpty,
   isBuffer,
