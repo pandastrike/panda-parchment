@@ -43,6 +43,8 @@ do ->
       test "buffer", scenario x: 1, y: { z: Buffer.from "panda" }
 
       test "symbol"
+
+      # These need a browser context to be tested.
       test "array buffer"
       test "data view"
 

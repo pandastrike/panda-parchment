@@ -61,6 +61,7 @@ do ->
       assert ! equal (Buffer.from "panda" ), (Buffer.from "foobar")
 
     test "symbol"
+    # These need a browser context to be tested.
     test "array buffer"
     test "data view"
   ]
