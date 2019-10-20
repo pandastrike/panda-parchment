@@ -5,7 +5,7 @@ import {first, second, third, fourth, fifth, nth, last, rest,
   empty, includes, findIndexOf, findLastIndexOf, uniqueBy, unique, uniq, dupes,
   union, intersection, difference, complement, push, pop, shift, unshift,
   enqueue, dequeue, splice, insert, remove, cat, slice, join, fill,
-  shuffle, range, pluck, pair} from "../src/array"
+  range, pluck, pair} from "../src/array"
 
 # import sinon from "sinon"
 
@@ -70,19 +70,6 @@ do ->
     test "remove", ->
       assert.deepEqual (remove [1..5], 3), [1,2,4,5]
       assert.deepEqual (remove [1..5], 6), [1..5]
-
-    test "shuffle"
-    #   # use a sinon sandbox b/c we're mocking globals
-    #   sinon.test ->
-    #     # stubbing Math.random() allows us to determine the algorithm used
-    #     # by expecting a specific result
-    #     sinon.stub(Math, "random").returns 0.8
-    #     # "Given Math.random() always returns 0.8..."
-    #     # * if the biased j = (i * array.size) algorithm is used,
-    #     #   the expected result is: [ 9, 1, 2, 3, 4, 5, 6, 7, 10, 8 ]
-    #     # * if the fisher-yates algorithm used, the expected result is:
-    #     fisher_yates = [ 1, 2, 3, 4, 10, 5, 6, 7, 8, 9 ]
-    #     assert.deepEqual (shuffle [1..10]), fisher_yates
 
     test "range", ->
       assert.deepEqual (range 1, 5), [1..5]

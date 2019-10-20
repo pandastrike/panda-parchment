@@ -4,9 +4,8 @@ import {test, print} from "amen"
 import {property, bind, detach,
   properties, methods,
   has, keys, values, pairs,
-  pick, omit, query,
+  pick, omit,
   assign, include, extend, merge,
-  equal,
   toJSON, fromJSON} from "../src/object"
 
 import {isDefined} from "../src/type"
@@ -27,16 +26,6 @@ do ->
       c = merge a, b
       assert.deepEqual a, {x: 1, y: 2}
       assert.deepEqual c, {x: 1, y: 2, z: 3}
-
-    test "equal", ->
-      assert equal 1, 1
-      assert !equal 1, 2
-      assert equal " ", " "
-      assert !equal "", " "
-      assert equal { x: 1 }, { x: 1}
-      assert !equal { x: 1 }, { x: 2}
-      assert equal [1..3], [1..3]
-      assert !equal [1..3], [1..4]
 
     test "property", -> assert (property "x", { x: 1 }) == 1
 
@@ -75,12 +64,6 @@ do ->
 
     test "omit", ->
       assert.deepEqual (omit ((k,v) -> v?), x: 1, y: null), { y: undefined }
-
-    test "query", ->
-      assert query { x: 1 }, { x: 1, y: 2 }
-      assert ! query { x: 2 }, { x: 1, y: 2 }
-      assert query 1, 1
-      assert !query 1, 2
 
     test "toJSON/fromJSON", ->
       assert.deepEqual (fromJSON toJSON x: 1, y: 2), x: 1, y: 2

@@ -1,16 +1,21 @@
+import "source-map-support/register"
 import {success} from "amen"
 
 targets = process.argv[2..]
 
 if targets.length == 0
   targets = [
-    "array"
-    "numeric"
-    "object"
-    "promise"
-    "string"
-    "type"
-    "time"
+    # "array"
+    # "array-advanced"
+    "clone"
+    "equal"
+    # "numeric"
+    # "object"
+    # "object-advanced"
+    # "promise"
+    # "string"
+    # "type"
+    # "time"
   ]
 
 # TODO: how to set up targetted tests via build-tools?

@@ -1,8 +1,5 @@
 import {curry, negate} from "panda-garden"
-import Method from "panda-generics"
 import {isObject, isArray, isFunction, isRegExp} from "./type"
-
-{create, define} = Method
 
 property = curry (key, object) -> object[key]
 
@@ -38,43 +35,10 @@ pick = curry (f, x) ->
 
 omit = curry (f, x) -> pick (negate f), x
 
-query = curry (example, target) ->
-  if (isObject example) && (isObject target)
-    for k, v of example
-      return false unless query v, target[k]
-    return true
-  else
-    equal example, target
-
 include = extend = assign = (target, sources...) ->
   Object.assign target, sources...
 
 merge = (objects...) -> Object.assign {}, objects...
-
-# “deep” comparison, when applicable
-equal = create
-  name: "equal"
-  description: "Performs a deep comparison of two entities."
-  default: (a, b) -> a == b
-
-# can't use unique and cat from array b/c array
-# depends on object (this file) for detach
-cat = detach Array::concat
-unique = (ax) -> Array.from new Set ax
-define equal, isObject, isObject, (a, b) ->
-  (a == b) || do ->
-    for key in (unique cat (keys a), (keys b))
-      if ! equal a[key], b[key]
-        return false
-    true
-
-define equal, isArray, isArray, (ax, bx) ->
-  (ax == bx) || do ->
-    return false if ax.length != bx.length
-    for i in [0..ax.length]
-      if !equal ax[i], bx[i]
-        return false
-    true
 
 toJSON = (x, pretty = false) ->
   if pretty
@@ -87,7 +51,6 @@ fromJSON = JSON.parse
 export {property, bind, detach,
 properties, methods,
 has, keys, values, pairs,
-pick, omit, query,
+pick, omit,
 assign, include, extend, merge,
-equal,
 toJSON, fromJSON}

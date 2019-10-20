@@ -1,4 +1,4 @@
-import {create, define} from "panda-generics"
+import Method from "panda-generics"
 import {
   isSymbol, isRegExp,
   isBuffer, isArrayBuffer, isTypedArray, isDataView,
@@ -6,6 +6,8 @@ import {
   isBoolean, isDate, isNumber, isString,
   isFunction, isWeakMap, isError
 } from "./type"
+
+{create, define} = Method
 
 # Inspired by Lodash's implementation, though we use generic dispatch: https://github.com/lodash/lodash/blob/898b378f069ecb6c92b7713529985ba78ff34d31/.internal/baseClone.js
 
@@ -30,7 +32,7 @@ define clone, isRegExp, do (flags=/\w*$/) ->
 
 
 define clone, isBuffer, (original) ->
-  original.slice()
+  Buffer.from original
 
 define clone, isArrayBuffer, (original) ->
   copy = new original.constructor original.byteLength
@@ -48,6 +50,7 @@ define clone, isDataView, (original) ->
 
 
 cloneIterator = (original, add) ->
+  console.log {original}
   copy = new original.constructor()
   add copy, entry for entry from original
   copy
@@ -59,19 +62,26 @@ define clone, isMap, (original) ->
 define clone, isArray, (original) ->
   cloneIterator original, (copy, entry) -> copy.push clone entry
 
-define clone, isObject, (original) ->
-  cloneIterator original, (copy, [key, value]) ->
-    copy.defineProperty (clone key), value: (clone value)
-
 define clone, isSet, (original) ->
   cloneIterator original, (copy, entry) -> copy.add clone entry
 
+define clone, isObject, (original) ->
+  copy = new original.constructor()
+  for key, value of original
+    copy[clone key] = clone value
+  copy
 
 
-isScalar = (x) -> (isBoolean x) || (isDate x) || (isNumber x) || (isString x)
 
-define clone, isScalar, (original) ->
+isPrimitive = (x) -> (isBoolean x) || (isNumber x) || (isString x)
+
+define clone, isPrimitive, (original) ->
+  original
+
+define clone, isDate, (original) ->
   new original.constructor original
+
+
 
 
 
