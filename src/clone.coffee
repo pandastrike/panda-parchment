@@ -44,8 +44,8 @@ define clone, isDataView, (original) ->
   new original.constructor (clone original.buffer),
     original.byteOffset, original.byteLength
 
-define clone, isBuffer, (original) ->
-  if Buffer?.from?
+if Buffer?.from?
+  define clone, isBuffer, (original) ->
     Buffer.from original
 
 
