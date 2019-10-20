@@ -45,7 +45,8 @@ define clone, isDataView, (original) ->
     original.byteOffset, original.byteLength
 
 define clone, isBuffer, (original) ->
-  Buffer.from original
+  if Buffer?.from?
+    Buffer.from original
 
 
 

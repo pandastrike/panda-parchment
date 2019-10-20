@@ -89,10 +89,11 @@ define size, hasLength, (x) -> x.length
 
 isEmpty = (x) -> (size x) == 0
 
-# Only works in Node.js
-isBuffer = isType Buffer
+if Buffer?
+  isBuffer = isType Buffer
+else
+  isBuffer = (x) -> false
 
-# Only works in browser. There is no global property named TypedArray.
 isArrayBuffer = isType ArrayBuffer
 isDataView = isType DataView
 isTypedArray = isKind prototype Uint8Array
