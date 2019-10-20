@@ -43,18 +43,13 @@ define equal, isDataView, isDataView, (a, b) ->
   equal a.buffer, b.buffer
 
 
+isPrimitive = (x) -> (isBoolean x) || (isNumber x) || (isString x)
 
-define equal, isBoolean, isBoolean, (a, b) ->
-  a == b
-
-define equal, isNumber, isNumber, (a, b) ->
+define equal, isPrimitive, isPrimitive, (a, b) ->
   a == b
 
 define equal, isDate, isDate, (a, b) ->
   a.getTime() == b.getTime()
-
-define equal, isString, isString, (a, b) ->
-  a == b
 
 define equal, isRegExp, isRegExp, (a, b) ->
   a.toString() == b.toString()
