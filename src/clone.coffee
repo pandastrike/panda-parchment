@@ -50,7 +50,6 @@ define clone, isDataView, (original) ->
 
 
 cloneIterator = (original, add) ->
-  console.log {original}
   copy = new original.constructor()
   add copy, entry for entry from original
   copy

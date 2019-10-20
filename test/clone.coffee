@@ -33,6 +33,7 @@ do ->
 
       test "regexp", scenario  x: 1, y: { z: /foo/gi }
       test "date", scenario  x: 1, y: { z: new Date() }
+      test "symbol", scenario  x: 1, y: { [Symbol "z"]: new Date() }
 
       test "array", scenario x: 1, y: { z: [1, 2, 3] }
       test "set", scenario x: 1, y: { z: new Set [1, 2, 3] }
@@ -41,8 +42,6 @@ do ->
         map.set "pandas", "are the best"
         scenario x: 1, y: { z: map }
       test "buffer", scenario x: 1, y: { z: Buffer.from "panda" }
-
-      test "symbol"
 
       # These need a browser context to be tested.
       test "array buffer"

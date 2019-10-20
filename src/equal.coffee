@@ -58,6 +58,8 @@ define equal, isError, isError, (a, b) ->
   (equal a.name, b.name) && (equal a.message, b.message)
 
 define equal, isSymbol, isSymbol, (a, b) ->
+  console.log (Symbol.prototype.valueOf a)
+  console.log (Symbol.prototype.valueOf b)
   equal (Symbol.prototype.valueOf a), (Symbol.prototype.valueOf b)
 
 
@@ -85,8 +87,11 @@ define equal, isObject, isObject, (a, b) ->
   keysB = keys b
   if keysA.length != keysB.length
     return false
-  for key in keysA
-    if ! equal a[key], b[key]
+
+  keysA.sort()
+  keysB.sort()
+  for key, i in keysA
+    if (! equal keysA[i], keysB[i]) || (! equal a[key], b[key])
       return false
   true
 
