@@ -16,7 +16,7 @@ clone = create
   description: "Creates a deep clone of an entity."
   # When no match, throw to alert that we cannot deliver a deep clone.
   default: (entity) ->
-    throw new Error "clone - no match on entity #{JSON.stringify entity}"
+    throw new Error "clone: no match on entity #{JSON.stringify entity}"
 
 define clone, isObject, (original) ->
   copy = new original.constructor()
@@ -85,12 +85,12 @@ define clone, isDate, (original) ->
 
 
 define clone, isFunction, (original) ->
-  throw new Error "clone - does not clone Function"
+  throw new Error "clone: does not clone Function"
 
 define clone, isWeakMap, (original) ->
-  throw new Error "clone - does not clone WeakMap"
+  throw new Error "clone: does not clone WeakMap"
 
 define clone, isError, (original) ->
-  throw new Error "clone - does not clone Error"
+  throw new Error "clone: does not clone Error"
 
 export {clone}
