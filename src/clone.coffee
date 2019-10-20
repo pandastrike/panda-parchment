@@ -18,6 +18,11 @@ clone = create
   default: (entity) ->
     throw new Error "clone - no match on entity #{JSON.stringify entity}"
 
+define clone, isObject, (original) ->
+  copy = new original.constructor()
+  for key, value of original
+    copy[clone key] = clone value
+  copy
 
 
 define clone, isSymbol, (original) ->
@@ -64,12 +69,6 @@ define clone, isArray, (original) ->
 
 define clone, isSet, (original) ->
   cloneIterator original, (copy, entry) -> copy.add clone entry
-
-define clone, isObject, (original) ->
-  copy = new original.constructor()
-  for key, value of original
-    copy[clone key] = clone value
-  copy
 
 
 

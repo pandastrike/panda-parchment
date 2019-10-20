@@ -19,9 +19,23 @@ equal = create
   description: "Performs a deep comparison of two entities."
   default: (a, b) -> a == b
 
+define equal, isObject, isObject, (a, b) ->
+  keysA = keys a
+  keysB = keys b
+  if keysA.length != keysB.length
+    return false
+
+  keysA.sort()
+  keysB.sort()
+  for key, i in keysA
+    if (! equal keysA[i], keysB[i]) || (! equal a[key], b[key])
+      return false
+  true
+
 # Only available within Node.js API
-define equal, isBuffer, isBuffer, (a, b) ->
-  a.equals b
+if Buffer?.from?
+  define equal, isBuffer, isBuffer, (a, b) ->
+    a.equals b
 
 define equal, isTypedArray, isTypedArray, (a, b) ->
   if (a.length != b.length) || (a.name != b.name)
@@ -78,19 +92,5 @@ define equal, isMap, isMap, (a, b) ->
 define equal, isSet, isSet, (a, b) ->
   equal (mapToArray a), (mapToArray b)
 
-
-
-define equal, isObject, isObject, (a, b) ->
-  keysA = keys a
-  keysB = keys b
-  if keysA.length != keysB.length
-    return false
-
-  keysA.sort()
-  keysB.sort()
-  for key, i in keysA
-    if (! equal keysA[i], keysB[i]) || (! equal a[key], b[key])
-      return false
-  true
 
 export {equal}
