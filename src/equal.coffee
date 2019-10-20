@@ -12,8 +12,6 @@ import {
 
 {create, define} = Method
 
-# Inspired by Lodash's implementation, though we use generic dispatch: https://github.com/lodash/lodash/blob/898b378f069ecb6c92b7713529985ba78ff34d31/.internal/baseIsEqualDeep.js
-
 equal = create
   name: "equal"
   description: "Performs a deep comparison of two entities."
