@@ -49,9 +49,9 @@ define clone, isDataView, (original) ->
   new original.constructor (clone original.buffer),
     original.byteOffset, original.byteLength
 
-if Buffer?.from?
-  define clone, isBuffer, (original) ->
-    Buffer.from original
+# Only available within Node.js API
+define clone, isBuffer, (original) ->
+  Buffer.from original
 
 
 

@@ -33,9 +33,8 @@ define equal, isObject, isObject, (a, b) ->
   true
 
 # Only available within Node.js API
-if Buffer?.from?
-  define equal, isBuffer, isBuffer, (a, b) ->
-    a.equals b
+define equal, isBuffer, isBuffer, (a, b) ->
+  a.equals b
 
 define equal, isTypedArray, isTypedArray, (a, b) ->
   if (a.length != b.length) || (a.name != b.name)
