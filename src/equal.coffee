@@ -30,9 +30,7 @@ define equal, isObject, isObject, (a, b) ->
       return false
   true
 
-# Only available within Node.js API
-define equal, isBuffer, isBuffer, (a, b) ->
-  a.equals b
+
 
 define equal, isTypedArray, isTypedArray, (a, b) ->
   if (a.length != b.length) || (a.name != b.name)
@@ -42,7 +40,6 @@ define equal, isTypedArray, isTypedArray, (a, b) ->
       return false
   true
 
-# Only available within browser APIs
 define equal, isArrayBuffer, isArrayBuffer, (a, b) ->
   if a.byteLength != b.byteLength
     return false
@@ -52,6 +49,10 @@ define equal, isDataView, isDataView, (a, b) ->
   if (a.byteLength != b.byteLength) || (a.byteOffset != b.byteOffset)
     return false
   equal a.buffer, b.buffer
+
+define equal, isBuffer, isBuffer, (a, b) ->
+  a.equals b
+
 
 
 isPrimitive = (x) -> (isBoolean x) || (isNumber x) || (isString x)
