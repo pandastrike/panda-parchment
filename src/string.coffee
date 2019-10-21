@@ -59,4 +59,4 @@ replace = curry (pattern, replacement, string) ->
 
 export {toString, toUpper, toLower, capitalize,
   titleCase, camelCase, underscored, dashed, plainText,
-  htmlEscape, split, w, blank, match, isMatch, replace}
+  htmlEscape, trim, split, w, blank, match, isMatch, replace}

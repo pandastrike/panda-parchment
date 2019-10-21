@@ -5,7 +5,7 @@ import {query} from "../src/object-advanced"
 
 do ->
 
-  print await test "array-advanced", [
+  print await test "advanced object helpers", [
 
     test "query", ->
       assert query { x: 1 }, { x: 1, y: 2 }

@@ -11,7 +11,7 @@ import {first, second, third, fourth, fifth, nth, last, rest,
 
 do ->
 
-  print await test "array helperrs", [
+  print await test "array helpers", [
 
     test "first", -> assert (first [1..5]) == 1
     test "second", -> assert (second [1..5]) == 2
@@ -22,13 +22,28 @@ do ->
     test "last", -> assert (last [1..5]) == 5
     test "rest", -> assert (first rest [1..5]) == 2
     test "includes", -> assert (includes 3, [1..5]) && !(includes 6, [1..5])
-    test "findIndexOf"
-    test "findLastIndexOf"
+
+    test "findIndexOf", ->
+      assert (findIndexOf 2, [1, 2, 3]) == 1
+      assert (findIndexOf 4, [1, 2, 3]) == undefined
+
+    test "findLastIndexOf", ->
+      assert (findLastIndexOf 2, [1, 2, 2, 3]) == 2
+      assert (findLastIndexOf 4, [1, 2,, 2, 3]) == undefined
+
     test "push/enqueue", -> assert.deepEqual (push [1..4], 5), [1..5]
     test "pop/dequeue", -> assert (pop [1..5]) == 5
-    test "shift"
-    test "unshift"
-    test "splice"
+
+    test "shift", ->
+      A = [1, 2, 3]
+      assert (shift A) == 1
+      assert.deepEqual A, [2, 3]
+
+    test "unshift", ->
+      A = [1, 2, 3]
+      assert (unshift A, 0) == 4
+      assert.deepEqual A, [0, 1, 2, 3]
+
     test "cat", -> assert.deepEqual (cat [1..5], [6..10]), [1..10]
 
     test "slice", ->
@@ -38,7 +53,12 @@ do ->
       assert.deepEqual (slice -3, -1, [1..5]), [3,4]
       assert.deepEqual (slice -3, -1, "0123456789"), "78"
 
-    test "splice"
+    test "splice", ->
+      A = [1, 2, 3, 4, 5]
+      assert.deepEqual (splice 0, 0, A), [1, 2, 3, 4, 5]
+      assert.deepEqual (splice 0, 1, A), [2, 3, 4, 5]
+      assert.deepEqual (splice 2, 2, A), [2, 3]
+      assert.deepEqual A, [2, 3]
 
     test "uniqueBy", ->
       mod3 = (x) -> x % 3
@@ -75,9 +95,20 @@ do ->
       assert.deepEqual (range 1, 5), [1..5]
       assert.deepEqual (range 5, 1), [5..1]
 
-    test "join"
-    test "fill"
-    test "pluck"
-    test "pair"
+    test "join", ->
+      A = ["water", "earth", "fire", "air"]
+      assert (join A, "-") == "water-earth-fire-air"
+
+    test "fill", ->
+      A = [1, 2, 3, 4]
+      assert.deepEqual (fill A, 2), [2, 2, 2, 2]
+      assert.deepEqual (fill A, 5), [5, 5, 5, 5]
+
+    test "pluck", ->
+      A = [1, 2, 3, 4, 5]
+      assert (pluck A) in A
+      assert A.length == 5
+
+    test "pair", -> assert.deepEqual (pair 1, 2), [1, 2]
 
   ]
