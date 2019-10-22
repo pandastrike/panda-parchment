@@ -65,8 +65,20 @@ do ->
           assert isArray []
           assert !isArray 7
 
-        test "isNaN"
-        test "isFinite"
+        test "isNaN", ->
+          assert isNaN NaN
+          assert ! isNaN 0
+          assert ! isNaN "foobar"
+
+        test "isFinite", ->
+          assert isFinite 0
+          assert isFinite 2e64
+
+          assert ! isFinite "0"
+          assert ! isFinite null
+          assert ! isFinite Infinity
+          assert ! isFinite NaN
+          assert ! isFinite -Infinity
 
         test "isInteger", ->
           assert isInteger 5

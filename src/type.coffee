@@ -30,19 +30,25 @@ isFloat = (n) -> n == +n && n != (n|0)
 
 isBoolean = isType Boolean
 
+isSymbol = isType Symbol
+
 isDate = isType Date
 
 isRegExp = isType RegExp
 
 isString = isType String
 
-isBuffer = isType Buffer
-
 isRegularFunction = isType Function
 
 isObject = isType Object
 
 isArray = isType Array
+
+isMap = isType Map
+
+isWeakMap = isType WeakMap
+
+isSet = isType Set
 
 isError = isType Error
 
@@ -83,9 +89,24 @@ define size, hasLength, (x) -> x.length
 
 isEmpty = (x) -> (size x) == 0
 
+if Buffer?
+  isBuffer = isType Buffer
+else
+  isBuffer = (x) -> false
+
+isArrayBuffer = isType ArrayBuffer
+isDataView = isType DataView
+isTypedArray = isKind prototype Uint8Array
+
 export {prototype, isPrototype, isTransitivePrototype,
-  isType, isKind, Type, instanceOf, isDefined, isUndefined,
-  isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat, isBuffer,
-  isString, isObject, isArray, isRegExp, isDate, isPromise,
+  isType, isKind, Type, instanceOf,
+  isDefined, isUndefined,
+  isBoolean, isString, isSymbol
+  isNumber, isNaN, isFinite, isInteger, isFloat,
+  isDate, isError, isRegExp, isPromise,
+  isObject, isArray, isMap, isWeakMap, isSet,
   isRegularFunction, isGeneratorFunction, isAsyncFunction, isFunction,
-  size, length, isEmpty}
+  size, length, isEmpty,
+  isBuffer,
+  isArrayBuffer, isDataView, isTypedArray
+}

@@ -1,5 +1,3 @@
-import {curry, binary} from "panda-garden"
-import {isDefined, isString, isObject, isFunction} from "./type"
 
 promise = (f) -> new Promise f
 

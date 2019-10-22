@@ -1,6 +1,6 @@
 {
   "name": "panda-parchment",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "JavaScript helpers for use in functional programming.",
   "files": [
     "build/npm"
@@ -20,12 +20,13 @@
   "license": "MIT",
   "dependencies": {
     "panda-garden": "^5.0.0",
-    "panda-generics": "^6.0.0"
+    "panda-generics": "^6.0.2"
   },
   "devDependencies": {
     "amen": "^3.0.0",
     "panda-9000": "5.0.2",
-    "panda-builder": "4.0.13"
+    "panda-builder": "4.0.13",
+    "source-map-support": "^0.5.13"
   },
   "engine": "node >= 8.10"
 }
