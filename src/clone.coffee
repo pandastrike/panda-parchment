@@ -37,7 +37,8 @@ define clone, isDataView, (original) ->
   new original.constructor (clone original.buffer),
     original.byteOffset, original.byteLength
 
-# Only available within Node.js API
+# Only available within Node.js API. isBuffer will only match when Buffer is
+# available on global. Otherwise, it returns false.
 define clone, isBuffer, (original) ->
   Buffer.from original
 

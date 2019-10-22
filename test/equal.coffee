@@ -49,9 +49,6 @@ do ->
     test "array", ->
       assert equal [1, 2, 3], [1, 2, 3]
       assert ! equal [1, 2, 3], [1, 2, 4]
-    test "set", ->
-      assert equal (new Set [1, 2, 3]), (new Set [1, 2, 3])
-      assert ! equal (new Set [1, 2, 3]), (new Set [1, 2, 4])
     test "map", ->
       A = new Map()
       B = new Map()
@@ -72,4 +69,17 @@ do ->
         (new DataView new ArrayBuffer 8)
       assert ! equal (new DataView new ArrayBuffer 6),
         (new DataView new ArrayBuffer 8)
+
+
+    # Negative tests
+    test "weak map", ->
+      try
+        equal new WeakMap(), new WeakMap()
+        assert.fail "comparing WeakMap should throw"
+      catch
+    test "set", ->
+      try
+        equal new Set(), new Set()
+        assert.fail "comparing WeakMap should throw"
+      catch
   ]
