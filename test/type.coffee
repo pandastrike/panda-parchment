@@ -5,7 +5,8 @@ import {prototype, isType, isKind,
     isBoolean, isNumber, isNaN, isFinite, isInteger, isFloat,
     isString, isBuffer, isFunction, isObject, isArray,
     isRegExp, isDate, isDefined, isGeneratorFunction, isPromise,
-    isAsyncFunction, Type, instanceOf, isEmpty, areType} from "../src/type"
+    isAsyncFunction, Type, instanceOf, isEmpty,
+    areType, areKind} from "../src/type"
 
 do ->
 
@@ -114,16 +115,25 @@ do ->
         test "isType", ->
           assert isType B, b
 
+        test "areType", ->
+          check = areType String
+          assert check ["1", "2", "3"]
+          assert ! check "1"
+          assert ! check ["1", 2, "3"]
+          assert ! check [1, 2, 3]
+
         test "isKind", ->
           assert isKind A, b
+
+        test "areKind", ->
+          check = areKind A
+          assert check [b, b, b]
+          assert ! check b
+          assert ! check [b, 2, b]
+          assert ! check [1, 2, 3]
       ]
 
-    test "areType", ->
-      check = areType isString
-      assert check ["1", "2", "3"]
-      assert ! check "1"
-      assert ! check ["1", 2, "3"]
-      assert ! check [1, 2, 3]
+
 
     test "isEmpty", ->
       assert isEmpty ""

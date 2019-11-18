@@ -98,10 +98,16 @@ isArrayBuffer = isType ArrayBuffer
 isDataView = isType DataView
 isTypedArray = isKind prototype Uint8Array
 
-areType = curry (typeCheck, array) ->
+areType = curry (type, array) ->
   return false unless isArray array
   for item in array
-    return false unless typeCheck item
+    return false unless isType type, item
+  true
+
+areKind = curry (kind, array) ->
+  return false unless isArray array
+  for item in array
+    return false unless isKind kind, item
   true
 
 export {prototype, isPrototype, isTransitivePrototype,
@@ -115,5 +121,5 @@ export {prototype, isPrototype, isTransitivePrototype,
   size, length, isEmpty,
   isBuffer,
   isArrayBuffer, isDataView, isTypedArray
-  areType
+  areType, areKind
 }
