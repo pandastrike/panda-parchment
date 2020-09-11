@@ -1,4 +1,4 @@
-import {curry, negate} from "panda-garden"
+import {curry, negate} from "@pandastrike/garden"
 import {isObject, isArray, isFunction, isRegExp} from "./type"
 
 property = curry (key, object) -> object[key]

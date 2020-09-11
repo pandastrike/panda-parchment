@@ -1,4 +1,4 @@
-import {identity} from "panda-garden"
+import {identity} from "@pandastrike/garden"
 import Method from "panda-generics"
 import {
   isSymbol, isRegExp,

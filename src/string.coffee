@@ -1,4 +1,4 @@
-import {curry, compose} from "panda-garden"
+import {curry, pipe, tee} from "@pandastrike/garden"
 
 toString = (x) -> x.toString()
 
@@ -46,7 +46,10 @@ trim = (s) -> s.trim()
 
 split = curry (re, s) -> s.split re
 
-w = compose (split /\s+/), trim
+w = pipe [
+  trim
+  split /\s+/
+]
 
 blank = (s) -> s.constructor == String && s.length == 0
 

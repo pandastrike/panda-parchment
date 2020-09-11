@@ -1,4 +1,4 @@
-import {curry, partial, negate} from "panda-garden"
+import {curry, partial, negate} from "@pandastrike/garden"
 
 eq = curry (x, y) -> x == y
 neq = curry (x, y) -> x != y

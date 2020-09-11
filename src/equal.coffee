@@ -1,4 +1,4 @@
-import {curry} from "panda-garden"
+import {curry} from "@pandastrike/garden"
 import Method from "panda-generics"
 import {detach, keys} from "./object"
 import {cat, unique} from "./array"

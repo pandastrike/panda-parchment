@@ -1,5 +1,5 @@
-import {curry, flip, compose, partial, _, identity,
-  unary, binary, ternary} from "panda-garden"
+import {curry, pipe, partial, _, identity,
+  unary, binary, ternary} from "@pandastrike/garden"
 
 import {detach} from "./object"
 
@@ -80,7 +80,7 @@ dupes = ([a, ax...]) ->
     bx = dupes ax
     if a in ax && !(a in bx) then [a, bx...] else bx
 
-union = curry compose unique, cat
+union = pipe [ cat, unique ]
 
 intersection = (first, rest...) ->
   if empty rest

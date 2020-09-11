@@ -1,5 +1,5 @@
 # Object functions that pull from other parchment primitives.
-import {curry} from "panda-garden"
+import {curry} from "@pandastrike/garden"
 import {isObject} from "./type"
 import {equal} from "./equal"
 

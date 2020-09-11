@@ -3,9 +3,11 @@
   "version": "6.0.3",
   "description": "JavaScript helpers for use in functional programming.",
   "files": [
-    "build/npm"
+    "src",
+    "build/npm/src"
   ],
   "main": "build/npm/src/index.js",
+  "main:coffee": "src/index.coffee",
   "scripts": {
     "test": "p9k npm:test"
   },
@@ -19,13 +21,14 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "panda-garden": "^5.0.0",
-    "panda-generics": "^6.0.2"
+    "@pandastrike/garden": "^8.0.1",
+    "panda-generics": "^6.0.3"
   },
   "devDependencies": {
     "amen": "^3.0.0",
     "panda-9000": "5.0.2",
     "panda-builder": "4.0.13",
+    "panda-garden": "^5.0.0",
     "source-map-support": "^0.5.13"
   },
   "engine": "node >= 8.10"
